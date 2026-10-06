@@ -1,0 +1,211 @@
+import React, { useState, useEffect } from 'react';
+
+const COLOR_PALETTE = [
+  '#06b6d4', // Cyan
+  '#f59e0b', // Amber
+  '#10b981', // Emerald
+  '#a855f7', // Violet
+  '#f43f5e', // Rose
+  '#38bdf8', // Sky Blue
+];
+
+const EMOJI_OPTIONS = ['⚡', '🚀', '🛠️', '💡', '🎯', '🏁', '⭐'];
+
+const STATUS_OPTIONS = [
+  'Not registered',
+  'Early application',
+  'Waiting for API key',
+  'Considering',
+  'In progress',
+  'Submitted'
+];
+
+export const LogModal = ({ isOpen, onClose, onSave, editingHackathon, initialYear, initialMonth }) => {
+  const [name, setName] = useState('');
+  const [deadline, setDeadline] = useState('');
+  const [status, setStatus] = useState('Not registered');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [color, setColor] = useState(COLOR_PALETTE[0]);
+  const [emoji, setEmoji] = useState(EMOJI_OPTIONS[0]);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (editingHackathon) {
+      setName(editingHackathon.name || '');
+      setDeadline(editingHackathon.deadline || '');
+      setStatus(editingHackathon.status || 'Not registered');
+      setStartDate(editingHackathon.startDate || '');
+      setEndDate(editingHackathon.endDate || '');
+      setColor(editingHackathon.color || COLOR_PALETTE[0]);
+      setEmoji(editingHackathon.emoji || EMOJI_OPTIONS[0]);
+    } else {
+      // Default to current year & month for new entries
+      const monthPadded = String(initialMonth + 1).padStart(2, '0');
+      const defaultStart = `${initialYear}-${monthPadded}-05`;
+      const defaultEnd = `${initialYear}-${monthPadded}-15`;
+      const defaultDeadline = `${initialYear}-${monthPadded}-16`;
+
+      setName('');
+      setDeadline(defaultDeadline);
+      setStatus('Not registered');
+      setStartDate(defaultStart);
+      setEndDate(defaultEnd);
+      setColor(COLOR_PALETTE[0]);
+      setEmoji(EMOJI_OPTIONS[0]);
+    }
+    setError('');
+  }, [editingHackathon, isOpen, initialYear, initialMonth]);
+
+  if (!isOpen) return null;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!name.trim()) {
+      setError('Please provide a hackathon name.');
+      return;
+    }
+    if (!deadline) {
+      setError('Please provide a submission deadline.');
+      return;
+    }
+    if (!startDate || !endDate) {
+      setError('Please provide both work start and end dates.');
+      return;
+    }
+    if (new Date(endDate) < new Date(startDate)) {
+      setError('End date cannot be earlier than start date.');
+      return;
+    }
+
+    const payload = {
+      id: editingHackathon ? editingHackathon.id : Date.now().toString(),
+      name: name.trim(),
+      deadline,
+      status,
+      startDate,
+      endDate,
+      color,
+      emoji,
+    };
+
+    onSave(payload);
+    onClose();
+  };
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-header">
+          <h2 className="modal-title">
+            <span>{editingHackathon ? '✏️' : '🚀'}</span>
+            {editingHackathon ? 'Edit Hackathon' : 'Log Hackathon'}
+          </h2>
+          <button type="button" className="modal-close-btn" onClick={onClose}>&times;</button>
+        </div>
+
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label className="form-label">Hackathon Name</label>
+            <input
+              type="text"
+              className={`form-input ${!name.trim() && error ? 'error' : ''}`}
+              placeholder="e.g. AI Basics Hackathon"
+              value={name}
+              onChange={(e) => { setName(e.target.value); setError(''); }}
+              autoFocus
+            />
+          </div>
+
+          <div className="form-row-2">
+            <div className="form-group">
+              <label className="form-label">Submission Deadline</label>
+              <input
+                type="date"
+                className="form-input"
+                value={deadline}
+                onChange={(e) => setDeadline(e.target.value)}
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Application Status</label>
+              <select
+                className="form-select"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+              >
+                {STATUS_OPTIONS.map((opt) => (
+                  <option key={opt} value={opt}>{opt}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="form-row-2">
+            <div className="form-group">
+              <label className="form-label">Work Start Date</label>
+              <input
+                type="date"
+                className="form-input"
+                value={startDate}
+                onChange={(e) => { setStartDate(e.target.value); setError(''); }}
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Work End Date</label>
+              <input
+                type="date"
+                className="form-input"
+                value={endDate}
+                onChange={(e) => { setEndDate(e.target.value); setError(''); }}
+              />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Theme Color</label>
+            <div className="color-picker-row">
+              {COLOR_PALETTE.map((c) => (
+                <div
+                  key={c}
+                  className={`color-option ${color === c ? 'selected' : ''}`}
+                  style={{ backgroundColor: c }}
+                  onClick={() => setColor(c)}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Badge Emoji</label>
+            <div className="emoji-picker-row">
+              {EMOJI_OPTIONS.map((emo) => (
+                <button
+                  key={emo}
+                  type="button"
+                  className={`emoji-option ${emoji === emo ? 'selected' : ''}`}
+                  onClick={() => setEmoji(emo)}
+                >
+                  {emo}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {error && <div className="form-error">⚠️ {error}</div>}
+
+          <div className="modal-footer">
+            <button type="button" className="btn-secondary" onClick={onClose}>
+              Cancel
+            </button>
+            <button type="submit" className="btn-primary">
+              {editingHackathon ? 'Save Changes' : 'Add Hackathon'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
