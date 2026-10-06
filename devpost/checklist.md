@@ -29,7 +29,7 @@ Build mode: learn
   Learner check: Look at the calendar grid, see your logged dates highlighted with your chosen color and emoji, and add an overlapping event to see the days split cleanly with the conflict tooltip.
   Commit: `feat: add monthly calendar grid with split-cell overlap visualization`
 
-- [ ] **3. Workload capacity calculator and rest days guardrail**
+- [x] **3. Workload capacity calculator and rest days guardrail**
   Becomes usable: The capacity bar dynamically computes total committed days vs. remaining free days in the active month, comparing them against the user's rest day target (configurable in SettingsModal). If free days drop below the rest target, a prominent amber warning badge triggers with clear overload feedback.
   Why now: Completes the core value proposition of Dev Cadence—transforming the planner from a passive calendar into an active capacity guardrail that prevents overcommitment.
   PRD ref: `prd.md > Features and Behavior > 4. Workload Capacity Calculation & Rest Warnings`, `prd.md > The Core Journey` (step 7)
@@ -39,7 +39,7 @@ Build mode: learn
   Learner check: Open Settings, set your rest target (e.g. 10 days), log enough hackathons to exceed the capacity, and verify the amber warning alerts you that your rest buffer is exceeded.
   Commit: `feat: add capacity calculator and rest days overcommitment guardrail`
 
-- [ ] **4. Chrome extension packaging and side panel integration**
+- [x] **4. Chrome extension packaging and side panel integration**
   Becomes usable: A complete Manifest V3 Chrome Extension package ready to load into Chrome via "Load unpacked", sliding out smoothly as a native side panel on any `devpost.com` page, with icons, toolbar action, and complete local persistence.
   Why now: Packages the built application into the final submission form factor so you can try it live alongside Devpost and record your 1-minute demo video.
   PRD ref: `prd.md > Screens and Layout > 1. Header Bar`, `prd.md > The Core Journey` (step 1)
