@@ -1,12 +1,12 @@
 ---
 doc: spec
-status: draft
+status: approved
 ---
 
 # Dev Cadence — Technical Specification
 
 ## How This Works, In Plain Language
-Dev Cadence is a Chrome Extension built with React and Vite that operates as a native browser side panel alongside Devpost.
+Dev Cadence is a Chrome Extension built with React 19 and Vite that operates as a native browser side panel alongside Devpost.
 
 When a user browses hackathons on Devpost, they click the extension icon to slide open the panel. Inside, the app maintains an in-memory React state synchronized with a lightweight dual-storage helper: it writes to `chrome.storage.local` when running inside the extension, and automatically falls back to browser `localStorage` during local development with Vite.
 
@@ -34,7 +34,7 @@ The panel features four core pieces working together:
    *PRD ref:* `prd.md > The Core Journey` (Step 7) and `prd.md > Features and Behavior > 4. Workload Capacity Calculation & Rest Warnings`.
 
 ## Stack
-- **Framework:** React 18 ([React Docs](https://react.dev/))
+- **Framework:** React 19 ([React Docs](https://react.dev/))
   - *Rationale:* Component-driven architecture allows clean separation between the calendar grid, capacity metrics, and pipeline table with reactive state updates.
 - **Build Tool & Bundler:** Vite ([Vite Docs](https://vitejs.dev/))
   - *Rationale:* Instant hot-module-replacement (HMR) for fast local development, compiling directly to a clean `dist/` directory that Chrome loads as an unpacked extension.
@@ -207,7 +207,7 @@ dev-cadence/
 - **Manual Logging over DOM Web Scraping:** Eliminates fragile DOM selectors that break whenever Devpost updates class names, ensuring 100% reliable entry during the hackathon demo.
 
 ## Decisions and Open Issues
-- **Learner-Selected Stack:** React 18 + Vite chosen for component modularity, fast live development, and smooth extension bundling.
+- **Learner-Selected Stack:** React 19 + Vite chosen for component modularity, fast live development, and smooth extension bundling.
 - **Split-Cell Overlap Interaction:** Confirmed that overlapping calendar days render split backgrounds/chips, surface a hover tooltip detailing conflicting events, and filter the table on click.
 - **Learner Uncertainty / Focus Area:** The learner wanted to evaluate the Devpost Learn Skill Pack and agent velocity. To optimize this, the spec provides a dual-mode dev workflow (`npm run dev` for instant preview, `npm run build` for Chrome unpacked extension) so the entire build can be verified step-by-step with zero friction.
 - **Open Issues:** None. All technical contracts, data models, component boundaries, and file structures are established.
