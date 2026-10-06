@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dev Cadence — Technical Specification Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070d19;
+      --card-bg: rgba(18, 27, 49, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-hover: rgba(26, 38, 68, 0.9);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --primary: #06b6d4;
+      --primary-glow: rgba(6, 182, 212, 0.25);
+      --gear-amber: #f59e0b;
+      --gear-amber-glow: rgba(245, 158, 11, 0.25);
+      --emerald: #10b981;
+      --rose: #f43f5e;
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at 12% 12%, #1e1b4b 0%, var(--bg) 40%),
+                  radial-gradient(circle at 88% 38%, #082f49 0%, var(--bg) 45%),
+                  radial-gradient(circle at 50% 85%, #18181b 0%, var(--bg) 60%);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 2.5rem 1.5rem;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .header-content {
+      flex: 1;
+      min-width: 320px;
+    }
+
+    .logo-container {
+      width: 140px;
+      height: 140px;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 2px solid rgba(245, 158, 11, 0.4);
+      box-shadow: 0 0 25px rgba(6, 182, 212, 0.25), 0 0 15px rgba(245, 158, 11, 0.2);
+      flex-shrink: 0;
+      background: #0f172a;
+    }
+
+    .logo-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--primary-glow);
+      border: 1px solid rgba(6, 182, 212, 0.4);
+      color: #38bdf8;
+      padding: 0.35rem 0.9rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 1rem;
+    }
+
+    .status-pulse {
+      width: 8px;
+      height: 8px;
+      background: #22d3ee;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #22d3ee;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    h1 {
+      font-size: 2.75rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #ffffff 25%, #67e8f9 65%, #f59e0b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.75rem;
+    }
+
+    .tagline {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 680px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      margin-bottom: 1.75rem;
+      backdrop-filter: blur(12px);
+      transition: border-color 0.2s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+      color: #fff;
+    }
+
+    .card-title svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--primary);
+    }
+
+    /* Diagram */
+    .diagram-container {
+      background: rgba(8, 14, 26, 0.9);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      overflow-x: auto;
+    }
+
+    svg.flow-diagram {
+      width: 100%;
+      height: auto;
+      min-width: 760px;
+      display: block;
+    }
+
+    /* Interactive Tabs */
+    .tabs-nav {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 0.65rem 1.25rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .tab-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+
+    .tab-btn.active {
+      background: rgba(6, 182, 212, 0.15);
+      border-color: rgba(6, 182, 212, 0.45);
+      color: #22d3ee;
+    }
+
+    .tab-pane {
+      display: none;
+    }
+
+    .tab-pane.active {
+      display: block;
+      animation: fadeIn 0.25s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Component Grid */
+    .component-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    .comp-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      padding: 1.25rem;
+      transition: all 0.2s ease;
+    }
+
+    .comp-card:hover {
+      border-color: rgba(6, 182, 212, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .comp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .comp-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+      color: #38bdf8;
+      font-weight: 700;
+    }
+
+    .comp-badge {
+      font-size: 0.72rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      background: rgba(99, 102, 241, 0.15);
+      color: #a5b4fc;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+    }
+
+    .comp-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .comp-ref {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* File Tree */
+    .file-tree {
+      background: #0b1120;
+      border-radius: 10px;
+      padding: 1.25rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      color: #94a3b8;
+      overflow-x: auto;
+    }
+
+    .tree-folder { color: #f59e0b; font-weight: 600; }
+    .tree-file { color: #e2e8f0; }
+    .tree-comment { color: #64748b; font-style: italic; }
+
+    /* Code Snippet */
+    pre.code-block {
+      background: #0b1120;
+      border-radius: 10px;
+      padding: 1.25rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: #e2e8f0;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      overflow-x: auto;
+      margin-top: 0.75rem;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--card-border);
+      color: var(--text-dim);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-content">
+        <div class="status-badge">
+          <span class="status-pulse"></span>
+          Spec Draft &bull; Review Ready
+        </div>
+        <h1>Dev Cadence</h1>
+        <p class="tagline">Technical specification and component architecture for the React + Vite Chrome Extension side panel, with unified local storage and dynamic split-cell calendar rendering.</p>
+      </div>
+      <div class="logo-container" title="Dev Cadence Custom Steampunk Automaton Logo">
+        <img src="logo.jpg" alt="Dev Cadence Logo">
+      </div>
+    </header>
+
+    <!-- Architecture & Data Flow Diagram -->
+    <section class="card">
+      <div class="card-title">
+        <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"/></svg>
+        System Architecture & Data Flow
+      </div>
+      <div class="diagram-container">
+        <svg class="flow-diagram" viewBox="0 0 860 170" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Flow arrows -->
+          <path d="M150 85 H185" stroke="#06b6d4" stroke-width="2.5" stroke-dasharray="4 4"/>
+          <polygon points="185,85 177,80 177,90" fill="#06b6d4"/>
+          
+          <path d="M345 85 H380" stroke="#06b6d4" stroke-width="2.5" stroke-dasharray="4 4"/>
+          <polygon points="380,85 372,80 372,90" fill="#06b6d4"/>
+
+          <path d="M540 85 H575" stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="4 4"/>
+          <polygon points="575,85 567,80 567,90" fill="#f59e0b"/>
+
+          <path d="M725 85 H760" stroke="#10b981" stroke-width="2.5" stroke-dasharray="4 4"/>
+          <polygon points="760,85 752,80 752,90" fill="#10b981"/>
+
+          <!-- 1. Browser Host -->
+          <rect x="10" y="35" width="140" height="100" rx="10" fill="#131e33" stroke="#1e293b" stroke-width="1.5"/>
+          <text x="80" y="70" text-anchor="middle" fill="#38bdf8" font-size="12" font-family="Plus Jakarta Sans" font-weight="700">Devpost Browser</text>
+          <text x="80" y="90" text-anchor="middle" fill="#cbd5e1" font-size="10" font-family="Plus Jakarta Sans">devpost.com/*</text>
+          <text x="80" y="110" text-anchor="middle" fill="#64748b" font-size="9" font-family="Plus Jakarta Sans">Native Side Panel Trigger</text>
+
+          <!-- 2. Side Panel Container -->
+          <rect x="185" y="35" width="160" height="100" rx="10" fill="#131e33" stroke="#06b6d4" stroke-width="2"/>
+          <text x="265" y="65" text-anchor="middle" fill="#38bdf8" font-size="12" font-family="Plus Jakarta Sans" font-weight="700">Chrome Side Panel</text>
+          <text x="265" y="85" text-anchor="middle" fill="#ffffff" font-size="11" font-family="Plus Jakarta Sans">index.html + React</text>
+          <text x="265" y="105" text-anchor="middle" fill="#a5b4fc" font-size="9" font-family="Plus Jakarta Sans">Manifest V3 sidePanel</text>
+
+          <!-- 3. React Core State -->
+          <rect x="380" y="35" width="160" height="100" rx="10" fill="#131e33" stroke="#06b6d4" stroke-width="1.5"/>
+          <text x="460" y="65" text-anchor="middle" fill="#38bdf8" font-size="12" font-family="Plus Jakarta Sans" font-weight="700">App State Core</text>
+          <text x="460" y="85" text-anchor="middle" fill="#ffffff" font-size="10" font-family="Plus Jakarta Sans">hackathons[]</text>
+          <text x="460" y="105" text-anchor="middle" fill="#cbd5e1" font-size="10" font-family="Plus Jakarta Sans">settings: { targetRest }</text>
+
+          <!-- 4. Interactive Components -->
+          <rect x="575" y="35" width="150" height="100" rx="10" fill="#131e33" stroke="#f59e0b" stroke-width="1.5"/>
+          <text x="650" y="65" text-anchor="middle" fill="#fbbf24" font-size="12" font-family="Plus Jakarta Sans" font-weight="700">UI Components</text>
+          <text x="650" y="85" text-anchor="middle" fill="#cbd5e1" font-size="10" font-family="Plus Jakarta Sans">CalendarGrid (Split)</text>
+          <text x="650" y="105" text-anchor="middle" fill="#cbd5e1" font-size="10" font-family="Plus Jakarta Sans">CapacityBar + Table</text>
+
+          <!-- 5. Dual Storage Bridge -->
+          <rect x="760" y="35" width="90" height="100" rx="10" fill="#0f2922" stroke="#10b981" stroke-width="2"/>
+          <text x="805" y="65" text-anchor="middle" fill="#34d399" font-size="12" font-family="Plus Jakarta Sans" font-weight="700">Storage</text>
+          <text x="805" y="85" text-anchor="middle" fill="#6ee7b7" font-size="9" font-family="Plus Jakarta Sans">chrome.storage</text>
+          <text x="805" y="105" text-anchor="middle" fill="#6ee7b7" font-size="9" font-family="Plus Jakarta Sans">localStorage</text>
+        </svg>
+      </div>
+    </section>
+
+    <!-- Navigation Tabs -->
+    <div class="tabs-nav">
+      <button class="tab-btn active" data-tab="components">
+        <span>🧩</span> Component Architecture
+      </button>
+      <button class="tab-btn" data-tab="datamodel">
+        <span>📦</span> Data Model & Schema
+      </button>
+      <button class="tab-btn" data-tab="filetree">
+        <span>📁</span> File Structure
+      </button>
+      <button class="tab-btn" data-tab="fallbacks">
+        <span>🛡️</span> Failure Modes & Fallbacks
+      </button>
+    </div>
+
+    <!-- Tab 1: Components -->
+    <div class="tab-pane active" id="pane-components">
+      <section class="card">
+        <div class="card-title">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+          Component Breakdown & PRD Mapping
+        </div>
+        <div class="component-grid">
+          <div class="comp-card">
+            <div class="comp-header">
+              <span class="comp-name">App.jsx</span>
+              <span class="comp-badge">Root Layout</span>
+            </div>
+            <p class="comp-desc">Coordinates app state, loads stored hackathons and settings, and mounts modals.</p>
+            <span class="comp-ref">Implements prd.md &gt; Features &gt; 1. Panel Lifecycle</span>
+          </div>
+
+          <div class="comp-card">
+            <div class="comp-header">
+              <span class="comp-name">Header.jsx</span>
+              <span class="comp-badge">Navigation</span>
+            </div>
+            <p class="comp-desc">Renders automaton brand, month title, month switcher (&lt; and &gt;), and settings button.</p>
+            <span class="comp-ref">Implements prd.md &gt; Screens &gt; 1. Header Bar</span>
+          </div>
+
+          <div class="comp-card">
+            <div class="comp-header">
+              <span class="comp-name">CapacityBar.jsx</span>
+              <span class="comp-badge">Analytics</span>
+            </div>
+            <p class="comp-desc">Calculates booked vs free days, compares against rest target, triggers amber overcommitment pill.</p>
+            <span class="comp-ref">Implements prd.md &gt; Features &gt; 4. Workload Capacity</span>
+          </div>
+
+          <div class="comp-card">
+            <div class="comp-header">
+              <span class="comp-name">CalendarGrid.jsx</span>
+              <span class="comp-badge">Visualization</span>
+            </div>
+            <p class="comp-desc">Renders month cells, shades work ranges, handles multi-event splits, surfaces hover tooltip.</p>
+            <span class="comp-ref">Implements prd.md &gt; Features &gt; 3. Calendar & Overlaps</span>
+          </div>
+
+          <div class="comp-card">
+            <div class="comp-header">
+              <span class="comp-name">PipelineTable.jsx</span>
+              <span class="comp-badge">Data View</span>
+            </div>
+            <p class="comp-desc">Tabular spreadsheet view with Name, Deadline, Status chip, Dates, and Edit/Delete controls.</p>
+            <span class="comp-ref">Implements prd.md &gt; Features &gt; 2. Hackathon Logging</span>
+          </div>
+
+          <div class="comp-card">
+            <div class="comp-header">
+              <span class="comp-name">LogModal.jsx</span>
+              <span class="comp-badge">Input Dialog</span>
+            </div>
+            <p class="comp-desc">Form modal for adding/editing hackathons with date range validation and color/emoji pickers.</p>
+            <span class="comp-ref">Implements prd.md &gt; Screens &gt; 6. Log Modal</span>
+          </div>
+
+          <div class="comp-card">
+            <div class="comp-header">
+              <span class="comp-name">SettingsModal.jsx</span>
+              <span class="comp-badge">Config</span>
+            </div>
+            <p class="comp-desc">Modal for setting target rest days per month and average project turnaround time.</p>
+            <span class="comp-ref">Implements prd.md &gt; Screens &gt; 7. Settings Modal</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Tab 2: Data Model -->
+    <div class="tab-pane" id="pane-datamodel">
+      <section class="card">
+        <div class="card-title">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/></svg>
+          Data Models & Storage Schemas
+        </div>
+        <p style="color:var(--text-muted); font-size:0.9rem;">Clean typed structures powering state and persistence:</p>
+
+        <pre class="code-block">// Hackathon item schema
+interface Hackathon {
+  id: string;               // UUID or timestamp
+  name: string;             // Hackathon name (e.g. "Cloud Sprint")
+  deadline: string;         // ISO date "YYYY-MM-DD"
+  status: string;           // "Not registered" | "Early application" | "Waiting for API key" | custom
+  startDate: string;        // ISO date "YYYY-MM-DD"
+  endDate: string;          // ISO date "YYYY-MM-DD"
+  color: string;            // Hex code "#06b6d4" | "#f59e0b" | "#10b981"
+  emoji: string;            // Emoji chip "⚡" | "🚀" | "🛠️"
+}
+
+// User Capacity Settings
+interface UserSettings {
+  targetRestDays: number;   // Default: 8
+  avgTurnaroundDays: number;// Default: 10
+}</pre>
+      </section>
+    </div>
+
+    <!-- Tab 3: File Tree -->
+    <div class="tab-pane" id="pane-filetree">
+      <section class="card">
+        <div class="card-title">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+          Annotated Project File Structure
+        </div>
+        <div class="file-tree">
+dev-cadence/
+├── <span class="tree-file">manifest.json</span>              <span class="tree-comment"># Chrome Extension Manifest V3 configuration</span>
+├── <span class="tree-file">index.html</span>                 <span class="tree-comment"># Side panel & Vite preview entry</span>
+├── <span class="tree-file">vite.config.js</span>             <span class="tree-comment"># Vite bundler configuration</span>
+├── <span class="tree-file">package.json</span>               <span class="tree-comment"># React 18, Vite dependencies</span>
+├── <span class="tree-folder">public/</span>
+│   ├── <span class="tree-file">icon16.png</span>, <span class="tree-file">icon48.png</span>, <span class="tree-file">icon128.png</span>
+│   └── <span class="tree-file">logo.jpg</span>               <span class="tree-comment"># Custom Steampunk Automaton emblem</span>
+├── <span class="tree-folder">src/</span>
+│   ├── <span class="tree-file">main.jsx</span>               <span class="tree-comment"># React root render</span>
+│   ├── <span class="tree-file">App.jsx</span>                <span class="tree-comment"># Main state & layout container</span>
+│   ├── <span class="tree-file">index.css</span>              <span class="tree-comment"># Theme variables & glassmorphism styles</span>
+│   ├── <span class="tree-folder">components/</span>
+│   │   ├── <span class="tree-file">Header.jsx</span>         <span class="tree-comment"># Brand, month nav, settings button</span>
+│   │   ├── <span class="tree-file">CapacityBar.jsx</span>    <span class="tree-comment"># Workload metrics & warning badge</span>
+│   │   ├── <span class="tree-file">CalendarGrid.jsx</span>   <span class="tree-comment"># Month grid with split-cell overlaps</span>
+│   │   ├── <span class="tree-file">PipelineTable.jsx</span>  <span class="tree-comment"># Tabular pipeline with edit/delete</span>
+│   │   ├── <span class="tree-file">LogModal.jsx</span>       <span class="tree-comment"># Log/edit hackathon modal</span>
+│   │   └── <span class="tree-file">SettingsModal.jsx</span>  <span class="tree-comment"># Capacity settings dialog</span>
+│   └── <span class="tree-folder">utils/</span>
+│       ├── <span class="tree-file">storage.js</span>         <span class="tree-comment"># chrome.storage & localStorage bridge</span>
+│       └── <span class="tree-file">calendarUtils.js</span>   <span class="tree-comment"># Date math & collision detection</span>
+└── <span class="tree-folder">devpost/</span>                   <span class="tree-comment"># Planning artifacts (scope, prd, spec)</span>
+        </div>
+      </section>
+    </div>
+
+    <!-- Tab 4: Fallbacks -->
+    <div class="tab-pane" id="pane-fallbacks">
+      <section class="card">
+        <div class="card-title">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+          Important Failure Modes & Fallback Strategies
+        </div>
+        <div style="display:grid; gap: 0.85rem;">
+          <div style="background:rgba(255,255,255,0.02); padding:1rem; border-radius:10px; border:1px solid rgba(255,255,255,0.05);">
+            <strong style="color:#38bdf8;">Running in Local Browser Preview (outside Extension):</strong>
+            <p style="color:var(--text-muted); font-size:0.88rem; margin-top:0.25rem;"><code>storage.js</code> detects absence of <code>chrome.storage</code> and seamlessly reads/writes to <code>window.localStorage</code>, guaranteeing identical behavior in development.</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.02); padding:1rem; border-radius:10px; border:1px solid rgba(255,255,255,0.05);">
+            <strong style="color:#f59e0b;">Invalid Date Range in Form:</strong>
+            <p style="color:var(--text-muted); font-size:0.88rem; margin-top:0.25rem;">If end date is earlier than start date, <code>LogModal.jsx</code> flags the field with a red border, displays an inline error message, and disables the Save button.</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.02); padding:1rem; border-radius:10px; border:1px solid rgba(255,255,255,0.05);">
+            <strong style="color:#10b981;">Empty Storage Hydration:</strong>
+            <p style="color:var(--text-muted); font-size:0.88rem; margin-top:0.25rem;">When opened for the first time or if storage is cleared, the app gracefully initializes default settings (8 rest days) and empty hackathon array, rendering the friendly empty state.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      Dev Cadence &bull; Build With AI: Basics Hackathon Spec Companion &bull; Canonical: devpost/spec.md
+    </footer>
+  </div>
+
+  <script>
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const panes = document.querySelectorAll('.tab-pane');
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.getAttribute('data-tab');
+        tabBtns.forEach(b => b.classList.remove('active'));
+        panes.forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(`pane-${target}`).classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
