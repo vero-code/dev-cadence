@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dev Cadence — Scope Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: rgba(23, 30, 48, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-hover: rgba(30, 41, 67, 0.9);
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --primary: #6366f1;
+      --primary-glow: rgba(99, 102, 241, 0.25);
+      --accent: #06b6d4;
+      --accent-glow: rgba(6, 182, 212, 0.2);
+      --emerald: #10b981;
+      --emerald-bg: rgba(16, 185, 129, 0.12);
+      --amber: #f59e0b;
+      --amber-bg: rgba(245, 158, 11, 0.12);
+      --rose: #f43f5e;
+      --rose-bg: rgba(244, 63, 94, 0.12);
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at 15% 10%, #1e1b4b 0%, var(--bg) 45%),
+                  radial-gradient(circle at 85% 60%, #0c2340 0%, var(--bg) 50%);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 2.5rem 1.5rem;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    header {
+      margin-bottom: 2.5rem;
+      position: relative;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--primary-glow);
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      color: #a5b4fc;
+      padding: 0.35rem 0.9rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 1rem;
+    }
+
+    .status-pulse {
+      width: 8px;
+      height: 8px;
+      background: #818cf8;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #818cf8;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    h1 {
+      font-size: 2.75rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 70%, #06b6d4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.75rem;
+    }
+
+    .tagline {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      max-width: 680px;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      margin-bottom: 1.5rem;
+      backdrop-filter: blur(12px);
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      color: #fff;
+    }
+
+    .card-title svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--accent);
+    }
+
+    /* Kernel Spotlight */
+    .kernel-card {
+      background: linear-gradient(135deg, rgba(30, 27, 75, 0.7) 0%, rgba(15, 23, 42, 0.8) 100%);
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      box-shadow: 0 12px 30px -10px var(--primary-glow);
+    }
+
+    .quote-block {
+      border-left: 3px solid var(--accent);
+      padding-left: 1.2rem;
+      margin-top: 1rem;
+      font-style: italic;
+      color: #cbd5e1;
+      background: rgba(6, 182, 212, 0.05);
+      border-radius: 0 10px 10px 0;
+      padding: 1rem;
+    }
+
+    /* Diagram Section */
+    .diagram-container {
+      background: rgba(11, 15, 25, 0.8);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1.25rem 0;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      overflow-x: auto;
+    }
+
+    svg.flow-diagram {
+      width: 100%;
+      height: auto;
+      min-width: 600px;
+      display: block;
+    }
+
+    /* Interactive Reveal Tabs */
+    .tabs-nav {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 0.6rem 1.2rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .tab-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    .tab-btn.active[data-tab="now"] {
+      background: var(--emerald-bg);
+      border-color: rgba(16, 185, 129, 0.4);
+      color: #34d399;
+    }
+
+    .tab-btn.active[data-tab="later"] {
+      background: var(--amber-bg);
+      border-color: rgba(245, 158, 11, 0.4);
+      color: #fbbf24;
+    }
+
+    .tab-btn.active[data-tab="cut"] {
+      background: var(--rose-bg);
+      border-color: rgba(244, 63, 94, 0.4);
+      color: #fb7185;
+    }
+
+    .tab-pane {
+      display: none;
+    }
+
+    .tab-pane.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .boundary-list {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .boundary-item {
+      padding: 1rem 1.25rem;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .boundary-item strong {
+      display: block;
+      color: #fff;
+      font-size: 0.95rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .boundary-item p {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      margin: 0;
+    }
+
+    .item-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .tag-now { background: var(--emerald-bg); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .tag-later { background: var(--amber-bg); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .tag-cut { background: var(--rose-bg); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3); }
+
+    /* Core Loop Steps */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 0.85rem;
+      margin-top: 1rem;
+    }
+
+    .step-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .step-num {
+      width: 28px;
+      height: 28px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.8rem;
+      margin: 0 auto 0.75rem;
+      color: #fff;
+    }
+
+    .step-text {
+      font-size: 0.85rem;
+      color: #e2e8f0;
+    }
+
+    /* What working looks like */
+    .demo-timeline {
+      border-left: 2px dashed rgba(99, 102, 241, 0.35);
+      margin-left: 1rem;
+      padding-left: 1.5rem;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .demo-step {
+      position: relative;
+    }
+
+    .demo-step::before {
+      content: '';
+      position: absolute;
+      left: -1.95rem;
+      top: 0.35rem;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+    }
+
+    .demo-step-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #fff;
+    }
+
+    .demo-step-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--card-border);
+      color: var(--text-dim);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="status-badge" style="background: rgba(16, 185, 129, 0.2); border-color: rgba(16, 185, 129, 0.4); color: #34d399;">
+        <span class="status-pulse" style="background: #10b981; box-shadow: 0 0 10px #10b981;"></span>
+        Scope Approved &bull; Ready for PRD
+      </div>
+      <h1>Dev Cadence</h1>
+      <p class="tagline">An in-context Chrome extension side panel that realistically paces hackathon workloads directly on Devpost, bridging the gap between registration and final submission.</p>
+    </header>
+
+    <!-- The Kernel -->
+    <section class="card kernel-card">
+      <div class="card-title">
+        <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        The Unique Kernel
+      </div>
+      <p>Instead of another detached to-do list, <strong>Dev Cadence</strong> couples directly with the Devpost browsing experience as a persistent side panel. It visually maps commitments against remaining open days in the month—giving developers immediate clarity on whether they can realistically deliver before hitting "Register".</p>
+      <div class="quote-block">
+        &ldquo;I’ve noticed a huge discrepancy between the number of hackathons participants register for and what they actually submit... great ideas never get presented due to poor management. The solution needs to work in the background, showing them how to plan directly on the Devpost page.&rdquo;
+      </div>
+    </section>
+
+    <!-- Visual Architecture Flow Diagram -->
+    <section class="card">
+      <div class="card-title">
+        <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+        Interactive Core Flow Diagram
+      </div>
+      <div class="diagram-container">
+        <svg class="flow-diagram" viewBox="0 0 860 170" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Connection lines -->
+          <path d="M170 85 H220" stroke="#6366f1" stroke-width="2.5" stroke-dasharray="4 4"/>
+          <polygon points="220,85 212,80 212,90" fill="#6366f1"/>
+          
+          <path d="M380 85 H430" stroke="#6366f1" stroke-width="2.5" stroke-dasharray="4 4"/>
+          <polygon points="430,85 422,80 422,90" fill="#6366f1"/>
+          
+          <path d="M590 85 H640" stroke="#06b6d4" stroke-width="2.5" stroke-dasharray="4 4"/>
+          <polygon points="640,85 632,80 632,90" fill="#06b6d4"/>
+
+          <!-- Step 1: Browse -->
+          <rect x="10" y="35" width="160" height="100" rx="12" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+          <circle cx="90" cy="65" r="16" fill="rgba(99, 102, 241, 0.2)" stroke="#818cf8"/>
+          <text x="90" y="70" text-anchor="middle" fill="#a5b4fc" font-size="12" font-family="Plus Jakarta Sans" font-weight="700">1</text>
+          <text x="90" y="100" text-anchor="middle" fill="#ffffff" font-size="12" font-family="Plus Jakarta Sans" font-weight="600">Devpost Browser</text>
+          <text x="90" y="118" text-anchor="middle" fill="#94a3b8" font-size="10" font-family="Plus Jakarta Sans">Active Hackathons</text>
+
+          <!-- Step 2: Open Side Panel -->
+          <rect x="220" y="35" width="160" height="100" rx="12" fill="#1e293b" stroke="#6366f1" stroke-width="2"/>
+          <circle cx="300" cy="65" r="16" fill="rgba(99, 102, 241, 0.3)" stroke="#a5b4fc"/>
+          <text x="300" y="70" text-anchor="middle" fill="#ffffff" font-size="12" font-family="Plus Jakarta Sans" font-weight="700">2</text>
+          <text x="300" y="100" text-anchor="middle" fill="#ffffff" font-size="12" font-family="Plus Jakarta Sans" font-weight="600">Dev Cadence Panel</text>
+          <text x="300" y="118" text-anchor="middle" fill="#a5b4fc" font-size="10" font-family="Plus Jakarta Sans">Slide-out from Right</text>
+
+          <!-- Step 3: Log Hackathon -->
+          <rect x="430" y="35" width="160" height="100" rx="12" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+          <circle cx="510" cy="65" r="16" fill="rgba(6, 182, 212, 0.2)" stroke="#22d3ee"/>
+          <text x="510" y="70" text-anchor="middle" fill="#67e8f9" font-size="12" font-family="Plus Jakarta Sans" font-weight="700">3</text>
+          <text x="510" y="100" text-anchor="middle" fill="#ffffff" font-size="12" font-family="Plus Jakarta Sans" font-weight="600">Log & Allocate</text>
+          <text x="510" y="118" text-anchor="middle" fill="#94a3b8" font-size="10" font-family="Plus Jakarta Sans">Work Dates & Deadlines</text>
+
+          <!-- Step 4: Calendar + Table Proof -->
+          <rect x="640" y="35" width="200" height="100" rx="12" fill="#112233" stroke="#06b6d4" stroke-width="2"/>
+          <circle cx="740" cy="65" r="16" fill="rgba(16, 185, 129, 0.25)" stroke="#34d399"/>
+          <text x="740" y="70" text-anchor="middle" fill="#34d399" font-size="12" font-family="Plus Jakarta Sans" font-weight="700">✓</text>
+          <text x="740" y="100" text-anchor="middle" fill="#38bdf8" font-size="12" font-family="Plus Jakarta Sans" font-weight="700">Capacity & Pipeline</text>
+          <text x="740" y="118" text-anchor="middle" fill="#cbd5e1" font-size="10" font-family="Plus Jakarta Sans">Committed vs Free Days</text>
+        </svg>
+      </div>
+      
+      <!-- Core Loop Steps -->
+      <div class="steps-grid">
+        <div class="step-box">
+          <div class="step-num">1</div>
+          <div class="step-text">Browse Devpost listings</div>
+        </div>
+        <div class="step-box">
+          <div class="step-num">2</div>
+          <div class="step-text">Click extension to toggle side panel</div>
+        </div>
+        <div class="step-box">
+          <div class="step-num">3</div>
+          <div class="step-text">Log candidate or registered event</div>
+        </div>
+        <div class="step-box">
+          <div class="step-num">4</div>
+          <div class="step-text">Calendar maps work blocks & deadlines</div>
+        </div>
+        <div class="step-box">
+          <div class="step-num">5</div>
+          <div class="step-text">Check remaining free days before committing</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Structured Reveals: POC Boundary -->
+    <section class="card">
+      <div class="card-title">
+        <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+        POC Boundary & Roadmap Reveals
+      </div>
+
+      <div class="tabs-nav">
+        <button class="tab-btn active" data-tab="now">
+          <span style="color:#10b981;">●</span> Now (PoC Scope)
+        </button>
+        <button class="tab-btn" data-tab="later">
+          <span style="color:#f59e0b;">●</span> Later (Roadmap)
+        </button>
+        <button class="tab-btn" data-tab="cut">
+          <span style="color:#f43f5e;">●</span> Explicitly Cut
+        </button>
+      </div>
+
+      <div class="tab-pane active" id="pane-now">
+        <div class="boundary-list">
+          <div class="boundary-item">
+            <div>
+              <strong>Chrome Extension Side Panel</strong>
+              <p>Opens directly alongside Devpost without tab switching or clutter.</p>
+            </div>
+            <span class="item-tag tag-now">IN POC</span>
+          </div>
+          <div class="boundary-item">
+            <div>
+              <strong>Monthly Commitment Calendar</strong>
+              <p>Visual month view highlighting scheduled work date windows, deadlines, and remaining open days.</p>
+            </div>
+            <span class="item-tag tag-now">IN POC</span>
+          </div>
+          <div class="boundary-item">
+            <div>
+              <strong>Quick "Log Hackathon" Entry</strong>
+              <p>Modal/input for Title, Deadline, Proposed Work Dates (e.g. 01–10), and Application Status.</p>
+            </div>
+            <span class="item-tag tag-now">IN POC</span>
+          </div>
+          <div class="boundary-item">
+            <div>
+              <strong>Pipeline Status Table</strong>
+              <p>Spreadsheet-style summary showing current stage (Considering, Registered, In Progress, Waiting for API key).</p>
+            </div>
+            <span class="item-tag tag-now">IN POC</span>
+          </div>
+          <div class="boundary-item">
+            <div>
+              <strong>Browser Local Storage Persistence</strong>
+              <p>Preserves all entered data across reloads with zero accounts, zero cloud setup, and complete privacy.</p>
+            </div>
+            <span class="item-tag tag-now">IN POC</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane" id="pane-later">
+        <div class="boundary-list">
+          <div class="boundary-item">
+            <div>
+              <strong>Automated Devpost Tab Scraping</strong>
+              <p>One-click import of hackathon title, dates, and submission deadline directly from the active tab's DOM.</p>
+            </div>
+            <span class="item-tag tag-later">ROADMAP</span>
+          </div>
+          <div class="boundary-item">
+            <div>
+              <strong>Historical Capacity Estimator</strong>
+              <p>Algorithm that calculates sustainable monthly projects based on past completion ratios and required rest buffers.</p>
+            </div>
+            <span class="item-tag tag-later">ROADMAP</span>
+          </div>
+          <div class="boundary-item">
+            <div>
+              <strong>Google Calendar 2-Way Sync</strong>
+              <p>Exporting work date blocks to Google Calendar and syncing back personal schedule conflicts.</p>
+            </div>
+            <span class="item-tag tag-later">ROADMAP</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane" id="pane-cut">
+        <div class="boundary-list">
+          <div class="boundary-item">
+            <div>
+              <strong>Team Collaboration & Shared Workspaces</strong>
+              <p><em>Reason:</em> Adds multiplayer authentication and sync complexity not needed for single-builder capacity planning.</p>
+            </div>
+            <span class="item-tag tag-cut">CUT</span>
+          </div>
+          <div class="boundary-item">
+            <div>
+              <strong>Centralized Cloud Database & Auth</strong>
+              <p><em>Reason:</em> Local storage is zero-latency, private, and requires zero cloud configuration during a 2–4 hour hackathon build.</p>
+            </div>
+            <span class="item-tag tag-cut">CUT</span>
+          </div>
+          <div class="boundary-item">
+            <div>
+              <strong>Global Hackathon Discovery Feed</strong>
+              <p><em>Reason:</em> Devpost already serves as the best discovery catalog; Dev Cadence focuses solely on pacing and execution.</p>
+            </div>
+            <span class="item-tag tag-cut">CUT</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- What Working Looks Like -->
+    <section class="card">
+      <div class="card-title">
+        <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+        What "Working" Looks Like (1-Minute Demo Video Finish Line)
+      </div>
+      <div class="demo-timeline">
+        <div class="demo-step">
+          <div class="demo-step-title">1. Context: Devpost Page Active</div>
+          <div class="demo-step-desc">The user is on Devpost viewing several exciting hackathons, facing the classic dilemma: "Can I realistically deliver these?"</div>
+        </div>
+        <div class="demo-step">
+          <div class="demo-step-title">2. Slide Open Dev Cadence</div>
+          <div class="demo-step-desc">The extension icon is clicked; the panel slides out smoothly on the right showing the monthly calendar view.</div>
+        </div>
+        <div class="demo-step">
+          <div class="demo-step-title">3. Log a Hackathon</div>
+          <div class="demo-step-desc">The user clicks "Log Hackathon", inputs a title, deadline, work dates (e.g., Oct 13–22), and stage ("Considering").</div>
+        </div>
+        <div class="demo-step">
+          <div class="demo-step-title">4. The "Oh, that's cool" Moment</div>
+          <div class="demo-step-desc">The monthly calendar instantly paints the work dates and deadline marker, the pipeline table updates, and remaining free days in the month are immediately visible.</div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Dev Cadence &bull; Build With AI: Basics Hackathon Planning Companion &bull; Canonical: devpost/scope.md
+    </footer>
+  </div>
+
+  <script>
+    // Tab switching logic
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const panes = document.querySelectorAll('.tab-pane');
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.getAttribute('data-tab');
+        
+        tabBtns.forEach(b => b.classList.remove('active'));
+        panes.forEach(p => p.classList.remove('active'));
+
+        btn.classList.add('active');
+        document.getElementById(`pane-${target}`).classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
