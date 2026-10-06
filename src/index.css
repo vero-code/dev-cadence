@@ -701,3 +701,171 @@ body {
   margin-top: 0.2rem;
 }
 
+/* Capacity & Workload Bar Styles */
+.capacity-card {
+  background: rgba(12, 19, 36, 0.75);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.capacity-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.capacity-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.capacity-gear-icon {
+  font-size: 1rem;
+}
+
+.capacity-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.capacity-edit-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  color: var(--amber-gear);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.capacity-edit-btn:hover {
+  background: var(--amber-glow);
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+.capacity-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.65rem;
+}
+
+.capacity-metric-box {
+  background: rgba(7, 13, 25, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+  padding: 0.6rem 0.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.metric-label {
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.metric-value {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.committed-val { color: var(--cyan-light); }
+.free-val { color: var(--emerald); }
+.warning-val { color: var(--amber-gear); }
+.rest-val { color: #a5b4fc; }
+
+.capacity-progress-track {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 9999px;
+  overflow: hidden;
+  display: flex;
+}
+
+.progress-segment {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.committed-seg {
+  background: linear-gradient(90deg, #0891b2, #06b6d4);
+}
+
+.rest-seg {
+  background: #818cf8;
+}
+
+.warning-seg {
+  background: #f59e0b;
+}
+
+.capacity-warning-banner {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: 8px;
+  padding: 0.65rem 0.85rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.78rem;
+  color: #fef3c7;
+  animation: fadeIn 0.2s ease;
+}
+
+.warning-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+  line-height: 1.2;
+}
+
+.warning-text {
+  line-height: 1.4;
+}
+
+.warning-text strong {
+  color: #fbbf24;
+}
+
+.capacity-healthy-banner {
+  background: var(--emerald-bg);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: 8px;
+  padding: 0.65rem 0.85rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.78rem;
+  color: #d1fae5;
+  animation: fadeIn 0.2s ease;
+}
+
+.healthy-icon {
+  font-size: 1rem;
+  color: #34d399;
+  font-weight: 700;
+  flex-shrink: 0;
+  line-height: 1.2;
+}
+
+.healthy-text {
+  line-height: 1.4;
+}
+
+.healthy-text strong {
+  color: #34d399;
+}
+
+

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Header } from './components/Header';
+import { CapacityBar } from './components/CapacityBar';
 import { CalendarGrid } from './components/CalendarGrid';
 import { PipelineTable } from './components/PipelineTable';
 import { LogModal } from './components/LogModal';
+import { SettingsModal } from './components/SettingsModal';
 import { getStoredData, saveHackathons, saveSettings } from './utils/storage';
 
 export const App = () => {
@@ -12,6 +14,7 @@ export const App = () => {
   const [currentMonth, setCurrentMonth] = useState(9); // October (0-indexed)
   const [selectedDate, setSelectedDate] = useState(null);
   const [isLogModalOpen, setIsLogModalOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [editingHackathon, setEditingHackathon] = useState(null);
 
   useEffect(() => {
@@ -62,6 +65,11 @@ export const App = () => {
     await saveHackathons(updated);
   };
 
+  const handleSaveSettings = async (newSettings) => {
+    setSettings(newSettings);
+    await saveSettings(newSettings);
+  };
+
   const handleOpenEdit = (hackathon) => {
     setEditingHackathon(hackathon);
     setIsLogModalOpen(true);
@@ -99,7 +107,15 @@ export const App = () => {
           currentMonth={currentMonth}
           onPrevMonth={handlePrevMonth}
           onNextMonth={handleNextMonth}
-          onOpenSettings={() => alert(`Capacity Settings:\nMinimum target rest days: ${settings.targetRestDays} days\nAverage project turnaround: ${settings.avgTurnaroundDays} days\n(Full settings dialog implemented in Slice 3)`)}
+          onOpenSettings={() => setIsSettingsOpen(true)}
+        />
+
+        <CapacityBar
+          year={currentYear}
+          month={currentMonth}
+          hackathons={visibleHackathons}
+          settings={settings}
+          onOpenSettings={() => setIsSettingsOpen(true)}
         />
 
         <CalendarGrid
@@ -156,7 +172,15 @@ export const App = () => {
           initialYear={currentYear}
           initialMonth={currentMonth}
         />
+
+        <SettingsModal
+          isOpen={isSettingsOpen}
+          onClose={() => setIsSettingsOpen(false)}
+          settings={settings}
+          onSaveSettings={handleSaveSettings}
+        />
       </div>
     </div>
   );
 };
+

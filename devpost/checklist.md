@@ -19,7 +19,7 @@ Build mode: learn
   Learner check: Open the app preview, click "+ Log Hackathon", log a test hackathon (e.g., "Cloud Sprint", deadline 10/24, status "Early application", dates 13–22), and confirm it appears in the pipeline table with its status chip.
   Commit: `feat: scaffold React 19 side panel and log hackathons to pipeline table`
 
-- [ ] **2. Monthly calendar grid with date shading and split-cell overlaps**
+- [x] **2. Monthly calendar grid with date shading and split-cell overlaps**
   Becomes usable: A visual 7-day monthly calendar grid where logged hackathons shade their work date ranges with their chosen color and emoji, marked with deadline flags (`🏁`). Overlapping hackathons dynamically split day cells into multi-color gradients with dual chips, surfacing a conflict tooltip on hover and filtering the table on click.
   Why now: This is the unique kernel of Dev Cadence—delivering it early ensures the visual pacing and collision mechanics are tangible and verified before adding additional features.
   PRD ref: `prd.md > Features and Behavior > 3. Visual Monthly Calendar & Overlap Splitting`, `prd.md > The Core Journey` (step 6)
@@ -51,7 +51,7 @@ Build mode: learn
 
 ## Hands-on Checkpoints
 
-- [ ] Early usable behavior explored — Slice 2 (interactive calendar with split-cell overlaps)
+- [x] Early usable behavior explored — Slice 2 (interactive calendar with split-cell overlaps)
 - [ ] Final kick-the-tires exploration and feedback completed
 
 ## Final Review
