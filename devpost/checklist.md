@@ -9,7 +9,7 @@ Build mode: learn
 
 ## Slices
 
-- [ ] **1. Scaffold React 19 app & log hackathons to pipeline table**
+- [x] **1. Scaffold React 19 app & log hackathons to pipeline table**
   Becomes usable: A running side-panel / preview app with the Dev Cadence steampunk automaton branding, month selector, and "+ Log Hackathon" modal that captures title, deadline, status, dates, and color/emoji, rendering immediately in an interactive pipeline table with edit and delete controls.
   Why now: Bootstraps the React 19 + Vite project, dual storage bridge (`storage.js`), component structure, and base styling so every subsequent slice builds directly on working code.
   PRD ref: `prd.md > The Core Journey` (steps 1–5), `prd.md > Features and Behavior > 1. Panel Lifecycle & In-Context Docking`, `prd.md > Features and Behavior > 2. Hackathon Logging & Management`
