@@ -13,6 +13,9 @@ export const App = () => {
   const [currentYear, setCurrentYear] = useState(2026);
   const [currentMonth, setCurrentMonth] = useState(9); // October (0-indexed)
   const [selectedDate, setSelectedDate] = useState(null);
+  const [dateRange, setDateRange] = useState({ start: null, end: null });
+  const [prefillDates, setPrefillDates] = useState(null);
+  const [isSelectingOnCalendar, setIsSelectingOnCalendar] = useState(false);
   const [isLogModalOpen, setIsLogModalOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [editingHackathon, setEditingHackathon] = useState(null);
@@ -28,6 +31,7 @@ export const App = () => {
 
   const handlePrevMonth = () => {
     setSelectedDate(null);
+    setDateRange({ start: null, end: null });
     if (currentMonth === 0) {
       setCurrentMonth(11);
       setCurrentYear((y) => y - 1);
@@ -38,6 +42,7 @@ export const App = () => {
 
   const handleNextMonth = () => {
     setSelectedDate(null);
+    setDateRange({ start: null, end: null });
     if (currentMonth === 11) {
       setCurrentMonth(0);
       setCurrentYear((y) => y + 1);
@@ -57,6 +62,8 @@ export const App = () => {
     setHackathons(updated);
     await saveHackathons(updated);
     setEditingHackathon(null);
+    setPrefillDates(null);
+    setDateRange({ start: null, end: null });
   };
 
   const handleDeleteHackathon = async (id) => {
@@ -72,12 +79,56 @@ export const App = () => {
 
   const handleOpenEdit = (hackathon) => {
     setEditingHackathon(hackathon);
+    setPrefillDates(null);
     setIsLogModalOpen(true);
   };
 
   const handleOpenAdd = () => {
+    if (dateRange.start) {
+      const end = dateRange.end || dateRange.start;
+      setPrefillDates({ startDate: dateRange.start, endDate: end, deadline: end });
+    } else {
+      setPrefillDates(null);
+    }
     setEditingHackathon(null);
+    setIsSelectingOnCalendar(false);
     setIsLogModalOpen(true);
+  };
+
+  const handleDateRangeClick = (dateString) => {
+    if (!dateRange.start) {
+      // First click: select start date
+      setDateRange({ start: dateString, end: null });
+      setSelectedDate(dateString);
+    } else if (dateRange.start && !dateRange.end) {
+      // Second click: complete range and open modal
+      const [start, end] = [dateRange.start, dateString].sort();
+      setDateRange({ start, end });
+      setSelectedDate(null);
+      setPrefillDates({ startDate: start, endDate: end, deadline: end });
+      setEditingHackathon(null);
+      setIsSelectingOnCalendar(false);
+      setIsLogModalOpen(true);
+    } else {
+      // Reset and select fresh start date
+      setDateRange({ start: dateString, end: null });
+      setSelectedDate(dateString);
+    }
+  };
+
+  const handleCancelDateRange = () => {
+    setDateRange({ start: null, end: null });
+    setSelectedDate(null);
+    if (isSelectingOnCalendar) {
+      setIsSelectingOnCalendar(false);
+      setIsLogModalOpen(true);
+    }
+  };
+
+  const handlePickOnCalendar = () => {
+    setIsLogModalOpen(false);
+    setIsSelectingOnCalendar(true);
+    setDateRange({ start: null, end: null });
   };
 
   // Filter hackathons relevant to the current displayed month
@@ -123,7 +174,10 @@ export const App = () => {
           month={currentMonth}
           hackathons={visibleHackathons}
           selectedDate={selectedDate}
-          onSelectDate={setSelectedDate}
+          dateRange={dateRange}
+          onDateRangeClick={handleDateRangeClick}
+          onCancelDateRange={handleCancelDateRange}
+          isSelectingOnCalendar={isSelectingOnCalendar}
         />
 
         <div className="action-bar">
@@ -166,11 +220,16 @@ export const App = () => {
           onClose={() => {
             setIsLogModalOpen(false);
             setEditingHackathon(null);
+            setPrefillDates(null);
+            setDateRange({ start: null, end: null });
+            setIsSelectingOnCalendar(false);
           }}
           onSave={handleSaveHackathon}
           editingHackathon={editingHackathon}
           initialYear={currentYear}
           initialMonth={currentMonth}
+          prefillDates={prefillDates}
+          onPickOnCalendar={handlePickOnCalendar}
         />
 
         <SettingsModal

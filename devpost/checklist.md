@@ -56,6 +56,7 @@ Build mode: learn
 
 ## Final Review
 
+- [x] Enable calendar-driven date range selection: click start & end days on the calendar to highlight selection and open the Log Modal with dates pre-filled, while preserving the "+ Log Hackathon" button
 - [ ] Final review complete — feedback resolved and learner confirms ready to ship
 
 ## Code Tour and App Map
@@ -72,3 +73,4 @@ Activity mode:
 
 ## Revisions
 
+- Final Review refinement: Added direct calendar-driven date range selection (Option 3). Users can click a start day and an end day directly on the calendar grid to visually set work dates without blind-guessing in a pop-up. Keeps "+ Log Hackathon" button and adds a "Pick on Calendar" shortcut within the modal.

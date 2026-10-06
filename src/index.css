@@ -434,6 +434,45 @@ body {
   border-color: var(--rose);
 }
 
+.date-header-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+}
+
+.form-label-sub {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+
+.btn-pick-calendar {
+  background: rgba(6, 182, 212, 0.12);
+  border: 1px solid rgba(6, 182, 212, 0.35);
+  color: var(--cyan-light);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.2s ease;
+}
+
+.btn-pick-calendar:hover {
+  background: rgba(6, 182, 212, 0.25);
+  border-color: var(--cyan-primary);
+  box-shadow: 0 0 10px var(--cyan-glow);
+  transform: translateY(-1px);
+}
+
 .form-row-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -556,6 +595,54 @@ body {
   font-weight: 500;
 }
 
+.calendar-selection-banner {
+  background: linear-gradient(135deg, rgba(8, 24, 46, 0.95), rgba(15, 30, 60, 0.95));
+  border: 1px solid var(--cyan-primary);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  box-shadow: 0 4px 14px var(--cyan-glow);
+  animation: fadeIn 0.2s ease;
+}
+
+.calendar-selection-banner .banner-text {
+  font-size: 0.8rem;
+  color: #e2e8f0;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.calendar-selection-banner .banner-text strong {
+  color: var(--cyan-light);
+}
+
+.calendar-selection-banner .banner-text em {
+  color: var(--amber-gear);
+  font-style: normal;
+}
+
+.banner-cancel-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.banner-cancel-btn:hover {
+  background: rgba(244, 63, 94, 0.2);
+  color: #f43f5e;
+  border-color: rgba(244, 63, 94, 0.4);
+}
+
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -602,6 +689,42 @@ body {
 .calendar-day-cell.selected-day {
   border-color: var(--cyan-light);
   box-shadow: 0 0 10px var(--cyan-glow);
+}
+
+.calendar-day-cell.range-start-cell {
+  border: 1.5px solid var(--amber-gear) !important;
+  box-shadow: 0 0 12px var(--amber-glow);
+  background: rgba(245, 158, 11, 0.16) !important;
+  animation: pulseStart 2s infinite ease-in-out;
+}
+
+.calendar-day-cell.range-preview-cell {
+  border: 1.5px dashed var(--cyan-light) !important;
+  box-shadow: 0 0 10px var(--cyan-glow);
+  background: rgba(6, 182, 212, 0.18) !important;
+}
+
+.calendar-day-cell.range-active-cell {
+  border: 1.5px solid var(--cyan-primary) !important;
+  box-shadow: 0 0 10px var(--cyan-glow);
+  background: rgba(6, 182, 212, 0.22) !important;
+}
+
+.range-badge {
+  font-size: 0.52rem;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  background: var(--amber-gear);
+  color: #070d19;
+  padding: 1px 4px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+}
+
+@keyframes pulseStart {
+  0%, 100% { box-shadow: 0 0 6px var(--amber-glow); }
+  50% { box-shadow: 0 0 14px rgba(245, 158, 11, 0.6); }
 }
 
 .calendar-day-cell.overlap-cell {
@@ -699,6 +822,22 @@ body {
   color: var(--cyan-light);
   font-size: 0.72rem;
   margin-top: 0.2rem;
+}
+
+.tooltip-range-action {
+  font-size: 0.7rem;
+  color: var(--cyan-light);
+  background: rgba(6, 182, 212, 0.15);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.tooltip-empty-day {
+  color: var(--text-dim);
+  font-size: 0.74rem;
+  font-style: italic;
+  padding: 0.2rem 0;
 }
 
 /* Capacity & Workload Bar Styles */
