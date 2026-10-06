@@ -52,24 +52,24 @@ Build mode: learn
 ## Hands-on Checkpoints
 
 - [x] Early usable behavior explored — Slice 2 (interactive calendar with split-cell overlaps)
-- [ ] Final kick-the-tires exploration and feedback completed
+- [x] Final kick-the-tires exploration and feedback completed
 
 ## Final Review
 
 - [x] Enable calendar-driven date range selection: click start & end days on the calendar to highlight selection and open the Log Modal with dates pre-filled, while preserving the "+ Log Hackathon" button
-- [ ] Final review complete — feedback resolved and learner confirms ready to ship
+- [x] Final review complete — feedback resolved and learner confirms ready to ship
 
 ## Code Tour and App Map
 
-- [ ] Learning activity complete — guided route, focused alternative, prior practice connected, or brief recap
-- [ ] Optional edit and transfer reflection addressed — offered/declined/already covered/not applicable as appropriate
-- [ ] `devpost/app-map.html` generated from finished code, checked, and shown, including a project-grounded practice to reuse
+- [x] Learning activity complete — guided route, focused alternative, prior practice connected, or brief recap
+- [x] Optional edit and transfer reflection addressed — offered/declined/already covered/not applicable as appropriate
+- [x] `devpost/app-map.html` generated from finished code, checked, and shown, including a project-grounded practice to reuse
 
-Activity and evidence:
-Route and stops:
-Edit outcome:
-Reflection:
-Activity mode:
+Activity and evidence: Focused alternative — evaluated planning/verification velocity on React 19 Chrome extension and resolved kick-the-tires UX friction by adding calendar-driven range selection.
+Route and stops: 1. `src/utils/calendarUtils.js` (collision math & split gradients), 2. `src/components/CalendarGrid.jsx` (calendar range selection & hover preview), 3. `src/utils/storage.js` (dual storage bridge).
+Edit outcome: Implemented calendar range selection & modal prefill, verified mechanically with `npm run build`, and verified as Chrome side panel extension.
+Reflection: Addressed during final review and captured in App Map ("Context-first input over form-first guessing").
+Activity mode: focused alternative
 
 ## Revisions
 
