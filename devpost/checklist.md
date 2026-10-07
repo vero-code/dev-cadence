@@ -57,7 +57,8 @@ Build mode: learn
 ## Final Review
 
 - [x] Enable calendar-driven date range selection: click start & end days on the calendar to highlight selection and open the Log Modal with dates pre-filled, while preserving the "+ Log Hackathon" button
-- [x] Final review complete — feedback resolved and learner confirms ready to ship
+- [ ] Fix calendar hover tooltip layout shift: prevent tooltip from pushing down and shifting the pipeline table when hovering calendar cells
+- [ ] Final review complete — feedback resolved and learner confirms ready to ship
 
 ## Code Tour and App Map
 
