@@ -8,6 +8,7 @@ export const Footer = ({
   hackathons,
   settings,
   onOpenSettings,
+  onOpenLegal,
 }) => {
   return (
     <footer className="app-footer">
@@ -29,9 +30,21 @@ export const Footer = ({
         </a>
         <span>&copy; {new Date().getFullYear()}</span>
         <span className="credits-dot">&bull;</span>
-        <a href="#" className="footer-legal-link">Privacy Policy</a>
-        <a href="#" className="footer-legal-link">Terms of Use</a>
-        <a href="#" className="footer-legal-link">Contact</a>
+        <button
+          type="button"
+          className="footer-legal-btn"
+          onClick={() => onOpenLegal && onOpenLegal('privacy')}
+        >
+          Privacy Policy
+        </button>
+        <span className="credits-dot">&bull;</span>
+        <button
+          type="button"
+          className="footer-legal-btn"
+          onClick={() => onOpenLegal && onOpenLegal('terms')}
+        >
+          Terms of Use
+        </button>
       </div>
     </footer>
   );

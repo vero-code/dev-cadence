@@ -6,6 +6,7 @@ import { PipelineTable } from './components/PipelineTable';
 import { LogModal } from './components/LogModal';
 import { SettingsModal } from './components/SettingsModal';
 import { ConfirmModal } from './components/ConfirmModal';
+import { LegalModal } from './components/LegalModal';
 import { getStoredData, saveHackathons, saveSettings, saveTheme, clearAllHackathons, clearAllData } from './utils/storage';
 import { addDaysToDateString } from './utils/calendarUtils';
 
@@ -25,6 +26,7 @@ export const App = () => {
   const [deleteCandidate, setDeleteCandidate] = useState(null);
   const [modalDates, setModalDates] = useState(null);
   const [calendarPickedDate, setCalendarPickedDate] = useState(null);
+  const [legalModalTab, setLegalModalTab] = useState(null);
 
   useEffect(() => {
     const initData = async () => {
@@ -364,6 +366,12 @@ export const App = () => {
           onConfirm={handleConfirmDelete}
           onCancel={handleCancelDelete}
         />
+
+        <LegalModal
+          isOpen={Boolean(legalModalTab)}
+          initialTab={legalModalTab || 'privacy'}
+          onClose={() => setLegalModalTab(null)}
+        />
       </div>
 
       <Footer
@@ -372,6 +380,7 @@ export const App = () => {
         hackathons={capacityHackathons}
         settings={settings}
         onOpenSettings={handleOpenSettings}
+        onOpenLegal={(tab) => setLegalModalTab(tab)}
       />
     </div>
   );
