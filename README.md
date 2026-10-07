@@ -1,9 +1,9 @@
 # Dev Cadence — Hackathon Capacity & Pacing Planner
 
-> **An in-context Chrome Extension side panel for Devpost that helps serial hackathon participants pace monthly workload, visualize multi-event date collisions with split cells, and monitor rest day buffers to turn registrations into actual submissions.**
+> **Chrome Side Panel extension for Devpost. Paces monthly workload, flags date collisions with split cells, and guards rest buffers to turn registrations into submissions.**
 
-![React 19](https://img.shields.io/badge/React-19.0.0-61dafb?logo=react&logoColor=black)
-![Vite 6](https://img.shields.io/badge/Vite-6.0.5-646cff?logo=vite&logoColor=white)
+![React 19](https://img.shields.io/badge/React-19-61dafb?logo=react&logoColor=black)
+![Vite 6](https://img.shields.io/badge/Vite-6-646cff?logo=vite&logoColor=white)
 ![Chrome Extension](https://img.shields.io/badge/Manifest_V3-Side_Panel-4285f4?logo=google-chrome&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 
@@ -11,172 +11,133 @@
 
 ## 💡 The Problem
 
-Serial hackathon competitors frequently register for multiple concurrent hackathons on Devpost ([`devpost.com`](https://devpost.com)). In practice, tracking workload across disconnected Google Sheets and Google Calendar entries leads to:
+Logging multiple hackathons across disconnected calendars causes:
 
-1. **Blind Overcommitment:** Logging registrations without visualizing whether active work dates overlap.
-2. **Date Collisions:** Unnoticed clashing crunch periods, simultaneous submissions, and sprint bottlenecks.
-3. **Burnout & Dropouts:** Zero visibility into remaining rest day buffers, turning enthusiastic registrations into last-minute no-shows.
+1. **Overcommitment:** Registering without seeing overlapping sprint dates.
+2. **Date Collisions:** Unnoticed clashing crunch periods and simultaneous deadlines.
+3. **Burnout:** Zero visibility into remaining rest days, leading to missed submissions.
 
-**Dev Cadence** solves this by docking directly alongside Devpost inside Chrome's native Side Panel as a real-time capacity guardrail and visual schedule planner.
+**Dev Cadence** lives directly inside Chrome's Side Panel next to Devpost as a real-time capacity guardrail.
 
 ---
 
 ## ✨ Features
 
-### 📅 1. Visual Monthly Calendar & Overlap Splitting (*The Kernel*)
-- **7-Day Monthly Grid:** Displays an interactive calendar where active hackathons shade their dedicated work periods with custom theme colors and emoji badges.
-- **Split-Cell Gradient Collision Shader:** When two or more hackathons overlap on the same calendar days, the cells dynamically split into multi-color diagonal CSS gradients (`linear-gradient(135deg, ...)`) with multi-event badges and conflict markers (`⚡`).
-- **Deadline Flags & Conflict Tooltips:** Submission deadlines are clearly flagged (`🏁`). Hovering over any day reveals a detailed breakdown of all active events, submission deadlines, and overlap warnings.
+### 📅 1. Monthly Calendar & Collision Shader
+- **Interactive Grid:** Displays active hackathon sprint periods with custom colors and emojis.
+- **Split-Cell Gradients:** Overlapping hackathons dynamically split cells diagonally (`linear-gradient`) with collision badges (`⚡`).
+- **Clean Day Numbers:** Numbers stay clear at the top; `START` / `END` badges and emojis sit neatly at the bottom.
+- **Deadlines & Popovers:** Submission deadlines are flagged (`🏁`). Click any busy day for quick event details and edit triggers.
 
-### 🎯 2. Direct Calendar Date Range Selection
-- **Click-to-Schedule:** Click a start day on the calendar, hover to see a luminous preview ribbon, and click an end day to instantly define your hackathon duration.
-- **Auto-Prefill:** Automatically pre-fills the logging form with the chosen dates—no blind date-guessing or mental math required.
-- **"Pick on Calendar" Action:** Inside the logging modal, click *"Pick on Calendar"* anytime to minimize the form and select dates directly on the visual grid.
+### 🔄 2. Real-Time Form & Calendar Sync
+- **Live Preview:** Editing dates in the form instantly highlights the calendar with a glowing dashed aura, translucent tint, and animated deadline flag.
+- **Direct Scheduling:** Click an empty day to start logging with pre-filled dates. Click calendar days to set sprint ranges.
+- **Date Guard:** Automatically enforces `startDate <= endDate` and spans new sprints by your target duration.
 
-### 🛡️ 3. Capacity Guardrail & Rest Buffer Alert
-- **Dynamic Capacity Bar:** Computes total committed work days vs. remaining free days in the active month.
-- **Configurable Rest Targets:** Set your target monthly rest days (e.g., 8–12 days) and average turnaround sprint duration in Settings.
-- **Amber Overload Pill:** If scheduled work commitments encroach on your required rest buffer, Dev Cadence immediately triggers a prominent amber warning pill alerting you to the shortage.
+### 🛡️ 3. Capacity Guardrail & Rest Buffer
+- **Workload Bar:** Real-time ratio of committed work days vs. remaining rest buffer.
+- **Custom Targets:** Set monthly rest targets (e.g. 8–12 days) and average sprint turnaround in Settings.
+- **Burnout Warning:** Prominent overload badge alerts you when work encroaches on your rest buffer.
 
-### 📋 4. Pipeline Spreadsheet Tracker
-- **Structured Table View:** Tracks Hackathon Name, Submission Deadline, Application Status, and Work Dates window in a compact spreadsheet interface.
-- **Status Chips:** Distinct colored chips for *Not registered*, *Early application*, *Waiting for API key*, *Considering*, *In progress*, and *Submitted*.
-- **Day Filtering & In-Place Actions:** Click any calendar day to filter the pipeline table to active hackathons on that day; edit and delete entries in place.
+### 📋 4. Dual-Layout Tracker (Cards & Table)
+- **Cards & Table Modes:** Switch between compact cards (optimized for side panels) and a classic table view.
+- **Status Filter:** Filter entries instantly (*Interested*, *Planning*, *In Progress*, *Submitted*).
+- **Active Month Scope:** Shows all hackathons active in the current month, including multi-month sprints.
+- **In-Place Actions:** 3-dots menu for fast editing and confirmed deletion.
 
-### 🧩 5. In-Context Chrome Side Panel & Dual Storage Bridge
-- **Native Chrome Side Panel API (`chrome.sidePanel`):** Docks seamlessly on the right side of any Devpost hackathon page via Manifest V3 background service worker.
-- **Unified Dual-Storage Bridge:** Uses `chrome.storage.local` inside the extension for persistent local storage across browser restarts, and automatically falls back to `window.localStorage` when running in a local Vite dev server.
+### 🎨 5. Multi-Theme Engine & Custom Typography
+- **3 Built-In Themes:**
+  - 🌐 **Devpost Classic Navy:** Deep obsidian navy, electric cyan, and glowing borders.
+  - ⚙️ **Rich Automaton Dark:** Clockwork steampunk, warm brass, and mechanical gears.
+  - 📜 **Light Parchment & Brass:** Warm paper, sepia tones, and bronze accents.
+- **3 Font Presets:** `Bahnschrift` (Technical), `Cinzel Automaton` (Serif), `Modern Geometric` (Sans).
+- **Font Scaling:** *Compact*, *Normal*, and *Large* sizing with live preview and auto-save.
 
----
-
-## 🎨 Design System: Steampunk Automaton
-
-Dev Cadence features a bespoke **Steampunk Automaton** aesthetic tailored for developers:
-
-| Token | Value | Purpose |
-| :--- | :--- | :--- |
-| **Deep Space Navy** | `#070d19` | Dark glassmorphic container background |
-| **Electric Cyan** | `#06b6d4` | Code glyph `{}` glow, selection ribbons, primary buttons |
-| **Warm Brass / Amber** | `#f59e0b` | Automaton cogs, rest day warnings, start badges |
-| **Emerald Green** | `#10b981` | Safe buffer indicators and registered status chips |
-| **Monospace Font** | `'JetBrains Mono'` | Numeric dates, day counts, and status tags |
-| **Interface Font** | `'Plus Jakarta Sans'` | Clean, modern developer typography |
+### 🔒 6. 100% Local-First & Zero Telemetry
+- **No Cloud, No Trackers:** Zero accounts, zero external APIs, zero tracking cookies.
+- **Dual Storage:** Uses `chrome.storage.local` in the extension with fallback to `localStorage`.
+- **Danger Zone:** 1-click verified *Clear Hackathons* and complete *Factory Reset*.
+- **Legal Center:** Integrated *Privacy Policy* and *Terms of Use* dialog in the footer.
 
 ---
 
-## 🛠️ Tech Stack & Architecture
+## 🎨 Theme Tokens
 
-- **UI Framework:** [React 19](https://react.dev/) (`react: ^19.0.0`, `react-dom: ^19.0.0`)
-- **Build Tool:** [Vite 6](https://vite.dev/) with relative asset resolution (`base: './'`)
-- **Styling:** Vanilla CSS with design system custom properties, CSS grid, and glassmorphic backdrop filters
-- **Extension Platform:** Chrome Extension Manifest V3 (`side_panel`, `storage`, background service worker)
+| Token | Devpost Classic Navy | Rich Automaton Dark | Light Parchment | Purpose |
+| :--- | :--- | :--- | :--- | :--- |
+| **Background** | `#070d19` | `#0c0804` | `#fbf6ee` | Panel background |
+| **Primary Accent** | `#06b6d4` (Cyan) | `#f59e0b` (Amber) | `#b8860b` (Gold) | Active buttons & highlights |
+| **Selection Aura** | `rgba(6, 182, 212, 0.35)` | `rgba(245, 158, 11, 0.3)` | `rgba(184, 134, 11, 0.2)` | Dashed calendar glow |
+| **Safe Buffer** | `#10b981` (Emerald) | `#10b981` (Emerald) | `#15803d` (Green) | Rest indicators & submissions |
 
-### Project Structure
+---
+
+## 🛠️ Tech Stack & Structure
+
+- **Framework:** [React 19](https://react.dev/) + [Vite 6](https://vite.dev/)
+- **Styling:** Vanilla CSS with CSS tokens, container queries, and backdrop blur
+- **Platform:** Chrome Extension Manifest V3 (`side_panel`, `storage`, background worker)
 
 ```text
 dev-cadence/
-├── public/
-│   ├── background.js       # Manifest V3 service worker (openPanelOnActionClick)
-│   ├── icon16.png          # Extension toolbar icon (16x16)
-│   ├── icon48.png          # Extension management icon (48x48)
-│   ├── icon128.png         # Chrome Web Store & installation icon (128x128)
-│   ├── logo.jpg            # Dev Cadence automaton brand logo
-│   └── manifest.json       # Manifest V3 configuration
+├── public/                 # Extension manifest, icons, service worker
 ├── src/
 │   ├── components/
-│   │   ├── CalendarGrid.jsx    # Monthly calendar, split-cell shader, range selection
-│   │   ├── CapacityBar.jsx     # Workload capacity calculator & rest alert pill
-│   │   ├── Header.jsx          # Automaton branding, month navigation, settings trigger
-│   │   ├── LogModal.jsx        # Hackathon logging modal with color/emoji picker
-│   │   ├── PipelineTable.jsx   # Spreadsheet tracker with status chips & actions
-│   │   └── SettingsModal.jsx   # Rest target & turnaround configuration
+│   │   ├── CalendarGrid.jsx    # Calendar, split-cell shader, range sync
+│   │   ├── CapacityBar.jsx     # Workload capacity bar & rest alert
+│   │   ├── ConfirmModal.jsx    # Deletion confirmation dialog
+│   │   ├── Footer.jsx          # Capacity bar, author & legal links
+│   │   ├── Header.jsx          # Branding, avatar & gear trigger
+│   │   ├── Icons.jsx           # Precision vector SVG icons
+│   │   ├── LegalModal.jsx      # Privacy Policy & Terms of Use
+│   │   ├── LogModal.jsx        # Hackathon form with live sync
+│   │   ├── MonthNavigator.jsx  # Inline month navigation
+│   │   ├── PipelineTable.jsx   # Dual-view tracker (Cards/Table)
+│   │   └── SettingsModal.jsx   # Themes, fonts, targets & Danger Zone
 │   ├── utils/
-│   │   ├── calendarUtils.js    # Matrix generation, collision math & split gradients
-│   │   └── storage.js          # Dual chrome.storage.local / localStorage bridge
-│   ├── App.jsx                 # Top-level state coordinator & range selection handler
-│   ├── index.css               # Steampunk design tokens, calendar styles & animations
-│   └── main.jsx                # React 19 DOM entry point
-├── devpost/
-│   ├── checklist.md        # Step-by-step verified build checklist
-│   ├── prd.md              # Product Requirements Document
-│   ├── scope.md            # Proof of Concept boundary & kernel definition
-│   └── spec.md             # Technical architecture specification
-├── package.json
-└── vite.config.js
+│   │   ├── calendarUtils.js    # Matrix math, collisions & gradients
+│   │   └── storage.js          # Dual chrome.storage / localStorage bridge
+│   ├── App.jsx                 # State coordinator & sync orchestration
+│   ├── constants.js            # Themes, typography presets & colors
+│   └── index.css               # Design tokens, layouts & animations
+├── devpost/                # Scope, PRD, spec, and build checklist
+└── package.json
 ```
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Quick Start
 
-### Prerequisites
-
-- [Node.js](https://nodejs.org/) (v18 or higher)
-- Google Chrome browser (v114+ with native Side Panel support)
-
-### 1. Local Development (Browser Preview)
-
-To run the application in the browser dev server:
-
+### Local Preview
 ```bash
-# Clone the repository
 git clone https://github.com/vero-code/dev-cadence.git
 cd dev-cadence
-
-# Install dependencies
 npm install
-
-# Start the Vite dev server
 npm run dev
 ```
+Open [http://localhost:5173](http://localhost:5173).
 
-Open [http://localhost:5173](http://localhost:5173) in your browser. Data will persist to browser `localStorage`.
-
----
-
-### 2. Chrome Extension Build & Installation
-
-To build and load Dev Cadence as a native Chrome Side Panel extension:
-
+### Chrome Extension Build
 ```bash
-# Build the production extension package
 npm run build
 ```
-
-This compiles the extension into the [`dist/`](dist) folder with relative assets and Manifest V3 compatibility.
-
-#### Load Unpacked Extension into Chrome:
-1. Open Google Chrome and navigate to:
-   ```text
-   chrome://extensions
-   ```
-2. Enable the **Developer mode** toggle in the top-right corner.
-3. Click the **Load unpacked** button in the top-left corner.
-4. Select the [`dist`](dist) directory inside this repository (`dev-cadence/dist`).
-5. Click the **Extensions** (puzzle piece) icon in Chrome's toolbar and **pin** Dev Cadence.
-6. Open [devpost.com/hackathons](https://devpost.com/hackathons) and click the Dev Cadence icon to launch the side panel!
+1. Open `chrome://extensions` in Chrome.
+2. Enable **Developer mode** (top right).
+3. Click **Load unpacked** and select the `dist/` folder.
+4. Pin Dev Cadence and click its icon on any Devpost page.
 
 ---
 
-## 🧪 Verification & Testing
+## 🧪 Quick Test
 
-- **Overlap Splitting:** Log two hackathons with overlapping dates (e.g., Oct 13–22 and Oct 20–26). Notice days 20, 21, and 22 render with diagonal split gradients and the collision indicator badge (`⚡`).
-- **Capacity Guardrail:** In Settings, set your Target Rest Days to `10`. Log hackathons occupying 25 days in a 31-day month. Observe the amber overload pill flag the 4-day rest shortage.
-- **Calendar Range Selection:** Click Day 14 on the grid (`START`), hover to Day 22, and click again. The Log Modal opens automatically with Start Date `2026-10-14` and End Date `2026-10-22` pre-filled.
-- **Extension Persistence:** Add or modify hackathons in the side panel, close the panel, and reopen it to verify seamless data retention via `chrome.storage.local`.
-
----
-
-## 📜 Devpost Hackathon Context
-
-This project was conceived, planned, and built as part of the **Build With AI: Basics** learning hackathon on Devpost, strictly following the structured Devpost Learn skill pack:
-- [`devpost/scope.md`](devpost/scope.md) — Finding the unique kernel and defining the POC boundary.
-- [`devpost/prd.md`](devpost/prd.md) — Product definition, core journeys, and state boundaries.
-- [`devpost/spec.md`](devpost/spec.md) — Technical blueprint, React 19 architecture, and extension lifecycle.
-- [`devpost/checklist.md`](devpost/checklist.md) — End-to-end slice-by-slice verification and commits.
+- **Collision Split:** Log two overlapping hackathons (e.g. Oct 13–20 and Oct 18–25) to see diagonal split cells with `⚡`.
+- **Live Sync:** Open Log Modal and change dates; watch the calendar update in real-time with cyan glow.
+- **Rest Alert:** Set Target Rest Days to `10` in Settings and log 25 work days to trigger the overload pill.
+- **Dual Views:** Switch between Cards and Table views in the Tracker header.
+- **Themes & Fonts:** Open Settings to toggle themes and typography with instant preview.
 
 ---
 
 ## 📄 License
 
-This project is licensed under the [MIT License](LICENSE).
+[MIT License](LICENSE) &bull; Built for **Build With AI: Basics** on Devpost.

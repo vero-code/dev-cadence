@@ -35,8 +35,8 @@ export const LegalModal = ({
       <div className="modal-card legal-modal-card" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2 className="modal-title">
-            <span>{activeTab === 'privacy' ? '🛡️' : activeTab === 'terms' ? '📜' : '✉️'}</span>
-            {activeTab === 'privacy' ? 'Privacy Policy' : activeTab === 'terms' ? 'Terms of Use' : 'Contact & Support'}
+            <span>{activeTab === 'privacy' ? '🛡️' : '📜'}</span>
+            {activeTab === 'privacy' ? 'Privacy Policy' : 'Terms of Use'}
           </h2>
           <button
             type="button"
@@ -63,13 +63,6 @@ export const LegalModal = ({
             onClick={() => setActiveTab('terms')}
           >
             <span>📜</span> Terms of Use
-          </button>
-          <button
-            type="button"
-            className={`legal-tab-btn ${activeTab === 'contact' ? 'active' : ''}`}
-            onClick={() => setActiveTab('contact')}
-          >
-            <span>✉️</span> Contact
           </button>
         </div>
 
