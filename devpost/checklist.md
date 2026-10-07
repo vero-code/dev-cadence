@@ -68,6 +68,10 @@ Build mode: learn
 - [x] Internal table card scrolling with theme scrollbars to keep side panel view height locked (no page overflow)
 - [x] Extract MonthNavigator component and place it inline opposite the Monthly Schedule title
 - [x] Embed Pipeline Tracker header, filter chip, and "+ Log Hackathon" button directly inside the table card
+- [x] Position hackathon status chip in the top-right corner of each card and 3-dots kebab menu in the bottom-right corner (with elevated z-index stacking to prevent sibling card overlap and outside click / Esc dismiss)
+- [x] Replace header theme switch button with a Settings cog icon (opening SettingsModal)
+- [x] Integrate interactive theme picker cards directly into SettingsModal
+- [x] Add future-ready engineer profile avatar badge into header actions
 - [ ] Final review complete — feedback resolved and learner confirms ready to ship
 
 ## Code Tour and App Map

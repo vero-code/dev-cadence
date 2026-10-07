@@ -143,6 +143,28 @@ export const LogModal = ({
 
           <div className="form-row-2">
             <div className="form-group">
+              <label className="form-label">Start Date</label>
+              <input
+                type="date"
+                className="form-input"
+                value={startDate}
+                onChange={(e) => { setStartDate(e.target.value); setError(''); }}
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">End Date</label>
+              <input
+                type="date"
+                className="form-input"
+                value={endDate}
+                onChange={(e) => { setEndDate(e.target.value); setError(''); }}
+              />
+            </div>
+          </div>
+
+          <div className="form-row-2">
+            <div className="form-group">
               <label className="form-label">Deadline</label>
               <input
                 type="date"
@@ -166,27 +188,7 @@ export const LogModal = ({
             </div>
           </div>
 
-          <div className="form-row-2">
-            <div className="form-group">
-              <label className="form-label">Start Date</label>
-              <input
-                type="date"
-                className="form-input"
-                value={startDate}
-                onChange={(e) => { setStartDate(e.target.value); setError(''); }}
-              />
-            </div>
-
-            <div className="form-group">
-              <label className="form-label">End Date</label>
-              <input
-                type="date"
-                className="form-input"
-                value={endDate}
-                onChange={(e) => { setEndDate(e.target.value); setError(''); }}
-              />
-            </div>
-          </div>
+          
 
           <div className="form-group">
             <div className="label-with-hint">

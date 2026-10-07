@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const MONTH_ABBR = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -49,7 +49,27 @@ export const PipelineTable = ({
   selectedDate,
   onClearFilter,
 }) => {
+  const [openMenuId, setOpenMenuId] = useState(null);
   const isEmpty = !hackathons || hackathons.length === 0;
+
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (!e.target.closest('.pipeline-menu-container')) {
+        setOpenMenuId(null);
+      }
+    };
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setOpenMenuId(null);
+      }
+    };
+    window.addEventListener('click', handleOutsideClick);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('click', handleOutsideClick);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   return (
     <div className="table-card pipeline-list-container">
@@ -67,7 +87,7 @@ export const PipelineTable = ({
           )}
         </h2>
         <button type="button" className="btn-primary" onClick={onAddNew}>
-          <span>+</span> Log Hackathon
+          <span>+</span> Hackathon
         </button>
       </div>
 
@@ -80,13 +100,21 @@ export const PipelineTable = ({
           <div className="empty-desc">
             {selectedDate
               ? 'Click the filter tag above or choose another date to view events.'
-              : 'Click "+ Log Hackathon" to start pacing your work dates and deadlines.'}
+              : 'Click "+ Hackathon" to start pacing your work dates and deadlines.'}
           </div>
         </div>
       ) : (
         <div className="pipeline-list">
-          {hackathons.map((h) => (
-            <div key={h.id} className="pipeline-item">
+          {hackathons.map((h, idx) => {
+            const isMenuOpen = openMenuId === h.id;
+            const openUpward = idx === hackathons.length - 1 && hackathons.length > 1;
+
+            return (
+              <div
+                key={h.id}
+                className={`pipeline-item ${isMenuOpen ? 'menu-open' : ''}`}
+                style={{ zIndex: isMenuOpen ? 100 : 'auto' }}
+              >
               <div
                 className="pipeline-item-color-bar"
                 style={{
@@ -102,45 +130,78 @@ export const PipelineTable = ({
                       {h.name}
                     </span>
                   </div>
-                  <div className="pipeline-item-actions">
-                    <button
-                      type="button"
-                      className="action-icon-btn"
-                      title="Edit Hackathon"
-                      onClick={() => onEdit(h)}
-                    >
-                      ✏️
-                    </button>
-                    <button
-                      type="button"
-                      className="action-icon-btn delete-btn"
-                      title="Delete Hackathon"
-                      onClick={() => onDelete(h)}
-                    >
-                      🗑️
-                    </button>
+
+                  <div className="pipeline-item-header-right">
+                    <span className={`status-chip ${getStatusChipClass(h.status)}`}>
+                      {h.status}
+                    </span>
                   </div>
                 </div>
 
                 <div className="pipeline-item-meta">
-                  <span className={`status-chip ${getStatusChipClass(h.status)}`}>
-                    {h.status}
-                  </span>
-                  <span className="pipeline-meta-pill" title="Work Dates">
-                    <span className="meta-icon">🗓️</span>
-                    <span>{formatWorkRange(h.startDate, h.endDate)}</span>
-                  </span>
-                  {h.deadline && (
-                    <span className="pipeline-meta-pill deadline-pill" title="Submission Deadline">
-                      <span className="meta-icon">🏁</span>
-                      <span>Due {formatDisplayDate(h.deadline)}</span>
+                  <div className="pipeline-meta-pills">
+                    <span className="pipeline-meta-pill" title="Work Dates">
+                      <span className="meta-icon">🗓️</span>
+                      <span>{formatWorkRange(h.startDate, h.endDate)}</span>
                     </span>
-                  )}
+                    {h.deadline && (
+                      <span className="pipeline-meta-pill deadline-pill" title="Submission Deadline">
+                        <span className="meta-icon">🏁</span>
+                        <span>Due {formatDisplayDate(h.deadline)}</span>
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="pipeline-menu-container">
+                    <button
+                      type="button"
+                      className="kebab-btn"
+                      title="Actions"
+                      aria-label="Actions menu"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setOpenMenuId(openMenuId === h.id ? null : h.id);
+                      }}
+                    >
+                      &#x22EE;
+                    </button>
+
+                    {openMenuId === h.id && (
+                      <div
+                        className={`pipeline-dropdown-menu ${openUpward ? 'dropdown-upward' : ''}`}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <button
+                          type="button"
+                          className="pipeline-menu-item"
+                          onClick={() => {
+                            setOpenMenuId(null);
+                            onEdit(h);
+                          }}
+                        >
+                          <span className="menu-item-icon">✏️</span>
+                          <span>Edit</span>
+                        </button>
+                        <button
+                          type="button"
+                          className="pipeline-menu-item delete-item"
+                          onClick={() => {
+                            setOpenMenuId(null);
+                            onDelete(h);
+                          }}
+                        >
+                          <span className="menu-item-icon">🗑️</span>
+                          <span>Delete</span>
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-          ))}
-        </div>
+          );
+        })}
+      </div>
       )}
     </div>
   );

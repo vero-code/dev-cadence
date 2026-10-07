@@ -55,17 +55,9 @@ export const App = () => {
     }
   };
 
-  const handleToggleTheme = async () => {
-    let nextTheme;
-    if (theme === 'dark') {
-      nextTheme = 'parchment';
-    } else if (theme === 'parchment') {
-      nextTheme = 'steampunk';
-    } else {
-      nextTheme = 'dark';
-    }
-    setTheme(nextTheme);
-    await saveTheme(nextTheme);
+  const handleSelectTheme = async (newTheme) => {
+    setTheme(newTheme);
+    await saveTheme(newTheme);
   };
 
   const handleSaveHackathon = async (newOrUpdated) => {
@@ -197,8 +189,7 @@ export const App = () => {
     <div className="app-container" data-theme={theme}>
       <div className="panel-content">
         <Header
-          theme={theme}
-          onToggleTheme={handleToggleTheme}
+          onOpenSettings={() => setIsSettingsOpen(true)}
         />
 
         
@@ -247,6 +238,8 @@ export const App = () => {
           onClose={() => setIsSettingsOpen(false)}
           settings={settings}
           onSaveSettings={handleSaveSettings}
+          currentTheme={theme}
+          onSelectTheme={handleSelectTheme}
         />
 
         <ConfirmModal

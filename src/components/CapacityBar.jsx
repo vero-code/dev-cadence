@@ -43,14 +43,16 @@ export const CapacityBar = ({ year, month, hackathons, settings, onOpenSettings 
     <div className="capacity-card">
       <div className="capacity-metrics-grid">
         <div className="capacity-metric-box">
-          <span className="metric-label">Work</span>
+          
           <span className="metric-value committed-val">{committedDaysCount} days</span>
+          <span className="metric-label">Work</span>
         </div>
         <div className="capacity-metric-box">
-          <span className="metric-label">Available</span>
+          
           <span className={`metric-value ${isOvercommitted ? 'warning-val' : 'free-val'}`}>
             {freeDays} days
           </span>
+          <span className="metric-label">Available</span>
         </div>
         <div
           className="capacity-metric-box"
@@ -58,8 +60,8 @@ export const CapacityBar = ({ year, month, hackathons, settings, onOpenSettings 
           onClick={onOpenSettings}
           title={onOpenSettings ? 'Click to configure Target Rest days' : undefined}
         >
-          <span className="metric-label">Target Rest {onOpenSettings && '⚙️'}</span>
           <span className="metric-value rest-val">{targetRest} days</span>
+          <span className="metric-label">Target Rest</span>
         </div>
       </div>
 
