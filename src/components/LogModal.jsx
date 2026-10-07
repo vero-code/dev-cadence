@@ -1,24 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
-const COLOR_PALETTE = [
-  '#06b6d4', // Cyan
-  '#f59e0b', // Amber
-  '#10b981', // Emerald
-  '#a855f7', // Violet
-  '#f43f5e', // Rose
-  '#38bdf8', // Sky Blue
-];
-
-const EMOJI_OPTIONS = ['⚡', '🚀', '🛠️', '💡', '🎯', '🏁', '⭐'];
-
-const STATUS_OPTIONS = [
-  'Not registered',
-  'Early application',
-  'Waiting for API key',
-  'Considering',
-  'In progress',
-  'Submitted'
-];
+import { COLOR_PALETTE, EMOJI_OPTIONS, STATUS_OPTIONS } from '../constants';
 
 export const LogModal = ({
   isOpen,
@@ -36,7 +17,7 @@ export const LogModal = ({
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [color, setColor] = useState(COLOR_PALETTE[0]);
-  const [emoji, setEmoji] = useState(EMOJI_OPTIONS[0]);
+  const [emoji, setEmoji] = useState('');
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -47,7 +28,7 @@ export const LogModal = ({
       setStartDate(editingHackathon.startDate || '');
       setEndDate(editingHackathon.endDate || '');
       setColor(editingHackathon.color || COLOR_PALETTE[0]);
-      setEmoji(editingHackathon.emoji || EMOJI_OPTIONS[0]);
+      setEmoji(editingHackathon.emoji || '');
     } else if (prefillDates) {
       setName('');
       setDeadline(prefillDates.deadline || prefillDates.endDate || '');
@@ -55,7 +36,7 @@ export const LogModal = ({
       setStartDate(prefillDates.startDate || '');
       setEndDate(prefillDates.endDate || '');
       setColor(COLOR_PALETTE[0]);
-      setEmoji(EMOJI_OPTIONS[0]);
+      setEmoji('');
     } else {
       // Default to current year & month for new entries
       const monthPadded = String(initialMonth + 1).padStart(2, '0');
@@ -69,7 +50,7 @@ export const LogModal = ({
       setStartDate(defaultStart);
       setEndDate(defaultEnd);
       setColor(COLOR_PALETTE[0]);
-      setEmoji(EMOJI_OPTIONS[0]);
+      setEmoji('');
     }
     setError('');
   }, [editingHackathon, isOpen, initialYear, initialMonth, prefillDates]);
@@ -196,28 +177,36 @@ export const LogModal = ({
           </div>
 
           <div className="form-group">
-            <label className="form-label">Theme Color</label>
+            <div className="label-with-hint">
+              <label className="form-label">Theme Color</label>
+              <span className="field-hint">optional</span>
+            </div>
             <div className="color-picker-row">
               {COLOR_PALETTE.map((c) => (
                 <div
                   key={c}
                   className={`color-option ${color === c ? 'selected' : ''}`}
                   style={{ backgroundColor: c }}
-                  onClick={() => setColor(c)}
+                  onClick={() => setColor(color === c ? '' : c)}
+                  title={color === c ? 'Click to deselect' : 'Select color'}
                 />
               ))}
             </div>
           </div>
 
           <div className="form-group">
-            <label className="form-label">Badge Emoji</label>
+            <div className="label-with-hint">
+              <label className="form-label">Badge Emoji</label>
+              <span className="field-hint">optional</span>
+            </div>
             <div className="emoji-picker-row">
               {EMOJI_OPTIONS.map((emo) => (
                 <button
                   key={emo}
                   type="button"
                   className={`emoji-option ${emoji === emo ? 'selected' : ''}`}
-                  onClick={() => setEmoji(emo)}
+                  onClick={() => setEmoji(emoji === emo ? '' : emo)}
+                  title={emoji === emo ? 'Click to deselect' : emo}
                 >
                   {emo}
                 </button>

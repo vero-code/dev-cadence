@@ -1,9 +1,5 @@
 import React from 'react';
-
-const MONTH_NAMES = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December'
-];
+import { MONTH_NAMES } from '../constants';
 
 export const Header = ({ currentYear, currentMonth, onPrevMonth, onNextMonth, onOpenSettings }) => {
   const monthName = MONTH_NAMES[currentMonth] || '';

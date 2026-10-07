@@ -56,8 +56,9 @@ Build mode: learn
 
 ## Final Review
 
-- [x] Enable calendar-driven date range selection: click start & end days on the calendar to highlight selection and open the Log Modal with dates pre-filled, while preserving the "+ Log Hackathon" button
-- [ ] Fix calendar hover tooltip layout shift: prevent tooltip from pushing down and shifting the pipeline table when hovering calendar cells
+- [x] Make color and emoji optional in LogModal, and remove checkered flag (🏁) from event emojis to reserve exclusively for deadlines
+- [x] Centralize palette, emojis, statuses, weekdays, and months constants into src/constants.js
+- [ ] Redesign pipeline table into a compact card-based list to prevent long hackathon names from getting squished in side panel
 - [ ] Final review complete — feedback resolved and learner confirms ready to ship
 
 ## Code Tour and App Map

@@ -53,11 +53,11 @@ export const CapacityBar = ({ year, month, hackathons, settings, onOpenSettings 
 
       <div className="capacity-metrics-grid">
         <div className="capacity-metric-box">
-          <span className="metric-label">Committed Work</span>
+          <span className="metric-label">Work</span>
           <span className="metric-value committed-val">{committedDaysCount} days</span>
         </div>
         <div className="capacity-metric-box">
-          <span className="metric-label">Available Free Days</span>
+          <span className="metric-label">Available</span>
           <span className={`metric-value ${isOvercommitted ? 'warning-val' : 'free-val'}`}>
             {freeDays} days
           </span>

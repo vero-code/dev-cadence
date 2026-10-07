@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { generateCalendarDays, getDayCellBackground } from '../utils/calendarUtils';
-
-const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+import { WEEKDAYS } from '../constants';
 
 export const CalendarGrid = ({
   year,
@@ -34,7 +33,7 @@ export const CalendarGrid = ({
     <div className="calendar-card">
       <div className="calendar-header-row">
         <h2 className="calendar-section-title">
-          <span>📅</span> Monthly Schedule Grid
+          <span>📅</span> Monthly Schedule
         </h2>
         {totalScheduledDays === 0 && !dateRange?.start && (
           <span className="calendar-empty-hint">
@@ -110,16 +109,18 @@ export const CalendarGrid = ({
               </div>
 
               <div className="day-badges-wrap">
-                {day.events.map((e) => (
-                  <span
-                    key={e.id}
-                    className="day-event-emoji"
-                    title={`${e.name} (${e.status})`}
-                    style={{ color: e.color }}
-                  >
-                    {e.emoji}
-                  </span>
-                ))}
+                {day.events.map((e) =>
+                  e.emoji ? (
+                    <span
+                      key={e.id}
+                      className="day-event-emoji"
+                      title={`${e.name} (${e.status})`}
+                      style={{ color: e.color }}
+                    >
+                      {e.emoji}
+                    </span>
+                  ) : null
+                )}
               </div>
 
               {day.isOverlap && (
