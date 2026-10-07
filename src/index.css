@@ -572,14 +572,14 @@ body:has([data-theme="dark"]) {
 .table-card {
   flex: 1;
   min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
   background: var(--card-solid-bg);
   border: 1.5px solid var(--border-subtle);
   border-radius: var(--radius);
-  padding: 0.65rem 0.75rem;
-  overflow-y: auto;
-  overflow-x: hidden;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(217, 119, 6, 0.45) transparent;
+  padding: 0.75rem 0.85rem;
+  overflow: hidden;
   box-shadow: 
     inset 0 0 0 1px rgba(245, 158, 11, 0.12),
     inset 0 1px 0 rgba(255, 255, 255, 0.1),
@@ -588,36 +588,92 @@ body:has([data-theme="dark"]) {
   transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
+.pipeline-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.pipeline-filter-tag {
+  font-size: 0.75rem;
+  color: var(--amber-gear);
+  background: var(--amber-glow);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  padding: 2px 8px;
+  border-radius: 12px;
+  text-transform: none;
+  letter-spacing: normal;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.pipeline-filter-tag:hover {
+  background: rgba(245, 158, 11, 0.25);
+  transform: translateY(-1px);
+}
+
+[data-theme="dark"] .pipeline-filter-tag {
+  color: var(--cyan-light);
+  background: rgba(6, 182, 212, 0.15);
+  border-color: rgba(6, 182, 212, 0.35);
+}
+
+[data-theme="parchment"] .pipeline-filter-tag {
+  color: #854d0e;
+  background: rgba(184, 134, 11, 0.12);
+  border-color: rgba(184, 134, 11, 0.3);
+}
+
+.pipeline-list,
+.table-card {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(217, 119, 6, 0.45) transparent;
+}
+
+[data-theme="parchment"] .pipeline-list,
 [data-theme="parchment"] .table-card {
   scrollbar-color: rgba(184, 134, 11, 0.45) transparent;
 }
 
+[data-theme="dark"] .pipeline-list,
 [data-theme="dark"] .table-card {
   scrollbar-color: rgba(6, 182, 212, 0.45) transparent;
 }
 
+.pipeline-list::-webkit-scrollbar,
 .table-card::-webkit-scrollbar {
   width: 5px;
 }
 
+.pipeline-list::-webkit-scrollbar-track,
 .table-card::-webkit-scrollbar-track {
   background: transparent;
 }
 
+.pipeline-list::-webkit-scrollbar-thumb,
 .table-card::-webkit-scrollbar-thumb {
   background: rgba(217, 119, 6, 0.35);
   border-radius: 9999px;
   transition: background 0.2s ease;
 }
 
+.pipeline-list::-webkit-scrollbar-thumb:hover,
 .table-card::-webkit-scrollbar-thumb:hover {
   background: var(--amber-gear);
 }
 
+[data-theme="parchment"] .pipeline-list::-webkit-scrollbar-thumb,
 [data-theme="parchment"] .table-card::-webkit-scrollbar-thumb {
   background: rgba(184, 134, 11, 0.4);
 }
 
+[data-theme="dark"] .pipeline-list::-webkit-scrollbar-thumb,
 [data-theme="dark"] .table-card::-webkit-scrollbar-thumb {
   background: rgba(6, 182, 212, 0.4);
 }
@@ -651,9 +707,14 @@ body:has([data-theme="dark"]) {
 
 /* Compact Pipeline List */
 .pipeline-list {
+  flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   gap: 0.55rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 2px;
 }
 
 .pipeline-item {
@@ -937,8 +998,13 @@ body:has([data-theme="dark"]) {
 
 /* Empty State */
 .empty-table-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  padding: 2.25rem 1rem;
+  padding: 1.5rem 1rem;
   color: var(--text-muted);
 }
 
@@ -1481,6 +1547,27 @@ body:has([data-theme="dark"]) {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 0.5rem;
+}
+
+/* Month switcher placed opposite the "Monthly Schedule" title */
+.calendar-month-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  flex-shrink: 0;
+}
+
+.calendar-month-nav .month-label {
+  font-size: 0.82rem;
+  min-width: 8.5em;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.calendar-month-nav .nav-arrow-btn {
+  padding: 0.1rem 0.4rem;
+  font-size: 1rem;
 }
 
 .calendar-section-title {
@@ -1496,6 +1583,7 @@ body:has([data-theme="dark"]) {
 }
 
 .calendar-empty-hint {
+  align-self: flex-start;
   font-size: 0.75rem;
   color: var(--amber-gear);
   background: var(--amber-glow);

@@ -64,8 +64,10 @@ Build mode: learn
 - [x] Allow saving hackathons with only an emoji and truly optional color (removed forced cyan fallbacks in calendar, table, and form defaults)
 - [x] Pin Capacity Bar inside a sticky footer at the bottom of the screen with frosted glass dock styling
 - [x] Display Available days (emerald green segment) on the Capacity progress track alongside Work and Target Rest
-- [x] Add tri-theme system: Midnight Dark (obsidian/cyan), Light Parchment & Brass, and Rich Automaton Dark (steampunk mahogany/warm brass) with cycling header button and storage persistence
-- [ ] Redesign pipeline table into a compact card-based list to prevent long hackathon names from getting squished in side panel
+- [x] Redesign pipeline table into a compact card-based list to prevent long hackathon names from getting squished in side panel
+- [x] Internal table card scrolling with theme scrollbars to keep side panel view height locked (no page overflow)
+- [x] Extract MonthNavigator component and place it inline opposite the Monthly Schedule title
+- [x] Embed Pipeline Tracker header, filter chip, and "+ Log Hackathon" button directly inside the table card
 - [ ] Final review complete — feedback resolved and learner confirms ready to ship
 
 ## Code Tour and App Map
@@ -83,3 +85,4 @@ Activity mode: focused alternative
 ## Revisions
 
 - Final Review refinement: Added direct calendar-driven date range selection (Option 3). Users can click a start day and an end day directly on the calendar grid to visually set work dates without blind-guessing in a pop-up. Keeps "+ Log Hackathon" button and adds a "Pick on Calendar" shortcut within the modal.
+- Side Panel Ergonomics & Theme Alignment: Redesigned the horizontal hackathon table into a vertical compact card list (`PipelineTable`), locked the main layout height to prevent window scrollbars in the Chrome side panel, enabled internal list scrolling with theme-aware thin scrollbars, separated `MonthNavigator` inline next to the calendar title, and embedded the Tracker header and action button directly inside the table card.

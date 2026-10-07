@@ -197,11 +197,6 @@ export const App = () => {
     <div className="app-container" data-theme={theme}>
       <div className="panel-content">
         <Header
-          currentYear={currentYear}
-          currentMonth={currentMonth}
-          onPrevMonth={handlePrevMonth}
-          onNextMonth={handleNextMonth}
-          onOpenSettings={() => setIsSettingsOpen(true)}
           theme={theme}
           onToggleTheme={handleToggleTheme}
         />
@@ -217,6 +212,8 @@ export const App = () => {
           onDateRangeClick={handleDateRangeClick}
           onCancelDateRange={handleCancelDateRange}
           isSelectingOnCalendar={isSelectingOnCalendar}
+          onPrevMonth={handlePrevMonth}
+          onNextMonth={handleNextMonth}
         />
 
         <div className="lower-content-section">
@@ -235,39 +232,13 @@ export const App = () => {
             </div>
           )}
 
-          <div className="action-bar">
-            <h2 className="section-heading">
-              <span>📋</span> Pipeline Tracker
-              {selectedDate && (
-                <span
-                  style={{
-                    fontSize: '0.75rem',
-                    color: 'var(--cyan-light)',
-                    fontWeight: 500,
-                    cursor: 'pointer',
-                    marginLeft: '0.5rem',
-                    background: 'rgba(6, 182, 212, 0.15)',
-                    padding: '2px 8px',
-                    borderRadius: '12px',
-                    border: '1px solid rgba(6, 182, 212, 0.3)'
-                  }}
-                  onClick={() => setSelectedDate(null)}
-                  title="Click to clear day filter"
-                >
-                  Filtered: {selectedDate} ✕
-                </span>
-              )}
-            </h2>
-            <button type="button" className="btn-primary" onClick={handleOpenAdd}>
-              <span>+</span> Log Hackathon
-            </button>
-          </div>
-
           <PipelineTable
             hackathons={tableHackathons}
             onEdit={handleOpenEdit}
             onDelete={handleRequestDelete}
             onAddNew={handleOpenAdd}
+            selectedDate={selectedDate}
+            onClearFilter={() => setSelectedDate(null)}
           />
         </div>
 

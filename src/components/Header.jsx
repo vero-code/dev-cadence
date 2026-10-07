@@ -1,7 +1,6 @@
 import React from 'react';
-import { MonthNavigator } from './MonthNavigator';
 
-export const Header = ({ currentYear, currentMonth, onPrevMonth, onNextMonth, onOpenSettings, theme, onToggleTheme }) => {
+export const Header = ({ theme, onToggleTheme }) => {
   const getThemeDetails = () => {
     switch (theme) {
       case 'parchment':
@@ -47,12 +46,6 @@ export const Header = ({ currentYear, currentMonth, onPrevMonth, onNextMonth, on
           >
             {themeInfo.icon}
           </button>
-          <MonthNavigator
-            currentYear={currentYear}
-            currentMonth={currentMonth}
-            onPrevMonth={onPrevMonth}
-            onNextMonth={onNextMonth}
-          />
         </div>
       </div>
     </header>

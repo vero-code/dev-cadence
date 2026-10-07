@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { generateCalendarDays, getDayCellBackground } from '../utils/calendarUtils';
 import { WEEKDAYS } from '../constants';
+import { MonthNavigator } from './MonthNavigator';
 
 export const CalendarGrid = ({
   year,
@@ -11,6 +12,8 @@ export const CalendarGrid = ({
   onDateRangeClick,
   onCancelDateRange,
   isSelectingOnCalendar,
+  onPrevMonth,
+  onNextMonth,
 }) => {
   const [activeTooltip, setActiveTooltip] = useState(null);
   const [hoveredRangeDate, setHoveredRangeDate] = useState(null);
@@ -165,14 +168,23 @@ export const CalendarGrid = ({
     <div className="calendar-card" ref={calendarCardRef}>
       <div className="calendar-header-row">
         <h2 className="calendar-section-title">
-          <span>📅</span> Monthly Schedule
+          <span>📅</span>Schedule
         </h2>
-        {totalScheduledDays === 0 && !dateRange?.start && (
-          <span className="calendar-empty-hint">
-            Click days to log dates
-          </span>
-        )}
+        <div className="calendar-month-nav">
+          <MonthNavigator
+            currentYear={year}
+            currentMonth={month}
+            onPrevMonth={onPrevMonth}
+            onNextMonth={onNextMonth}
+          />
+        </div>
       </div>
+
+      {totalScheduledDays === 0 && !dateRange?.start && (
+        <span className="calendar-empty-hint">
+          Click days to log dates
+        </span>
+      )}
 
       <div className="calendar-grid" onMouseLeave={() => setHoveredRangeDate(null)}>
         {WEEKDAYS.map((w) => (
