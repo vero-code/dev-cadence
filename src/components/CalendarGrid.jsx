@@ -9,11 +9,13 @@ export const CalendarGrid = ({
   hackathons,
   selectedDate,
   dateRange,
+  modalActiveRange,
   onDateRangeClick,
   onCancelDateRange,
   isSelectingOnCalendar,
   onPrevMonth,
   onNextMonth,
+  onEdit,
 }) => {
   const [activeTooltip, setActiveTooltip] = useState(null);
   const [hoveredRangeDate, setHoveredRangeDate] = useState(null);
@@ -32,6 +34,14 @@ export const CalendarGrid = ({
     if (!dateRange?.start || dateRange?.end || !hoveredRangeDate || !dateString) return false;
     const [start, end] = [dateRange.start, hoveredRangeDate].sort();
     return dateString >= start && dateString <= end;
+  };
+
+  // Check if day falls within the active create/edit form date range
+  const isDayInModalRange = (dateString) => {
+    if (!modalActiveRange?.startDate || !dateString) return false;
+    const end = modalActiveRange.endDate || modalActiveRange.startDate;
+    const [startD, endD] = [modalActiveRange.startDate, end].sort();
+    return dateString >= startD && dateString <= endD;
   };
 
   // Close tooltip or cancel date booking when clicking on another area or pressing escape key
@@ -204,13 +214,14 @@ export const CalendarGrid = ({
           const isRangeStart = dateRange?.start === day.dateString;
           const inRangePreview = isDayInRangePreview(day.dateString);
           const inActiveRange = isDayInActiveRange(day.dateString);
+          const inModalRange = isDayInModalRange(day.dateString);
           const bgStyle = getDayCellBackground(day.events);
           const isTooltipActive = activeTooltip?.dateString === day.dateString;
 
           return (
             <div
               key={day.dateString}
-              className={`calendar-day-cell ${day.isOverlap ? 'overlap-cell' : ''} ${hasEvents ? 'active-day' : ''} ${isSelected || isTooltipActive ? 'selected-day' : ''} ${isRangeStart ? 'range-start-cell' : ''} ${inRangePreview ? 'range-preview-cell' : ''} ${inActiveRange ? 'range-active-cell' : ''}`}
+              className={`calendar-day-cell ${day.isToday ? 'today-cell' : ''} ${hasEvents ? 'active-day' : ''} ${isSelected || isTooltipActive ? 'selected-day' : ''} ${isRangeStart ? 'range-start-cell' : ''} ${inRangePreview ? 'range-preview-cell' : ''} ${inActiveRange ? 'range-active-cell' : ''} ${inModalRange ? 'modal-dashed-cell' : ''}`}
               style={{ background: bgStyle }}
               onClick={(e) => handleCellClick(e, day, idx)}
               onMouseEnter={() => {
@@ -228,6 +239,7 @@ export const CalendarGrid = ({
             >
               <div className="day-top-bar">
                 <span className="day-number">{day.dayNumber}</span>
+                {day.isToday && <span className="today-badge" title="Today">TODAY</span>}
                 {isRangeStart && <span className="range-badge">START</span>}
                 {hasDeadlines && !isRangeStart && (
                   <span className="deadline-flag" title={`Deadline: ${day.deadlines.map((d) => d.name).join(', ')}`}>
@@ -290,23 +302,52 @@ export const CalendarGrid = ({
           <div className="tooltip-events-list">
             {activeTooltip.events.map((e) => (
               <div key={e.id} className="tooltip-event-row">
-                {e.color && (
-                  <span
-                    className="tooltip-color-dot"
-                    style={{ backgroundColor: e.color }}
-                  />
-                )}
-                <strong className="tooltip-event-name">
-                  {e.emoji ? `${e.emoji} ` : ''}{e.name}
-                </strong>
-                {/* <span className="tooltip-status-pill">{e.status}</span> */}
+                <div className="tooltip-event-info">
+                  {e.color && (
+                    <span
+                      className="tooltip-color-dot"
+                      style={{ backgroundColor: e.color }}
+                    />
+                  )}
+                  <strong className="tooltip-event-name" title={e.name}>
+                    {e.emoji ? `${e.emoji} ` : ''}{e.name}
+                  </strong>
+                </div>
+                <button
+                  type="button"
+                  className="tooltip-event-edit-btn"
+                  title={`Edit ${e.name}`}
+                  aria-label={`Edit ${e.name}`}
+                  onClick={(ev) => {
+                    ev.stopPropagation();
+                    setActiveTooltip(null);
+                    onEdit && onEdit(e);
+                  }}
+                >
+                  ✏️
+                </button>
               </div>
             ))}
 
             {activeTooltip.deadlines && activeTooltip.deadlines.map((d) => (
               <div key={`dl-${d.id}`} className="tooltip-deadline-row">
-                <span>🏁</span>
-                <em>Deadline: {d.name}</em>
+                <div className="tooltip-deadline-info">
+                  <span>🏁</span>
+                  <em>Deadline: {d.name}</em>
+                </div>
+                <button
+                  type="button"
+                  className="tooltip-event-edit-btn"
+                  title={`Edit ${d.name}`}
+                  aria-label={`Edit ${d.name}`}
+                  onClick={(ev) => {
+                    ev.stopPropagation();
+                    setActiveTooltip(null);
+                    onEdit && onEdit(d);
+                  }}
+                >
+                  ✏️
+                </button>
               </div>
             ))}
           </div>

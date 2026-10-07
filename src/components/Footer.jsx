@@ -1,5 +1,6 @@
 import React from 'react';
 import { CapacityBar } from './CapacityBar';
+import { GITHUB_REPO_URL } from '../constants';
 
 export const Footer = ({
   year,
@@ -19,7 +20,7 @@ export const Footer = ({
       />
       <div className="footer-credits">
         <a
-          href="https://devpost.com/v_code"
+          href={GITHUB_REPO_URL}
           target="_blank"
           rel="noopener noreferrer"
           className="footer-author-link"

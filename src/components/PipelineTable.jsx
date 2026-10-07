@@ -144,65 +144,106 @@ export const PipelineTable = ({
       ) : viewMode === 'table' ? (
         <div className="pipeline-table-wrapper">
           <table className="pipeline-table">
+            <colgroup>
+              <col style={{ width: '38%' }} />
+              <col style={{ width: '30%' }} />
+              <col style={{ width: '23%' }} />
+              <col style={{ width: '9%' }} />
+            </colgroup>
             <thead>
               <tr>
-                <th>Hackathon</th>
-                <th>Deadline</th>
-                <th>Status</th>
-                <th>Dates</th>
-                <th style={{ textAlign: 'right' }}>Actions</th>
+                <th className="table-th-name">Hackathon</th>
+                <th className="table-th-dates">Dates & Deadline</th>
+                <th className="table-th-status">Status</th>
+                <th className="table-th-actions" style={{ textAlign: 'right' }}></th>
               </tr>
             </thead>
             <tbody>
-              {hackathons.map((h) => (
-                <tr key={h.id}>
-                  <td>
-                    <div className="table-event-name">
-                      {h.color && (
-                        <span
-                          className="color-dot"
-                          style={{
-                            backgroundColor: h.color,
-                            boxShadow: `0 0 6px ${h.color}`,
+              {hackathons.map((h, idx) => {
+                const isMenuOpen = openMenuId === h.id;
+                const openUpward = idx >= hackathons.length - 2 && hackathons.length > 2;
+
+                return (
+                  <tr key={h.id}>
+                    <td className="table-col-name">
+                      <div className="table-event-name" title={h.name}>
+                        {h.color && (
+                          <span
+                            className="color-dot"
+                            style={{
+                              backgroundColor: h.color,
+                            }}
+                          />
+                        )}
+                        {h.emoji && <span className="table-event-emoji">{h.emoji}</span>}
+                        <span className="table-event-text">{h.name}</span>
+                      </div>
+                    </td>
+                    <td className="table-col-dates">
+                      <div className="table-dates-group">
+                        <span className="table-work-range" title={`Work range: ${formatWorkRange(h.startDate, h.endDate)}`}>
+                          {formatWorkRange(h.startDate, h.endDate)}
+                        </span>
+                        {h.deadline && (
+                          <span className="table-deadline-sub" title={`Deadline: ${formatDisplayDate(h.deadline)}`}>
+                            by {formatDisplayDate(h.deadline)}
+                          </span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="table-col-status">
+                      <span className={`status-chip table-status-chip ${getStatusChipClass(h.status)}`} title={h.status}>
+                        {h.status}
+                      </span>
+                    </td>
+                    <td className="table-col-actions" style={{ textAlign: 'right' }}>
+                      <div className="pipeline-menu-container">
+                        <button
+                          type="button"
+                          className="kebab-btn"
+                          title="Actions"
+                          aria-label="Actions menu"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setOpenMenuId(isMenuOpen ? null : h.id);
                           }}
-                        />
-                      )}
-                      <span>{h.emoji ? `${h.emoji} ` : ''}{h.name}</span>
-                    </div>
-                  </td>
-                  <td className="table-date">
-                    {h.deadline ? `by ${formatDisplayDate(h.deadline)}` : '—'}
-                  </td>
-                  <td>
-                    <span className={`status-chip ${getStatusChipClass(h.status)}`}>
-                      {h.status}
-                    </span>
-                  </td>
-                  <td className="table-date">
-                    {formatWorkRange(h.startDate, h.endDate)}
-                  </td>
-                  <td style={{ textAlign: 'right' }}>
-                    <div className="table-actions" style={{ justifyContent: 'flex-end' }}>
-                      <button
-                        type="button"
-                        className="action-icon-btn"
-                        title="Edit Hackathon"
-                        onClick={() => onEdit(h)}
-                      >
-                        ✏️
-                      </button>
-                      <button
-                        type="button"
-                        className="action-icon-btn delete-btn"
-                        title="Delete Hackathon"
-                        onClick={() => onDelete(h)}
-                      >
-                        🗑️
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+                        >
+                          &#x22EE;
+                        </button>
+                        {isMenuOpen && (
+                          <div
+                            className={`pipeline-dropdown-menu ${openUpward ? 'dropdown-upward' : ''}`}
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <button
+                              type="button"
+                              className="pipeline-menu-item"
+                              onClick={() => {
+                                setOpenMenuId(null);
+                                onEdit(h);
+                              }}
+                            >
+                              <span className="menu-item-icon">✏️</span>
+                              <span>Edit</span>
+                            </button>
+                            <button
+                              type="button"
+                              className="pipeline-menu-item delete-item"
+                              onClick={() => {
+                                setOpenMenuId(null);
+                                onDelete(h);
+                              }}
+                            >
+                              <span className="menu-item-icon">🗑️</span>
+                              <span>Delete</span>
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -222,7 +263,6 @@ export const PipelineTable = ({
                 className="pipeline-item-color-bar"
                 style={{
                   backgroundColor: h.color || 'var(--amber-gear)',
-                  boxShadow: `0 0 8px ${h.color || 'var(--amber-gear)'}`,
                 }}
               />
               <div className="pipeline-item-content">

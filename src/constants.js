@@ -13,11 +13,11 @@ export const EMOJI_OPTIONS = ['🔷', '🔴', '🟩', '⭐', '🫟', '❕', '▪
 export const STATUS_OPTIONS = [
   'Interested',
   'Registered',
-  'Waiting for API key',
-  'Early application', 
+  'Awaiting API',
+  'Early Bird',
   'Draft',
-  'Need to submit video',
-  'Submitted (final)',
+  'Video Pending',
+  'Submitted',
 ];
 
 export const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -25,4 +25,57 @@ export const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 export const MONTH_NAMES = [
   'January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December',
+];
+
+export const DEVPOST_PROFILE_URL = 'https://devpost.com/software/dev-cadence';
+export const GITHUB_REPO_URL = 'https://github.com/vero-code/dev-cadence';
+
+export const THEMES = [
+  {
+    id: 'steampunk',
+    name: 'Rich Automaton Dark',
+    icon: '⚙️',
+    desc: 'Clockwork brass, rich mahogany & warm glow',
+  },
+  {
+    id: 'parchment',
+    name: 'Light Parchment & Brass',
+    icon: '📜',
+    desc: 'Devpost parchment paper & brass accents',
+  },
+  {
+    id: 'dark',
+    name: 'Midnight Dark',
+    icon: '🌙',
+    desc: 'Deep obsidian & electric cyan glow',
+  },
+];
+
+export const FONT_PRESETS = [
+  {
+    id: 'bahnschrift',
+    name: '📐 Bahnschrift',
+    preview: 'Clean DIN Geometric',
+  },
+  {
+    id: 'cinzel',
+    name: '⚙️ Cinzel Automaton',
+    preview: 'Steampunk Engraving Serif',
+  },
+  {
+    id: 'sans',
+    name: '⚡ Modern Geometric',
+    preview: 'Plus Jakarta Sans',
+  },
+  {
+    id: 'mono',
+    name: '💻 Terminal Developer',
+    preview: 'JetBrains Mono monospace',
+  },
+];
+
+export const FONT_SIZES = [
+  { id: 'compact', label: 'Compact (90%)' },
+  { id: 'normal', label: 'Standard (100%)' },
+  { id: 'spacious', label: 'Comfortable (110%)' },
 ];

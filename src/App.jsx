@@ -6,11 +6,11 @@ import { PipelineTable } from './components/PipelineTable';
 import { LogModal } from './components/LogModal';
 import { SettingsModal } from './components/SettingsModal';
 import { ConfirmModal } from './components/ConfirmModal';
-import { getStoredData, saveHackathons, saveSettings, saveTheme } from './utils/storage';
+import { getStoredData, saveHackathons, saveSettings, saveTheme, clearAllHackathons, clearAllData } from './utils/storage';
 
 export const App = () => {
   const [hackathons, setHackathons] = useState([]);
-  const [settings, setSettings] = useState({ targetRestDays: 8, avgTurnaroundDays: 10 });
+  const [settings, setSettings] = useState({ targetRestDays: 8, avgTurnaroundDays: 10, fontPreset: 'cinzel', fontSize: 'normal' });
   const [theme, setTheme] = useState('steampunk');
   const [currentYear, setCurrentYear] = useState(2026);
   const [currentMonth, setCurrentMonth] = useState(9); // October (0-indexed)
@@ -22,6 +22,7 @@ export const App = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [editingHackathon, setEditingHackathon] = useState(null);
   const [deleteCandidate, setDeleteCandidate] = useState(null);
+  const [modalDates, setModalDates] = useState(null);
 
   useEffect(() => {
     const initData = async () => {
@@ -29,6 +30,8 @@ export const App = () => {
       setHackathons(data.hackathons);
       setSettings(data.settings);
       setTheme(data.theme || 'steampunk');
+      document.documentElement.setAttribute('data-font', data.settings?.fontPreset || 'cinzel');
+      document.documentElement.setAttribute('data-font-size', data.settings?.fontSize || 'normal');
     };
     initData();
   }, []);
@@ -100,6 +103,34 @@ export const App = () => {
   const handleSaveSettings = async (newSettings) => {
     setSettings(newSettings);
     await saveSettings(newSettings);
+    if (newSettings?.fontPreset) {
+      document.documentElement.setAttribute('data-font', newSettings.fontPreset);
+    }
+    if (newSettings?.fontSize) {
+      document.documentElement.setAttribute('data-font-size', newSettings.fontSize);
+    }
+  };
+
+  const handleClearAllHackathons = async () => {
+    setHackathons([]);
+    await clearAllHackathons();
+    setSelectedDate(null);
+    setDateRange({ start: null, end: null });
+    setPrefillDates(null);
+  };
+
+  const handleResetAllData = async () => {
+    await clearAllData();
+    setHackathons([]);
+    const defaultSet = { targetRestDays: 8, avgTurnaroundDays: 10, fontPreset: 'cinzel', fontSize: 'normal' };
+    setSettings(defaultSet);
+    setTheme('steampunk');
+    document.documentElement.setAttribute('data-font', 'cinzel');
+    document.documentElement.setAttribute('data-font-size', 'normal');
+    setSelectedDate(null);
+    setDateRange({ start: null, end: null });
+    setPrefillDates(null);
+    setEditingHackathon(null);
   };
 
   const handleOpenEdit = (hackathon) => {
@@ -158,6 +189,7 @@ export const App = () => {
     setPrefillDates(null);
     setDateRange({ start: null, end: null });
     setIsSelectingOnCalendar(false);
+    setModalDates(null);
   };
 
   const handlePickOnCalendar = () => {
@@ -186,7 +218,12 @@ export const App = () => {
     : visibleHackathons;
 
   return (
-    <div className="app-container" data-theme={theme}>
+    <div
+      className="app-container"
+      data-theme={theme}
+      data-font={settings?.fontPreset || 'cinzel'}
+      data-font-size={settings?.fontSize || 'normal'}
+    >
       <div className="panel-content">
         <Header
           onOpenSettings={() => setIsSettingsOpen(true)}
@@ -200,11 +237,13 @@ export const App = () => {
           hackathons={visibleHackathons}
           selectedDate={selectedDate}
           dateRange={dateRange}
+          modalActiveRange={isLogModalOpen ? modalDates : null}
           onDateRangeClick={handleDateRangeClick}
           onCancelDateRange={handleCancelDateRange}
           isSelectingOnCalendar={isSelectingOnCalendar}
           onPrevMonth={handlePrevMonth}
           onNextMonth={handleNextMonth}
+          onEdit={handleOpenEdit}
         />
 
         <div className="lower-content-section">
@@ -219,6 +258,7 @@ export const App = () => {
                 initialMonth={currentMonth}
                 prefillDates={prefillDates}
                 onPickOnCalendar={handlePickOnCalendar}
+                onDatesChange={setModalDates}
               />
             </div>
           )}
@@ -240,6 +280,8 @@ export const App = () => {
           onSaveSettings={handleSaveSettings}
           currentTheme={theme}
           onSelectTheme={handleSelectTheme}
+          onClearAllHackathons={handleClearAllHackathons}
+          onResetAllData={handleResetAllData}
         />
 
         <ConfirmModal

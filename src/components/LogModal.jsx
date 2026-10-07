@@ -10,6 +10,7 @@ export const LogModal = ({
   initialMonth,
   prefillDates,
   onPickOnCalendar,
+  onDatesChange,
 }) => {
   const formCardRef = useRef(null);
   const [name, setName] = useState('');
@@ -55,6 +56,12 @@ export const LogModal = ({
     }
     setError('');
   }, [editingHackathon, isOpen, initialYear, initialMonth, prefillDates]);
+
+  useEffect(() => {
+    if (isOpen && onDatesChange) {
+      onDatesChange({ startDate, endDate, deadline });
+    }
+  }, [startDate, endDate, deadline, isOpen, onDatesChange]);
 
   useEffect(() => {
     const handleOutsideClick = (e) => {

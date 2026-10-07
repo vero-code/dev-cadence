@@ -71,7 +71,7 @@ Build mode: learn
 - [x] Position 3-dots kebab menu in the top-right corner of each card and status chip in the bottom-right corner (with elevated z-index stacking to prevent sibling card overlap and outside click / Esc dismiss)
 - [x] Replace header theme switch button with a Settings cog icon (opening SettingsModal)
 - [x] Integrate interactive theme picker cards directly into SettingsModal
-- [x] Add future-ready engineer profile avatar badge into header actions
+- [x] Add future-ready engineer profile avatar badge into header actions (styled with matching rounded-square silhouette)
 - [x] Add Tracker layout view toggle (compact cards vs classic table) and fix top hover border clipping
 - [ ] Final review complete — feedback resolved and learner confirms ready to ship
 
@@ -91,3 +91,9 @@ Activity mode: focused alternative
 
 - Final Review refinement: Added direct calendar-driven date range selection (Option 3). Users can click a start day and an end day directly on the calendar grid to visually set work dates without blind-guessing in a pop-up. Keeps "+ Log Hackathon" button and adds a "Pick on Calendar" shortcut within the modal.
 - Side Panel Ergonomics & Theme Alignment: Redesigned the horizontal hackathon table into a vertical compact card list (`PipelineTable`), locked the main layout height to prevent window scrollbars in the Chrome side panel, enabled internal list scrolling with theme-aware thin scrollbars, separated `MonthNavigator` inline next to the calendar title, and embedded the Tracker header and action button directly inside the table card.
+- Theme Contrast & Stability: Fixed modal close button hover state in light/parchment theme to remain distinct and dark brown (`#78350f`) instead of fading into white, and stabilized footer capacity metric values to retain consistent colors without dynamic warning-state shifting.
+- Table Mode, Typography & Danger Zone: Refined table view with fixed layout, ellipsis truncation, 3-dots kebab action menu, and adjacent dates/deadline stack (no horizontal scrolling). Added typography presets (Cinzel, Sans, Mono, Serif) and font size scaling in Settings, plus two-click confirmed data reset functions (Clear Hackathons and Factory Reset). Synchronized Target Rest metric number to purple (`#818cf8` / `#6366f1`) matching its progress bar scale.
+- Calendar Popover & Card Clarity: Added direct event edit icon button (✏️) inside day popover list. Removed overlapping day glow to keep calendar view calm, highlighting strictly the current day (TODAY badge). Removed fuzzy blur/box-shadow on card indicator bars for crisp, sharp edges.
+- Fonts, Tooltip Stability & Form Range Glow: Added Bahnschrift and Bebas Neue Bold font presets with live CSS tokens. Eliminated tooltip horizontal scrollbar caused by pencil hover scaling. Connected real-time dashed border highlighting on the calendar grid whenever the create/edit hackathon modal is open.
+- Devpost Profile Integration & Constants Centralization: Replaced profile icon with custom automaton robot avatar artwork (`/avatar.png`), connected direct link to `https://devpost.com/software/dev-cadence` (`target="_blank"`), and centralized all font presets, font sizes, and themes into `src/constants.js`.
+- GitHub Repo Constant, Cinzel Automaton Preset & Work Metric Centering: Extracted `GITHUB_REPO_URL` into `constants.js`, replaced Bebas font with classical antique `Cinzel Automaton` (`⚙️ Cinzel Automaton`), and centered the Work metric text perfectly both vertically and horizontally in the footer capacity bar.

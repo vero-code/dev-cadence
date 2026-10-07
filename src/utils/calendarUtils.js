@@ -39,6 +39,9 @@ export const generateCalendarDays = (year, month, hackathons = []) => {
 
   const monthPadded = String(month + 1).padStart(2, '0');
 
+  const now = new Date();
+  const todayString = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+
   // Populate month days
   for (let d = 1; d <= daysInMonth; d++) {
     const dayPadded = String(d).padStart(2, '0');
@@ -62,7 +65,8 @@ export const generateCalendarDays = (year, month, hackathons = []) => {
       dateString,
       events: activeEvents,
       deadlines,
-      isOverlap: activeEvents.length > 1,
+      isOverlap: false,
+      isToday: dateString === todayString,
     });
   }
 

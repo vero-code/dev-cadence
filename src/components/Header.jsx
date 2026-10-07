@@ -1,4 +1,5 @@
 import React from 'react';
+import { DEVPOST_PROFILE_URL } from '../constants';
 
 export const Header = ({ onOpenSettings }) => {
   return (
@@ -21,17 +22,22 @@ export const Header = ({ onOpenSettings }) => {
             title="Settings & Themes"
             aria-label="Settings and Themes"
           >
-            ⚙️
+            <span className="settings-icon">⚙️</span>
           </button>
-          <div
+          <a
+            href={DEVPOST_PROFILE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className="header-avatar-badge"
-            title="Engineer Profile (Coming Soon)"
-            tabIndex={0}
-            role="button"
-            aria-label="User Profile"
+            title="Devpost Profile: @v_code"
+            aria-label="Devpost Profile @v_code"
           >
-            <span className="avatar-icon">👤</span>
-          </div>
+            <img
+              src="/avatar.png"
+              alt="v_code Devpost Profile"
+              className="header-avatar-img"
+            />
+          </a>
         </div>
       </div>
     </header>

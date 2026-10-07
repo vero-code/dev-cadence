@@ -9,6 +9,8 @@ const STORAGE_KEYS = {
 const DEFAULT_SETTINGS = {
   targetRestDays: 8,
   avgTurnaroundDays: 10,
+  fontPreset: 'bahnschrift',
+  fontSize: 'normal',
 };
 
 const isChromeStorageAvailable = () => {
@@ -22,7 +24,7 @@ export const getStoredData = async () => {
         chrome.storage.local.get([STORAGE_KEYS.HACKATHONS, STORAGE_KEYS.SETTINGS, STORAGE_KEYS.THEME], (result) => {
           resolve({
             hackathons: result[STORAGE_KEYS.HACKATHONS] || [],
-            settings: result[STORAGE_KEYS.SETTINGS] || DEFAULT_SETTINGS,
+            settings: { ...DEFAULT_SETTINGS, ...(result[STORAGE_KEYS.SETTINGS] || {}) },
             theme: result[STORAGE_KEYS.THEME] || 'steampunk',
           });
         });
@@ -34,7 +36,7 @@ export const getStoredData = async () => {
       const rawTheme = localStorage.getItem(STORAGE_KEYS.THEME);
       return {
         hackathons: rawHackathons ? JSON.parse(rawHackathons) : [],
-        settings: rawSettings ? JSON.parse(rawSettings) : DEFAULT_SETTINGS,
+        settings: rawSettings ? { ...DEFAULT_SETTINGS, ...JSON.parse(rawSettings) } : DEFAULT_SETTINGS,
         theme: rawTheme || 'steampunk',
       };
     }
@@ -77,5 +79,28 @@ export const saveTheme = async (theme) => {
     }
   } catch (err) {
     console.error('Failed to save theme to storage:', err);
+  }
+};
+
+export const clearAllHackathons = async () => {
+  try {
+    await saveHackathons([]);
+  } catch (err) {
+    console.error('Failed to clear hackathons:', err);
+  }
+};
+
+export const clearAllData = async () => {
+  try {
+    if (isChromeStorageAvailable()) {
+      await chrome.storage.local.clear();
+    } else {
+      localStorage.removeItem(STORAGE_KEYS.HACKATHONS);
+      localStorage.removeItem(STORAGE_KEYS.SETTINGS);
+      localStorage.removeItem(STORAGE_KEYS.THEME);
+      localStorage.removeItem('dev_cadence_tracker_view_mode');
+    }
+  } catch (err) {
+    console.error('Failed to clear all data from storage:', err);
   }
 };
