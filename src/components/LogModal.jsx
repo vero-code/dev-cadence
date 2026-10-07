@@ -166,23 +166,9 @@ export const LogModal = ({
             </div>
           </div>
 
-          {/* <div className="date-header-group">
-            <label className="form-label">Work Schedule</label>
-            {onPickOnCalendar && !editingHackathon && (
-              <button
-                type="button"
-                className="btn-pick-calendar"
-                onClick={onPickOnCalendar}
-                title="Select start and end dates directly on the calendar"
-              >
-                📅 Pick on Calendar
-              </button>
-            )}
-          </div> */}
-
           <div className="form-row-2">
             <div className="form-group">
-              <label className="form-label-sub">Start Date</label>
+              <label className="form-label">Start Date</label>
               <input
                 type="date"
                 className="form-input"
@@ -192,7 +178,7 @@ export const LogModal = ({
             </div>
 
             <div className="form-group">
-              <label className="form-label-sub">End Date</label>
+              <label className="form-label">End Date</label>
               <input
                 type="date"
                 className="form-input"

@@ -1,10 +1,15 @@
 import React from 'react';
 
+const MONTH_ABBR = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
 const formatDisplayDate = (isoDate) => {
   if (!isoDate) return '';
   const parts = isoDate.split('-');
   if (parts.length === 3) {
-    return `${parts[1]}/${parts[2]}`;
+    const m = parseInt(parts[1], 10) - 1;
+    const d = parseInt(parts[2], 10);
+    const monthStr = MONTH_ABBR[m] || parts[1];
+    return `${monthStr} ${d}`;
   }
   return isoDate;
 };
@@ -14,7 +19,15 @@ const formatWorkRange = (startIso, endIso) => {
   const startParts = startIso.split('-');
   const endParts = endIso.split('-');
   if (startParts.length === 3 && endParts.length === 3) {
-    return `${startParts[2]} – ${endParts[2]}`;
+    const sMonth = parseInt(startParts[1], 10) - 1;
+    const eMonth = parseInt(endParts[1], 10) - 1;
+    const sDay = parseInt(startParts[2], 10);
+    const eDay = parseInt(endParts[2], 10);
+
+    if (sMonth === eMonth) {
+      return `${MONTH_ABBR[sMonth] || startParts[1]} ${sDay} – ${eDay}`;
+    }
+    return `${MONTH_ABBR[sMonth]} ${sDay} – ${MONTH_ABBR[eMonth]} ${eDay}`;
   }
   return `${startIso} – ${endIso}`;
 };
@@ -44,41 +57,26 @@ export const PipelineTable = ({ hackathons, onEdit, onDelete, onAddNew }) => {
   }
 
   return (
-    <div className="table-card">
-      <table className="pipeline-table">
-        <thead>
-          <tr>
-            <th>Hackathon</th>
-            <th>Deadline</th>
-            <th>Status</th>
-            <th>Dates</th>
-            <th style={{ textAlign: 'right' }}>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {hackathons.map((h) => (
-            <tr key={h.id}>
-              <td>
-                <div className="table-event-name">
-                  {h.color && (
-                    <span className="color-dot" style={{ backgroundColor: h.color }} />
-                  )}
-                  <span>{h.emoji ? `${h.emoji} ` : ''}{h.name}</span>
+    <div className="table-card pipeline-list-container">
+      <div className="pipeline-list">
+        {hackathons.map((h) => (
+          <div key={h.id} className="pipeline-item">
+            <div
+              className="pipeline-item-color-bar"
+              style={{
+                backgroundColor: h.color || 'var(--amber-gear)',
+                boxShadow: `0 0 8px ${h.color || 'var(--amber-gear)'}`,
+              }}
+            />
+            <div className="pipeline-item-content">
+              <div className="pipeline-item-header">
+                <div className="pipeline-item-title-wrap">
+                  {h.emoji && <span className="pipeline-item-emoji">{h.emoji}</span>}
+                  <span className="pipeline-item-name" title={h.name}>
+                    {h.name}
+                  </span>
                 </div>
-              </td>
-              <td className="table-date">
-                by {formatDisplayDate(h.deadline)}
-              </td>
-              <td>
-                <span className={`status-chip ${getStatusChipClass(h.status)}`}>
-                  {h.status}
-                </span>
-              </td>
-              <td className="table-date">
-                {formatWorkRange(h.startDate, h.endDate)}
-              </td>
-              <td style={{ textAlign: 'right' }}>
-                <div className="table-actions" style={{ justifyContent: 'flex-end' }}>
+                <div className="pipeline-item-actions">
                   <button
                     type="button"
                     className="action-icon-btn"
@@ -96,11 +94,29 @@ export const PipelineTable = ({ hackathons, onEdit, onDelete, onAddNew }) => {
                     🗑️
                   </button>
                 </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              </div>
+
+              <div className="pipeline-item-meta">
+                <span className={`status-chip ${getStatusChipClass(h.status)}`}>
+                  {h.status}
+                </span>
+                <span className="pipeline-meta-pill" title="Work Dates">
+                  <span className="meta-icon">🗓️</span>
+                  <span>{formatWorkRange(h.startDate, h.endDate)}</span>
+                </span>
+                {h.deadline && (
+                  <span className="pipeline-meta-pill deadline-pill" title="Submission Deadline">
+                    <span className="meta-icon">🏁</span>
+                    <span>Due {formatDisplayDate(h.deadline)}</span>
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
+
+export const PipelineList = PipelineTable;

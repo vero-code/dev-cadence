@@ -18,9 +18,6 @@ export const Footer = ({
         onOpenSettings={onOpenSettings}
       />
       <div className="footer-credits">
-        <span>&copy; {new Date().getFullYear()}</span>
-        <span className="credits-dot">&bull;</span>
-        <span>Crafted by</span>
         <a
           href="https://devpost.com/v_code"
           target="_blank"
@@ -29,6 +26,11 @@ export const Footer = ({
         >
           vero-code
         </a>
+        <span>&copy; {new Date().getFullYear()}</span>
+        <span className="credits-dot">&bull;</span>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+        <a href="#">Contact</a>
       </div>
     </footer>
   );
