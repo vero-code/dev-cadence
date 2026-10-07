@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { generateCalendarDays, getDayCellBackground } from '../utils/calendarUtils';
+import { generateCalendarDays, getDayCellBackground, addDaysToDateString } from '../utils/calendarUtils';
 import { WEEKDAYS } from '../constants';
 import { MonthNavigator } from './MonthNavigator';
 
@@ -10,6 +10,7 @@ export const CalendarGrid = ({
   selectedDate,
   dateRange,
   modalActiveRange,
+  avgTurnaroundDays = 10,
   onDateRangeClick,
   onCancelDateRange,
   isSelectingOnCalendar,
@@ -29,10 +30,12 @@ export const CalendarGrid = ({
     return dateString >= dateRange.start && dateString <= dateRange.end;
   };
 
-  // Calculate range preview between dateRange.start and hovered day (shows dashed border)
+  // Calculate range preview between dateRange.start and hovered day, defaulting to avgTurnaroundDays span
   const isDayInRangePreview = (dateString) => {
-    if (!dateRange?.start || dateRange?.end || !hoveredRangeDate || !dateString) return false;
-    const [start, end] = [dateRange.start, hoveredRangeDate].sort();
+    if (!dateRange?.start || dateRange?.end || !dateString) return false;
+    const defaultEnd = addDaysToDateString(dateRange.start, (avgTurnaroundDays || 10) - 1);
+    const targetEnd = hoveredRangeDate || defaultEnd;
+    const [start, end] = [dateRange.start, targetEnd].sort();
     return dateString >= start && dateString <= end;
   };
 

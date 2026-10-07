@@ -5,7 +5,7 @@ export const SettingsModal = ({
   isOpen,
   onClose,
   settings,
-  onSaveSettings,
+  onUpdateSettings,
   currentTheme,
   onSelectTheme,
   onClearAllHackathons,
@@ -13,9 +13,6 @@ export const SettingsModal = ({
 }) => {
   const [targetRestDays, setTargetRestDays] = useState(8);
   const [avgTurnaroundDays, setAvgTurnaroundDays] = useState(10);
-  const [fontPreset, setFontPreset] = useState('bahnschrift');
-  const [fontSize, setFontSize] = useState('normal');
-  const [savedSuccess, setSavedSuccess] = useState(false);
   const [confirmClearHackathons, setConfirmClearHackathons] = useState(false);
   const [confirmResetAll, setConfirmResetAll] = useState(false);
   const [resetMessage, setResetMessage] = useState(null);
@@ -24,10 +21,7 @@ export const SettingsModal = ({
     if (settings) {
       setTargetRestDays(settings.targetRestDays ?? 8);
       setAvgTurnaroundDays(settings.avgTurnaroundDays ?? 10);
-      setFontPreset(settings.fontPreset ?? 'bahnschrift');
-      setFontSize(settings.fontSize ?? 'normal');
     }
-    setSavedSuccess(false);
     setConfirmClearHackathons(false);
     setConfirmResetAll(false);
     setResetMessage(null);
@@ -35,19 +29,50 @@ export const SettingsModal = ({
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const updated = {
-      targetRestDays: Math.max(0, Math.min(28, parseInt(targetRestDays, 10) || 0)),
-      avgTurnaroundDays: Math.max(1, parseInt(avgTurnaroundDays, 10) || 1),
-      fontPreset,
-      fontSize,
-    };
-    onSaveSettings(updated);
-    setSavedSuccess(true);
-    setTimeout(() => {
-      onClose();
-    }, 400);
+  const handleThemeClick = (themeId) => {
+    if (onSelectTheme) {
+      onSelectTheme(themeId);
+    }
+  };
+
+  const handleFontClick = (presetId) => {
+    if (onUpdateSettings) {
+      onUpdateSettings({ fontPreset: presetId });
+    }
+  };
+
+  const handleFontSizeClick = (sizeId) => {
+    if (onUpdateSettings) {
+      onUpdateSettings({ fontSize: sizeId });
+    }
+  };
+
+  const handleRestDaysChange = (val) => {
+    setTargetRestDays(val);
+    const parsed = parseInt(val, 10);
+    if (!isNaN(parsed) && parsed >= 0 && parsed <= 28) {
+      if (onUpdateSettings) onUpdateSettings({ targetRestDays: parsed });
+    }
+  };
+
+  const handleRestDaysBlur = () => {
+    const parsed = Math.max(0, Math.min(28, parseInt(targetRestDays, 10) || 0));
+    setTargetRestDays(parsed);
+    if (onUpdateSettings) onUpdateSettings({ targetRestDays: parsed });
+  };
+
+  const handleAvgDaysChange = (val) => {
+    setAvgTurnaroundDays(val);
+    const parsed = parseInt(val, 10);
+    if (!isNaN(parsed) && parsed >= 1 && parsed <= 60) {
+      if (onUpdateSettings) onUpdateSettings({ avgTurnaroundDays: parsed });
+    }
+  };
+
+  const handleAvgDaysBlur = () => {
+    const parsed = Math.max(1, Math.min(60, parseInt(avgTurnaroundDays, 10) || 10));
+    setAvgTurnaroundDays(parsed);
+    if (onUpdateSettings) onUpdateSettings({ avgTurnaroundDays: parsed });
   };
 
   const handleClearHackathonsClick = async () => {
@@ -83,15 +108,15 @@ export const SettingsModal = ({
       <div className="modal-card" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2 className="modal-title">
-            <span>⚙️</span> Settings & Preferences
+            <span>⚙️</span> Settings
           </h2>
           <button type="button" className="modal-close-btn" onClick={onClose}>&times;</button>
         </div>
 
-        <form onSubmit={handleSubmit}>
+        <div className="modal-body-content">
           {/* Theme Selector */}
           <div className="form-group">
-            <label className="form-label">Theme & Appearance</label>
+            <label className="form-label">Theme</label>
             <div className="theme-options-grid">
               {THEMES.map((t) => {
                 const isSelected = currentTheme === t.id;
@@ -100,12 +125,11 @@ export const SettingsModal = ({
                     key={t.id}
                     type="button"
                     className={`theme-option-btn ${isSelected ? 'active' : ''}`}
-                    onClick={() => onSelectTheme && onSelectTheme(t.id)}
+                    onClick={() => handleThemeClick(t.id)}
                   >
                     <span className="theme-option-icon">{t.icon}</span>
                     <div className="theme-option-text">
                       <div className="theme-option-name">{t.name}</div>
-                      <div className="theme-option-desc">{t.desc}</div>
                     </div>
                     {isSelected && <span className="theme-option-check">✓</span>}
                   </button>
@@ -116,76 +140,77 @@ export const SettingsModal = ({
 
           {/* Typography Settings */}
           <div className="form-group">
-            <label className="form-label">Typography & Font Style</label>
+            <label className="form-label">Typography</label>
             <div className="font-options-grid">
               {FONT_PRESETS.map((f) => {
-                const isSelected = fontPreset === f.id;
+                const isSelected = (settings?.fontPreset || 'bahnschrift') === f.id;
                 return (
                   <button
                     key={f.id}
                     type="button"
                     className={`font-option-btn ${isSelected ? 'active' : ''}`}
-                    onClick={() => setFontPreset(f.id)}
+                    onClick={() => handleFontClick(f.id)}
+                    data-font-preview={f.id}
                   >
                     <span className="font-option-title">{f.name}</span>
-                    <span className="font-option-preview">{f.preview}</span>
                   </button>
                 );
               })}
             </div>
 
             <div className="font-size-row">
-              {FONT_SIZES.map((s) => (
-                <button
-                  key={s.id}
-                  type="button"
-                  className={`font-size-btn ${fontSize === s.id ? 'active' : ''}`}
-                  onClick={() => setFontSize(s.id)}
-                >
-                  {s.label}
-                </button>
-              ))}
+              {FONT_SIZES.map((s) => {
+                const isSelected = (settings?.fontSize || 'normal') === s.id;
+                return (
+                  <button
+                    key={s.id}
+                    type="button"
+                    className={`font-size-btn ${isSelected ? 'active' : ''}`}
+                    onClick={() => handleFontSizeClick(s.id)}
+                  >
+                    {s.label}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
-          {/* Capacity Goals */}
-          <div className="form-group">
-            <label className="form-label">Desired Days Off Per Month (Rest Buffer)</label>
-            <input
-              type="number"
-              min="0"
-              max="28"
-              className="form-input"
-              value={targetRestDays}
-              onChange={(e) => setTargetRestDays(e.target.value)}
-            />
-            <span style={{ fontSize: '0.72rem', color: 'var(--text-dim)', marginTop: '4px', display: 'block' }}>
-              Triggers an overcommitment warning whenever remaining free days drop below this limit.
-            </span>
-          </div>
+          {/* Capacity Goals in one row */}
+          <div className="form-row-2">
+            <div className="form-group">
+              <label className="form-label">Rest Days / Month</label>
+              <input
+                type="number"
+                min="0"
+                max="28"
+                className="form-input"
+                value={targetRestDays}
+                onChange={(e) => handleRestDaysChange(e.target.value)}
+                onBlur={handleRestDaysBlur}
+              />
+            </div>
 
-          <div className="form-group">
-            <label className="form-label">Average Project Turnaround (Days)</label>
-            <input
-              type="number"
-              min="1"
-              max="60"
-              className="form-input"
-              value={avgTurnaroundDays}
-              onChange={(e) => setAvgTurnaroundDays(e.target.value)}
-            />
-            <span style={{ fontSize: '0.72rem', color: 'var(--text-dim)', marginTop: '4px', display: 'block' }}>
-              Your estimated baseline sprint duration to complete and submit a hackathon.
-            </span>
+            <div className="form-group">
+              <label className="form-label">Work Days / Hackathon</label>
+              <input
+                type="number"
+                min="1"
+                max="60"
+                className="form-input"
+                value={avgTurnaroundDays}
+                onChange={(e) => handleAvgDaysChange(e.target.value)}
+                onBlur={handleAvgDaysBlur}
+              />
+            </div>
           </div>
 
           {/* Danger Zone: Full Wipe / Reset Actions */}
           <div className="settings-danger-zone">
             <div className="danger-zone-title">
-              <span>⚠️</span> Data Management & Reset
+              Data Management & Reset
             </div>
             <p className="danger-zone-desc">
-              Clear logged events or reset the entire extension back to initial factory state.
+              Clear logged events or reset the extension to defaults.
             </p>
             <div className="danger-actions-row">
               <button
@@ -210,21 +235,15 @@ export const SettingsModal = ({
             )}
           </div>
 
-          {savedSuccess && (
-            <div style={{ color: 'var(--emerald)', fontSize: '0.8rem', marginTop: '0.65rem', fontWeight: 600 }}>
-              ✓ Settings saved successfully!
-            </div>
-          )}
-
-          <div className="modal-footer">
-            <button type="button" className="btn-secondary" onClick={onClose}>
-              Cancel
-            </button>
-            <button type="submit" className="btn-primary">
-              Save Settings
+          <div className="modal-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <span style={{ fontSize: '0.74rem', color: 'var(--text-dim)', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+              <span style={{ color: 'var(--emerald)', fontSize: '0.65rem' }}>●</span> Auto-saved
+            </span>
+            <button type="button" className="btn-primary" onClick={onClose} style={{ minWidth: '90px', justifyContent: 'center' }}>
+              Close
             </button>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { COLOR_PALETTE, EMOJI_OPTIONS, STATUS_OPTIONS } from '../constants';
+import { addDaysToDateString } from '../utils/calendarUtils';
 
 export const LogModal = ({
   isOpen,
@@ -9,6 +10,7 @@ export const LogModal = ({
   initialYear,
   initialMonth,
   prefillDates,
+  avgTurnaroundDays = 10,
   onPickOnCalendar,
   onDatesChange,
 }) => {
@@ -23,6 +25,7 @@ export const LogModal = ({
   const [error, setError] = useState('');
 
   useEffect(() => {
+    const avgDays = Number(avgTurnaroundDays) || 10;
     if (editingHackathon) {
       setName(editingHackathon.name || '');
       setDeadline(editingHackathon.deadline || '');
@@ -33,18 +36,27 @@ export const LogModal = ({
       setEmoji(editingHackathon.emoji || '');
     } else if (prefillDates) {
       setName('');
-      setDeadline(prefillDates.deadline || prefillDates.endDate || '');
+      const start = prefillDates.startDate || '';
+      // If only single date was selected, automatically extend by avgTurnaroundDays
+      const end = prefillDates.endDate && prefillDates.endDate !== prefillDates.startDate
+        ? prefillDates.endDate
+        : (start ? addDaysToDateString(start, avgDays - 1) : '');
+      const dead = prefillDates.deadline && prefillDates.deadline !== prefillDates.startDate
+        ? prefillDates.deadline
+        : end;
+
+      setStartDate(start);
+      setEndDate(end);
+      setDeadline(dead);
       setStatus(STATUS_OPTIONS[0]);
-      setStartDate(prefillDates.startDate || '');
-      setEndDate(prefillDates.endDate || '');
       setColor('');
       setEmoji('');
     } else {
-      // Default to current year & month for new entries
+      // Default to current year & month, spanning avgTurnaroundDays
       const monthPadded = String(initialMonth + 1).padStart(2, '0');
       const defaultStart = `${initialYear}-${monthPadded}-05`;
-      const defaultEnd = `${initialYear}-${monthPadded}-15`;
-      const defaultDeadline = `${initialYear}-${monthPadded}-16`;
+      const defaultEnd = addDaysToDateString(defaultStart, avgDays - 1);
+      const defaultDeadline = defaultEnd;
 
       setName('');
       setDeadline(defaultDeadline);
@@ -55,7 +67,7 @@ export const LogModal = ({
       setEmoji('');
     }
     setError('');
-  }, [editingHackathon, isOpen, initialYear, initialMonth, prefillDates]);
+  }, [editingHackathon, isOpen, initialYear, initialMonth, prefillDates, avgTurnaroundDays]);
 
   useEffect(() => {
     if (isOpen && onDatesChange) {

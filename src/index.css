@@ -185,6 +185,10 @@ body {
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
+button, input, select, textarea, optgroup {
+  font-family: inherit;
+}
+
 body:has([data-theme="parchment"]) {
   background-color: #dfcfb6;
   background-image: 
@@ -3099,10 +3103,15 @@ body:has([data-theme="dark"]) {
   text-shadow: 0 0 10px rgba(6, 182, 212, 0.6);
 }
 
-/* Typography Presets */
+/* Typography Presets — Unifying all text, headings, buttons, and badges uniformly */
 [data-font="bahnschrift"], :root {
   --font-heading: 'Bahnschrift', 'DIN Alternate', 'Franklin Gothic Medium', -apple-system, sans-serif;
-  --font-main: 'Bahnschrift', 'DIN Alternate', 'Plus Jakarta Sans', -apple-system, sans-serif;
+  --font-main: 'Bahnschrift', 'DIN Alternate', 'Franklin Gothic Medium', -apple-system, sans-serif;
+}
+
+[data-font="cinzel"] {
+  --font-heading: 'Cinzel', Georgia, serif;
+  --font-main: 'Cinzel', Georgia, serif;
 }
 
 [data-font="sans"] {
@@ -3113,11 +3122,6 @@ body:has([data-theme="dark"]) {
 [data-font="mono"] {
   --font-heading: 'JetBrains Mono', monospace;
   --font-main: 'JetBrains Mono', monospace;
-}
-
-[data-font="cinzel"] {
-  --font-heading: 'Cinzel', Georgia, serif;
-  --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 /* Font Size Scaling */
@@ -3181,6 +3185,22 @@ body:has([data-theme="dark"]) {
 .font-option-title {
   font-size: 0.8rem;
   font-weight: 700;
+}
+
+.font-option-btn[data-font-preview="bahnschrift"] .font-option-title {
+  font-family: 'Bahnschrift', 'DIN Alternate', sans-serif;
+}
+
+.font-option-btn[data-font-preview="cinzel"] .font-option-title {
+  font-family: 'Cinzel', Georgia, serif;
+}
+
+.font-option-btn[data-font-preview="sans"] .font-option-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.font-option-btn[data-font-preview="mono"] .font-option-title {
+  font-family: 'JetBrains Mono', monospace;
 }
 
 .font-option-preview {

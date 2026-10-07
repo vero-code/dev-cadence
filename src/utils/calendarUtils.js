@@ -105,3 +105,17 @@ export const getDayCellBackground = (events) => {
 
   return `linear-gradient(135deg, ${stops})`;
 };
+
+/**
+ * Adds or subtracts days to a 'YYYY-MM-DD' date string and returns 'YYYY-MM-DD'
+ */
+export const addDaysToDateString = (dateStr, daysToAdd) => {
+  if (!dateStr) return '';
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const date = new Date(Date.UTC(y, m - 1, d));
+  date.setUTCDate(date.getUTCDate() + Number(daysToAdd));
+  const nextY = date.getUTCFullYear();
+  const nextM = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const nextD = String(date.getUTCDate()).padStart(2, '0');
+  return `${nextY}-${nextM}-${nextD}`;
+};

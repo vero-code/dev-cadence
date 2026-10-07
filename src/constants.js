@@ -54,22 +54,22 @@ export const THEMES = [
 export const FONT_PRESETS = [
   {
     id: 'bahnschrift',
-    name: '📐 Bahnschrift',
+    name: 'Bahnschrift',
     preview: 'Clean DIN Geometric',
   },
   {
     id: 'cinzel',
-    name: '⚙️ Cinzel Automaton',
+    name: 'Cinzel Automaton',
     preview: 'Steampunk Engraving Serif',
   },
   {
     id: 'sans',
-    name: '⚡ Modern Geometric',
+    name: 'Modern Geometric',
     preview: 'Plus Jakarta Sans',
   },
   {
     id: 'mono',
-    name: '💻 Terminal Developer',
+    name: 'Terminal Developer',
     preview: 'JetBrains Mono monospace',
   },
 ];
@@ -77,5 +77,5 @@ export const FONT_PRESETS = [
 export const FONT_SIZES = [
   { id: 'compact', label: 'Compact (90%)' },
   { id: 'normal', label: 'Standard (100%)' },
-  { id: 'spacious', label: 'Comfortable (110%)' },
+  { id: 'spacious', label: 'Comfort (110%)' },
 ];

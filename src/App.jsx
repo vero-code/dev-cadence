@@ -7,10 +7,11 @@ import { LogModal } from './components/LogModal';
 import { SettingsModal } from './components/SettingsModal';
 import { ConfirmModal } from './components/ConfirmModal';
 import { getStoredData, saveHackathons, saveSettings, saveTheme, clearAllHackathons, clearAllData } from './utils/storage';
+import { addDaysToDateString } from './utils/calendarUtils';
 
 export const App = () => {
   const [hackathons, setHackathons] = useState([]);
-  const [settings, setSettings] = useState({ targetRestDays: 8, avgTurnaroundDays: 10, fontPreset: 'cinzel', fontSize: 'normal' });
+  const [settings, setSettings] = useState({ targetRestDays: 8, avgTurnaroundDays: 10, fontPreset: 'bahnschrift', fontSize: 'normal' });
   const [theme, setTheme] = useState('steampunk');
   const [currentYear, setCurrentYear] = useState(2026);
   const [currentMonth, setCurrentMonth] = useState(9); // October (0-indexed)
@@ -30,7 +31,7 @@ export const App = () => {
       setHackathons(data.hackathons);
       setSettings(data.settings);
       setTheme(data.theme || 'steampunk');
-      document.documentElement.setAttribute('data-font', data.settings?.fontPreset || 'cinzel');
+      document.documentElement.setAttribute('data-font', data.settings?.fontPreset || 'bahnschrift');
       document.documentElement.setAttribute('data-font-size', data.settings?.fontSize || 'normal');
     };
     initData();
@@ -100,14 +101,23 @@ export const App = () => {
     setDeleteCandidate(null);
   };
 
-  const handleSaveSettings = async (newSettings) => {
-    setSettings(newSettings);
-    await saveSettings(newSettings);
-    if (newSettings?.fontPreset) {
-      document.documentElement.setAttribute('data-font', newSettings.fontPreset);
+  const handleOpenSettings = () => {
+    setIsSettingsOpen(true);
+  };
+
+  const handleCloseSettings = () => {
+    setIsSettingsOpen(false);
+  };
+
+  const handleUpdateSettings = async (partialSettings) => {
+    const updated = { ...settings, ...partialSettings };
+    setSettings(updated);
+    await saveSettings(updated);
+    if (partialSettings.fontPreset) {
+      document.documentElement.setAttribute('data-font', partialSettings.fontPreset);
     }
-    if (newSettings?.fontSize) {
-      document.documentElement.setAttribute('data-font-size', newSettings.fontSize);
+    if (partialSettings.fontSize) {
+      document.documentElement.setAttribute('data-font-size', partialSettings.fontSize);
     }
   };
 
@@ -122,10 +132,10 @@ export const App = () => {
   const handleResetAllData = async () => {
     await clearAllData();
     setHackathons([]);
-    const defaultSet = { targetRestDays: 8, avgTurnaroundDays: 10, fontPreset: 'cinzel', fontSize: 'normal' };
+    const defaultSet = { targetRestDays: 8, avgTurnaroundDays: 10, fontPreset: 'bahnschrift', fontSize: 'normal' };
     setSettings(defaultSet);
     setTheme('steampunk');
-    document.documentElement.setAttribute('data-font', 'cinzel');
+    document.documentElement.setAttribute('data-font', 'bahnschrift');
     document.documentElement.setAttribute('data-font-size', 'normal');
     setSelectedDate(null);
     setDateRange({ start: null, end: null });
@@ -140,13 +150,18 @@ export const App = () => {
   };
 
   const handleOpenAdd = (targetDate = null) => {
+    const avgDays = Number(settings?.avgTurnaroundDays) || 10;
     if (typeof targetDate === 'string' && targetDate) {
-      setPrefillDates({ startDate: targetDate, endDate: targetDate, deadline: targetDate });
+      const end = addDaysToDateString(targetDate, avgDays - 1);
+      setPrefillDates({ startDate: targetDate, endDate: end, deadline: end });
     } else if (dateRange.start) {
-      const end = dateRange.end || dateRange.start;
+      const end = dateRange.end || addDaysToDateString(dateRange.start, avgDays - 1);
       setPrefillDates({ startDate: dateRange.start, endDate: end, deadline: end });
     } else {
-      setPrefillDates(null);
+      const monthPadded = String(currentMonth + 1).padStart(2, '0');
+      const start = `${currentYear}-${monthPadded}-05`;
+      const end = addDaysToDateString(start, avgDays - 1);
+      setPrefillDates({ startDate: start, endDate: end, deadline: end });
     }
     setEditingHackathon(null);
     setIsSelectingOnCalendar(false);
@@ -221,12 +236,12 @@ export const App = () => {
     <div
       className="app-container"
       data-theme={theme}
-      data-font={settings?.fontPreset || 'cinzel'}
+      data-font={settings?.fontPreset || 'bahnschrift'}
       data-font-size={settings?.fontSize || 'normal'}
     >
       <div className="panel-content">
         <Header
-          onOpenSettings={() => setIsSettingsOpen(true)}
+          onOpenSettings={handleOpenSettings}
         />
 
         
@@ -238,6 +253,7 @@ export const App = () => {
           selectedDate={selectedDate}
           dateRange={dateRange}
           modalActiveRange={isLogModalOpen ? modalDates : null}
+          avgTurnaroundDays={settings?.avgTurnaroundDays || 10}
           onDateRangeClick={handleDateRangeClick}
           onCancelDateRange={handleCancelDateRange}
           isSelectingOnCalendar={isSelectingOnCalendar}
@@ -257,6 +273,7 @@ export const App = () => {
                 initialYear={currentYear}
                 initialMonth={currentMonth}
                 prefillDates={prefillDates}
+                avgTurnaroundDays={settings?.avgTurnaroundDays || 10}
                 onPickOnCalendar={handlePickOnCalendar}
                 onDatesChange={setModalDates}
               />
@@ -275,9 +292,9 @@ export const App = () => {
 
         <SettingsModal
           isOpen={isSettingsOpen}
-          onClose={() => setIsSettingsOpen(false)}
+          onClose={handleCloseSettings}
           settings={settings}
-          onSaveSettings={handleSaveSettings}
+          onUpdateSettings={handleUpdateSettings}
           currentTheme={theme}
           onSelectTheme={handleSelectTheme}
           onClearAllHackathons={handleClearAllHackathons}
@@ -297,7 +314,7 @@ export const App = () => {
         month={currentMonth}
         hackathons={visibleHackathons}
         settings={settings}
-        onOpenSettings={() => setIsSettingsOpen(true)}
+        onOpenSettings={handleOpenSettings}
       />
     </div>
   );
