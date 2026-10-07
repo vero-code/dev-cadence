@@ -14,7 +14,7 @@ export const LogModal = ({
   const formCardRef = useRef(null);
   const [name, setName] = useState('');
   const [deadline, setDeadline] = useState('');
-  const [status, setStatus] = useState('Not registered');
+  const [status, setStatus] = useState(STATUS_OPTIONS[0] || 'Interested');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [color, setColor] = useState(COLOR_PALETTE[0]);
@@ -25,7 +25,7 @@ export const LogModal = ({
     if (editingHackathon) {
       setName(editingHackathon.name || '');
       setDeadline(editingHackathon.deadline || '');
-      setStatus(editingHackathon.status || 'Not registered');
+      setStatus(editingHackathon.status || STATUS_OPTIONS[0]);
       setStartDate(editingHackathon.startDate || '');
       setEndDate(editingHackathon.endDate || '');
       setColor(editingHackathon.color || COLOR_PALETTE[0]);
@@ -33,7 +33,7 @@ export const LogModal = ({
     } else if (prefillDates) {
       setName('');
       setDeadline(prefillDates.deadline || prefillDates.endDate || '');
-      setStatus('Not registered');
+      setStatus(STATUS_OPTIONS[0]);
       setStartDate(prefillDates.startDate || '');
       setEndDate(prefillDates.endDate || '');
       setColor(COLOR_PALETTE[0]);
@@ -47,7 +47,7 @@ export const LogModal = ({
 
       setName('');
       setDeadline(defaultDeadline);
-      setStatus('Not registered');
+      setStatus(STATUS_OPTIONS[0]);
       setStartDate(defaultStart);
       setEndDate(defaultEnd);
       setColor(COLOR_PALETTE[0]);

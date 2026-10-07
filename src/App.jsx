@@ -5,6 +5,7 @@ import { CalendarGrid } from './components/CalendarGrid';
 import { PipelineTable } from './components/PipelineTable';
 import { LogModal } from './components/LogModal';
 import { SettingsModal } from './components/SettingsModal';
+import { ConfirmModal } from './components/ConfirmModal';
 import { getStoredData, saveHackathons, saveSettings } from './utils/storage';
 
 export const App = () => {
@@ -19,6 +20,7 @@ export const App = () => {
   const [isLogModalOpen, setIsLogModalOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [editingHackathon, setEditingHackathon] = useState(null);
+  const [deleteCandidate, setDeleteCandidate] = useState(null);
 
   useEffect(() => {
     const initData = async () => {
@@ -66,10 +68,26 @@ export const App = () => {
     setDateRange({ start: null, end: null });
   };
 
-  const handleDeleteHackathon = async (id) => {
+  const handleRequestDelete = (hackathonOrId) => {
+    if (typeof hackathonOrId === 'object' && hackathonOrId !== null) {
+      setDeleteCandidate(hackathonOrId);
+    } else {
+      const found = hackathons.find((h) => h.id === hackathonOrId);
+      setDeleteCandidate(found || { id: hackathonOrId, name: 'this hackathon' });
+    }
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!deleteCandidate) return;
+    const id = deleteCandidate.id;
     const updated = hackathons.filter((h) => h.id !== id);
     setHackathons(updated);
     await saveHackathons(updated);
+    setDeleteCandidate(null);
+  };
+
+  const handleCancelDelete = () => {
+    setDeleteCandidate(null);
   };
 
   const handleSaveSettings = async (newSettings) => {
@@ -231,7 +249,7 @@ export const App = () => {
           <PipelineTable
             hackathons={tableHackathons}
             onEdit={handleOpenEdit}
-            onDelete={handleDeleteHackathon}
+            onDelete={handleRequestDelete}
             onAddNew={handleOpenAdd}
           />
 
@@ -249,6 +267,13 @@ export const App = () => {
           onClose={() => setIsSettingsOpen(false)}
           settings={settings}
           onSaveSettings={handleSaveSettings}
+        />
+
+        <ConfirmModal
+          isOpen={Boolean(deleteCandidate)}
+          hackathon={deleteCandidate}
+          onConfirm={handleConfirmDelete}
+          onCancel={handleCancelDelete}
         />
       </div>
     </div>

@@ -11,10 +11,10 @@ export const COLOR_PALETTE = [
 export const EMOJI_OPTIONS = ['🔷', '🔴', '🟩', '⭐', '🫟', '❕', '▪️'];
 
 export const STATUS_OPTIONS = [
-  'Not registered',
+  'Interested',
   'Registered',
   'Waiting for API key',
-  'Early application',
+  'Early application', 
   'Draft',
   'Need to submit video',
   'Submitted (final)',

@@ -51,7 +51,7 @@ export const PipelineTable = ({ hackathons, onEdit, onDelete, onAddNew }) => {
             <th>Hackathon</th>
             <th>Deadline</th>
             <th>Status</th>
-            <th>Work Dates</th>
+            <th>Dates</th>
             <th style={{ textAlign: 'right' }}>Actions</th>
           </tr>
         </thead>
@@ -89,7 +89,7 @@ export const PipelineTable = ({ hackathons, onEdit, onDelete, onAddNew }) => {
                     type="button"
                     className="action-icon-btn delete-btn"
                     title="Delete Hackathon"
-                    onClick={() => onDelete(h.id)}
+                    onClick={() => onDelete(h)}
                   >
                     🗑️
                   </button>
