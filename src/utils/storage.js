@@ -17,6 +17,11 @@ const isChromeStorageAvailable = () => {
   return typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local;
 };
 
+const sanitizeTheme = (t) => {
+  if (t === 'dark') return 'devpost';
+  return t || 'devpost';
+};
+
 export const getStoredData = async () => {
   try {
     if (isChromeStorageAvailable()) {
@@ -25,7 +30,7 @@ export const getStoredData = async () => {
           resolve({
             hackathons: result[STORAGE_KEYS.HACKATHONS] || [],
             settings: { ...DEFAULT_SETTINGS, ...(result[STORAGE_KEYS.SETTINGS] || {}) },
-            theme: result[STORAGE_KEYS.THEME] || 'steampunk',
+            theme: sanitizeTheme(result[STORAGE_KEYS.THEME]),
           });
         });
       });
@@ -37,12 +42,12 @@ export const getStoredData = async () => {
       return {
         hackathons: rawHackathons ? JSON.parse(rawHackathons) : [],
         settings: rawSettings ? { ...DEFAULT_SETTINGS, ...JSON.parse(rawSettings) } : DEFAULT_SETTINGS,
-        theme: rawTheme || 'steampunk',
+        theme: sanitizeTheme(rawTheme),
       };
     }
   } catch (err) {
     console.error('Failed to load from storage, using defaults:', err);
-    return { hackathons: [], settings: DEFAULT_SETTINGS, theme: 'steampunk' };
+    return { hackathons: [], settings: DEFAULT_SETTINGS, theme: 'devpost' };
   }
 };
 

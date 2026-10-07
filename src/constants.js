@@ -32,6 +32,12 @@ export const GITHUB_REPO_URL = 'https://github.com/vero-code/dev-cadence';
 
 export const THEMES = [
   {
+    id: 'devpost',
+    name: 'Devpost Classic Navy',
+    icon: '🌐',
+    desc: 'Original Devpost deep navy & electric cyan glow',
+  },
+  {
     id: 'steampunk',
     name: 'Rich Automaton Dark',
     icon: '⚙️',
@@ -41,13 +47,7 @@ export const THEMES = [
     id: 'parchment',
     name: 'Light Parchment & Brass',
     icon: '📜',
-    desc: 'Devpost parchment paper & brass accents',
-  },
-  {
-    id: 'dark',
-    name: 'Midnight Dark',
-    icon: '🌙',
-    desc: 'Deep obsidian & electric cyan glow',
+    desc: 'Devpost parchment paper',
   },
 ];
 
