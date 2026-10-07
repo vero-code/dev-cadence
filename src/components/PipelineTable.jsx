@@ -234,27 +234,6 @@ export const PipelineTable = ({
                     </span>
                   </div>
 
-                  <div className="pipeline-item-header-right">
-                    <span className={`status-chip ${getStatusChipClass(h.status)}`}>
-                      {h.status}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="pipeline-item-meta">
-                  <div className="pipeline-meta-pills">
-                    <span className="pipeline-meta-pill" title="Work Dates">
-                      <span className="meta-icon">🗓️</span>
-                      <span>{formatWorkRange(h.startDate, h.endDate)}</span>
-                    </span>
-                    {h.deadline && (
-                      <span className="pipeline-meta-pill deadline-pill" title="Submission Deadline">
-                        <span className="meta-icon">🏁</span>
-                        <span>Due {formatDisplayDate(h.deadline)}</span>
-                      </span>
-                    )}
-                  </div>
-
                   <div className="pipeline-menu-container">
                     <button
                       type="button"
@@ -299,6 +278,24 @@ export const PipelineTable = ({
                       </div>
                     )}
                   </div>
+                </div>
+
+                <div className="pipeline-item-meta">
+                  <div className="pipeline-meta-pills">
+                    <span className="pipeline-meta-pill" title="Work Dates">
+                      <span className="meta-icon">🗓️</span>
+                      <span>{formatWorkRange(h.startDate, h.endDate)}</span>
+                    </span>
+                    {h.deadline && (
+                      <span className="pipeline-meta-pill deadline-pill" title="Submission Deadline">
+                        <span className="meta-icon">🏁</span>
+                        <span>Due {formatDisplayDate(h.deadline)}</span>
+                      </span>
+                    )}
+                  </div>
+                  <span className={`status-chip ${getStatusChipClass(h.status)}`}>
+                    {h.status}
+                  </span>
                 </div>
               </div>
             </div>

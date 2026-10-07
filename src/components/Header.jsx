@@ -14,15 +14,6 @@ export const Header = ({ onOpenSettings }) => {
           </div>
         </div>
         <div className="header-actions">
-          <div
-            className="header-avatar-badge"
-            title="Engineer Profile (Coming Soon)"
-            tabIndex={0}
-            role="button"
-            aria-label="User Profile"
-          >
-            <span className="avatar-icon">👤</span>
-          </div>
           <button
             type="button"
             className="settings-icon-btn"
@@ -32,6 +23,15 @@ export const Header = ({ onOpenSettings }) => {
           >
             ⚙️
           </button>
+          <div
+            className="header-avatar-badge"
+            title="Engineer Profile (Coming Soon)"
+            tabIndex={0}
+            role="button"
+            aria-label="User Profile"
+          >
+            <span className="avatar-icon">👤</span>
+          </div>
         </div>
       </div>
     </header>
