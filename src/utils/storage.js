@@ -3,6 +3,7 @@
 const STORAGE_KEYS = {
   HACKATHONS: 'dev_cadence_hackathons',
   SETTINGS: 'dev_cadence_settings',
+  THEME: 'dev_cadence_theme',
 };
 
 const DEFAULT_SETTINGS = {
@@ -18,10 +19,11 @@ export const getStoredData = async () => {
   try {
     if (isChromeStorageAvailable()) {
       return new Promise((resolve) => {
-        chrome.storage.local.get([STORAGE_KEYS.HACKATHONS, STORAGE_KEYS.SETTINGS], (result) => {
+        chrome.storage.local.get([STORAGE_KEYS.HACKATHONS, STORAGE_KEYS.SETTINGS, STORAGE_KEYS.THEME], (result) => {
           resolve({
             hackathons: result[STORAGE_KEYS.HACKATHONS] || [],
             settings: result[STORAGE_KEYS.SETTINGS] || DEFAULT_SETTINGS,
+            theme: result[STORAGE_KEYS.THEME] || 'dark',
           });
         });
       });
@@ -29,14 +31,16 @@ export const getStoredData = async () => {
       // LocalStorage fallback for web preview
       const rawHackathons = localStorage.getItem(STORAGE_KEYS.HACKATHONS);
       const rawSettings = localStorage.getItem(STORAGE_KEYS.SETTINGS);
+      const rawTheme = localStorage.getItem(STORAGE_KEYS.THEME);
       return {
         hackathons: rawHackathons ? JSON.parse(rawHackathons) : [],
         settings: rawSettings ? JSON.parse(rawSettings) : DEFAULT_SETTINGS,
+        theme: rawTheme || 'dark',
       };
     }
   } catch (err) {
     console.error('Failed to load from storage, using defaults:', err);
-    return { hackathons: [], settings: DEFAULT_SETTINGS };
+    return { hackathons: [], settings: DEFAULT_SETTINGS, theme: 'dark' };
   }
 };
 
@@ -61,5 +65,17 @@ export const saveSettings = async (settings) => {
     }
   } catch (err) {
     console.error('Failed to save settings to storage:', err);
+  }
+};
+
+export const saveTheme = async (theme) => {
+  try {
+    if (isChromeStorageAvailable()) {
+      await chrome.storage.local.set({ [STORAGE_KEYS.THEME]: theme });
+    } else {
+      localStorage.setItem(STORAGE_KEYS.THEME, theme);
+    }
+  } catch (err) {
+    console.error('Failed to save theme to storage:', err);
   }
 };

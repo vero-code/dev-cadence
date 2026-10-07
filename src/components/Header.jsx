@@ -1,7 +1,7 @@
 import React from 'react';
 import { MONTH_NAMES } from '../constants';
 
-export const Header = ({ currentYear, currentMonth, onPrevMonth, onNextMonth, onOpenSettings }) => {
+export const Header = ({ currentYear, currentMonth, onPrevMonth, onNextMonth, onOpenSettings, theme, onToggleTheme }) => {
   const monthName = MONTH_NAMES[currentMonth] || '';
 
   return (
@@ -15,6 +15,15 @@ export const Header = ({ currentYear, currentMonth, onPrevMonth, onNextMonth, on
           </div>
         </div>
         <div className="header-actions">
+          <button
+            type="button"
+            className="theme-toggle-btn"
+            onClick={onToggleTheme}
+            title={theme === 'parchment' ? 'Switch to Rich Automaton Dark theme' : 'Switch to Light Parchment & Brass theme'}
+            aria-label="Toggle theme"
+          >
+            {theme === 'parchment' ? '🌙' : '📜'}
+          </button>
           <button 
           type="button" 
           className="nav-arrow-btn" 
@@ -24,7 +33,7 @@ export const Header = ({ currentYear, currentMonth, onPrevMonth, onNextMonth, on
           &larr;
         </button>
         <span className="month-label">
-          {monthName} {currentYear} Goals
+          {monthName} {currentYear}
         </span>
         <button 
           type="button" 

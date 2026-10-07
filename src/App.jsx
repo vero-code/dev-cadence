@@ -6,11 +6,12 @@ import { PipelineTable } from './components/PipelineTable';
 import { LogModal } from './components/LogModal';
 import { SettingsModal } from './components/SettingsModal';
 import { ConfirmModal } from './components/ConfirmModal';
-import { getStoredData, saveHackathons, saveSettings } from './utils/storage';
+import { getStoredData, saveHackathons, saveSettings, saveTheme } from './utils/storage';
 
 export const App = () => {
   const [hackathons, setHackathons] = useState([]);
   const [settings, setSettings] = useState({ targetRestDays: 8, avgTurnaroundDays: 10 });
+  const [theme, setTheme] = useState('dark');
   const [currentYear, setCurrentYear] = useState(2026);
   const [currentMonth, setCurrentMonth] = useState(9); // October (0-indexed)
   const [selectedDate, setSelectedDate] = useState(null);
@@ -27,6 +28,7 @@ export const App = () => {
       const data = await getStoredData();
       setHackathons(data.hackathons);
       setSettings(data.settings);
+      setTheme(data.theme || 'dark');
     };
     initData();
   }, []);
@@ -51,6 +53,12 @@ export const App = () => {
     } else {
       setCurrentMonth((m) => m + 1);
     }
+  };
+
+  const handleToggleTheme = async () => {
+    const nextTheme = theme === 'parchment' ? 'dark' : 'parchment';
+    setTheme(nextTheme);
+    await saveTheme(nextTheme);
   };
 
   const handleSaveHackathon = async (newOrUpdated) => {
@@ -179,7 +187,7 @@ export const App = () => {
     : visibleHackathons;
 
   return (
-    <div className="app-container">
+    <div className="app-container" data-theme={theme}>
       <div className="panel-content">
         <Header
           currentYear={currentYear}
@@ -187,6 +195,8 @@ export const App = () => {
           onPrevMonth={handlePrevMonth}
           onNextMonth={handleNextMonth}
           onOpenSettings={() => setIsSettingsOpen(true)}
+          theme={theme}
+          onToggleTheme={handleToggleTheme}
         />
 
         

@@ -65,6 +65,7 @@ Build mode: learn
 - [x] Pin Capacity Bar inside a sticky footer at the bottom of the screen with frosted glass dock styling
 - [x] Display Available days (emerald green segment) on the Capacity progress track alongside Work and Target Rest
 - [x] Add developer attribution and current year in footer with Devpost/GitHub link, and extract into dedicated Footer component
+- [x] Add dual theme support: preserve Rich Automaton Dark theme and add new Light Parchment & Brass theme with header toggle button and storage persistence
 - [ ] Redesign pipeline table into a compact card-based list to prevent long hackathon names from getting squished in side panel
 - [ ] Final review complete — feedback resolved and learner confirms ready to ship
 
