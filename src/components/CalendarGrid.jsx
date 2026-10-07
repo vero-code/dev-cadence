@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { generateCalendarDays, getDayCellBackground, addDaysToDateString } from '../utils/calendarUtils';
 import { WEEKDAYS } from '../constants';
 import { MonthNavigator } from './MonthNavigator';
+import { ScheduleBadgeIcon } from './Icons';
 
 export const CalendarGrid = ({
   year,
@@ -13,6 +14,8 @@ export const CalendarGrid = ({
   avgTurnaroundDays = 10,
   onDateRangeClick,
   onCancelDateRange,
+  onCancelModalRange,
+  onOpenAdd,
   isSelectingOnCalendar,
   onPrevMonth,
   onNextMonth,
@@ -122,14 +125,30 @@ export const CalendarGrid = ({
 
   const handleBookFromTooltip = (dateString) => {
     setActiveTooltip(null);
-    onDateRangeClick && onDateRangeClick(dateString);
+    if (onOpenAdd) {
+      onOpenAdd(dateString);
+    } else if (onDateRangeClick) {
+      onDateRangeClick(dateString);
+    }
   };
 
   const handleCellClick = (e, day, idx) => {
     e.stopPropagation();
 
-    // If modal is actively open, clicking any calendar cell updates the dates in the form
+    // If create/edit modal is actively open (calendar has dashed range highlight)
     if (modalActiveRange) {
+      // Repeat click on cell with dashed outline: deselects / closes creation screen
+      if (isDayInModalRange(day.dateString)) {
+        setActiveTooltip(null);
+        setHoveredRangeDate(null);
+        if (onCancelModalRange) {
+          onCancelModalRange();
+        } else if (onCancelDateRange) {
+          onCancelDateRange();
+        }
+        return;
+      }
+      // Clicking another day while modal is open updates form dates to that day
       setActiveTooltip(null);
       setHoveredRangeDate(null);
       onDateRangeClick && onDateRangeClick(day.dateString);
@@ -138,6 +157,13 @@ export const CalendarGrid = ({
 
     // If user is actively selecting a date range (e.g. from banner or picking dates for LogModal)
     if (isSelectingOnCalendar || (dateRange?.start && !dateRange?.end)) {
+      if (dateRange?.start === day.dateString) {
+        // Repeat click on dashed start day: cancel selection
+        setActiveTooltip(null);
+        setHoveredRangeDate(null);
+        onCancelDateRange && onCancelDateRange();
+        return;
+      }
       setActiveTooltip(null);
       setHoveredRangeDate(null);
       onDateRangeClick && onDateRangeClick(day.dateString);
@@ -197,10 +223,14 @@ export const CalendarGrid = ({
         });
       }
     } else {
-      // Empty day: close tooltip and trigger range selection
+      // Empty day: open creation modal prefilled with this date
       setActiveTooltip(null);
       setHoveredRangeDate(null);
-      onDateRangeClick && onDateRangeClick(day.dateString);
+      if (onOpenAdd) {
+        onOpenAdd(day.dateString);
+      } else if (onDateRangeClick) {
+        onDateRangeClick(day.dateString);
+      }
     }
   };
 
@@ -208,7 +238,8 @@ export const CalendarGrid = ({
     <div className="calendar-card" ref={calendarCardRef}>
       <div className="calendar-header-row">
         <h2 className="calendar-section-title">
-          <span>📅</span>Schedule
+          <ScheduleBadgeIcon className="schedule-badge-icon" size={17} />
+          <span>Schedule</span>
         </h2>
         <div className="calendar-month-nav">
           <MonthNavigator
@@ -375,7 +406,9 @@ export const CalendarGrid = ({
                 title="Book hackathon starting from this date"
                 aria-label="Book date"
               >
-                +
+                <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
+                  <path d="M6 1.5v9M1.5 6h9" />
+                </svg>
               </button>
               <button
                 type="button"

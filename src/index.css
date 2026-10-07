@@ -967,29 +967,48 @@ body:has([data-theme="devpost"]) {
   gap: 0.45rem;
 }
 
+.pipeline-header-actions .btn-primary {
+  height: 28px;
+  padding: 0 0.8rem;
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  gap: 0.35rem;
+}
+
 .view-mode-toggle {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   background: var(--bg-input);
   border: 1px solid var(--border-subtle);
-  border-radius: 7px;
+  border-radius: 6px;
   padding: 2px;
   gap: 2px;
+  height: 28px;
+  box-sizing: border-box;
 }
 
 .view-toggle-btn {
   background: transparent;
   border: none;
-  font-size: 0.85rem;
-  padding: 0.25rem 0.45rem;
-  border-radius: 5px;
+  height: 22px;
+  width: 24px;
+  padding: 0;
+  border-radius: 4px;
   cursor: pointer;
-  line-height: 1;
   color: var(--text-dim);
   transition: all 0.15s ease;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+}
+
+.view-toggle-btn svg {
+  display: block;
 }
 
 .view-toggle-btn:hover {
@@ -1000,7 +1019,7 @@ body:has([data-theme="devpost"]) {
 .view-toggle-btn.active {
   background: var(--card-solid-bg);
   color: var(--amber-gear);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
 }
 
 [data-theme="devpost"] .view-toggle-btn.active {
@@ -1010,7 +1029,7 @@ body:has([data-theme="devpost"]) {
 [data-theme="parchment"] .view-toggle-btn.active {
   background: #ffffff;
   color: #78350f;
-  box-shadow: 0 1px 3px rgba(70, 45, 20, 0.15);
+  box-shadow: 0 1px 2px rgba(70, 45, 20, 0.15);
 }
 
 .pipeline-filter-tag {
@@ -2423,6 +2442,21 @@ body:has([data-theme="devpost"]) {
   gap: 0.45rem;
 }
 
+.schedule-badge-icon {
+  color: var(--amber-gear);
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+[data-theme="devpost"] .schedule-badge-icon {
+  color: #38bdf8;
+}
+
+[data-theme="parchment"] .schedule-badge-icon {
+  color: #854d0e;
+}
+
 .calendar-empty-hint {
   align-self: flex-start;
   font-size: 0.75rem;
@@ -2886,19 +2920,20 @@ body:has([data-theme="devpost"]) {
   background: linear-gradient(180deg, #f59e0b 0%, #d97706 60%, #b45309 100%);
   border: 1.5px solid #fbbf24;
   color: #1a0e05;
-  font-family: var(--font-heading);
-  font-size: 1.1rem;
-  font-weight: 800;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  line-height: 1;
   padding: 0;
   box-shadow: 
     inset 0 1px 0 rgba(255, 255, 255, 0.4),
     0 2px 6px rgba(0, 0, 0, 0.4);
   transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.tooltip-add-btn svg {
+  display: block;
 }
 
 .tooltip-add-btn:hover {

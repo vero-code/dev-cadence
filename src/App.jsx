@@ -307,10 +307,12 @@ export const App = () => {
           hackathons={calendarHackathons}
           selectedDate={selectedDate}
           dateRange={dateRange}
-          modalActiveRange={isLogModalOpen ? modalDates : null}
+          modalActiveRange={isLogModalOpen ? modalDates || prefillDates || (editingHackathon ? { ...editingHackathon, startDate: editingHackathon.startDate, endDate: editingHackathon.endDate } : null) : null}
           avgTurnaroundDays={settings?.avgTurnaroundDays || 10}
           onDateRangeClick={handleDateRangeClick}
           onCancelDateRange={handleCancelDateRange}
+          onCancelModalRange={handleCloseLogModal}
+          onOpenAdd={handleOpenAdd}
           isSelectingOnCalendar={isSelectingOnCalendar}
           onPrevMonth={handlePrevMonth}
           onNextMonth={handleNextMonth}

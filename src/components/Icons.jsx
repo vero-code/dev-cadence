@@ -1,7 +1,8 @@
 import React from 'react';
 
 /**
- * Antique aged mechanical cogwheel with center hub, clockwork spokes, and machine teeth.
+ * Clean, symmetrical clockwork mechanical cogwheel icon.
+ * Sharp precision teeth, center bore arbor hole.
  */
 export const AgedGearIcon = ({ className = '', size = 18 }) => (
   <svg
@@ -10,30 +11,20 @@ export const AgedGearIcon = ({ className = '', size = 18 }) => (
     height={size}
     viewBox="0 0 24 24"
     fill="none"
+    stroke="currentColor"
+    strokeWidth="1.9"
+    strokeLinecap="round"
+    strokeLinejoin="round"
     xmlns="http://www.w3.org/2000/svg"
     aria-hidden="true"
   >
-    {/* Antique mechanical gear outline */}
-    <path
-      d="M12 2c.55 0 1 .45 1 1v.55c.78.16 1.52.44 2.2.82l.39-.39a1 1 0 0 1 1.41 0l1.41 1.41a1 1 0 0 1 0 1.41l-.39.39c.38.68.66 1.42.82 2.2H19c.55 0 1 .45 1 1v2c0 .55-.45 1-1 1h-.55c-.16.78-.44 1.52-.82 2.2l.39.39a1 1 0 0 1 0 1.41l-1.41 1.41a1 1 0 0 1-1.41 0l-.39-.39c-.68.38-1.42.66-2.2.82V19c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-.55c-.78-.16-1.52-.44-2.2-.82l-.39.39a1 1 0 0 1-1.41 0l-1.41-1.41a1 1 0 0 1 0-1.41l.39-.39c-.38-.68-.66-1.42-.82-2.2H5c-.55 0-1-.45-1-1v-2c0-.55.45-1 1-1h.55c.16-.78.44-1.52.82-2.2l-.39-.39a1 1 0 0 1 0-1.41l1.41-1.41a1 1 0 0 1 1.41 0l.39.39c.68-.38 1.42-.66 2.2-.82V3c0-.55.45-1 1-1h2Z"
-      stroke="currentColor"
-      strokeWidth="1.6"
-      strokeLinejoin="round"
-    />
-    {/* Inner gear rim */}
-    <circle cx="12" cy="12" r="4.2" stroke="currentColor" strokeWidth="1.5" />
-    {/* Center mechanical hub */}
-    <circle cx="12" cy="12" r="1.8" fill="currentColor" />
-    {/* Mechanical spokes */}
-    <line x1="12" y1="7.8" x2="12" y2="10.2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-    <line x1="12" y1="13.8" x2="12" y2="16.2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-    <line x1="7.8" y1="12" x2="10.2" y2="12" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-    <line x1="13.8" y1="12" x2="16.2" y2="12" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+    <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+    <circle cx="12" cy="12" r="3.2" />
   </svg>
 );
 
 /**
- * Clean vector clipboard/checklist badge icon replacing the raw emoji
+ * Clean vector clipboard/checklist badge icon for Tracker
  */
 export const TrackerBadgeIcon = ({ className = '', size = 16 }) => (
   <svg
@@ -57,9 +48,38 @@ export const TrackerBadgeIcon = ({ className = '', size = 16 }) => (
 );
 
 /**
+ * Clean vector calendar badge icon for Schedule (matching TrackerBadgeIcon)
+ */
+export const ScheduleBadgeIcon = ({ className = '', size = 16 }) => (
+  <svg
+    className={`schedule-badge-icon ${className}`}
+    width={size}
+    height={size}
+    viewBox="0 0 16 16"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <rect x="2" y="2.5" width="12" height="11.5" rx="2" />
+    <line x1="2" y1="6" x2="14" y2="6" />
+    <line x1="4.75" y1="1.25" x2="4.75" y2="3.25" />
+    <line x1="11.25" y1="1.25" x2="11.25" y2="3.25" />
+    <circle cx="5" cy="8.75" r="0.75" fill="currentColor" stroke="none" />
+    <circle cx="8" cy="8.75" r="0.75" fill="currentColor" stroke="none" />
+    <circle cx="11" cy="8.75" r="0.75" fill="currentColor" stroke="none" />
+    <circle cx="5" cy="11.5" r="0.75" fill="currentColor" stroke="none" />
+    <circle cx="8" cy="11.5" r="0.75" fill="currentColor" stroke="none" />
+    <circle cx="11" cy="11.5" r="0.75" fill="currentColor" stroke="none" />
+  </svg>
+);
+
+/**
  * Modern cards layout icon replacing raw 🗂️ emoji
  */
-export const CardsViewIcon = ({ size = 14, className = '' }) => (
+export const CardsViewIcon = ({ size = 13, className = '' }) => (
   <svg className={className} width={size} height={size} viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
     <rect x="1.5" y="2" width="5.5" height="5" rx="1.5" />
     <rect x="9" y="2" width="5.5" height="5" rx="1.5" />
@@ -71,20 +91,11 @@ export const CardsViewIcon = ({ size = 14, className = '' }) => (
 /**
  * Modern table layout icon replacing raw 📊 emoji
  */
-export const TableViewIcon = ({ size = 14, className = '' }) => (
+export const TableViewIcon = ({ size = 13, className = '' }) => (
   <svg className={className} width={size} height={size} viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
     <rect x="2" y="2" width="12" height="3" rx="1" />
     <rect x="2" y="6.5" width="12" height="3" rx="1" />
     <rect x="2" y="11" width="12" height="3" rx="1" />
-  </svg>
-);
-
-/**
- * Filter funnel icon for filter actions
- */
-export const FilterFunnelIcon = ({ size = 13, className = '' }) => (
-  <svg className={className} width={size} height={size} viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M2 3h12L9.5 8.5V13l-3-1.5V8.5L2 3z" />
   </svg>
 );
 
