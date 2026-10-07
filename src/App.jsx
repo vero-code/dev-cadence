@@ -127,6 +127,14 @@ export const App = () => {
     }
   };
 
+  const handleCloseLogModal = () => {
+    setIsLogModalOpen(false);
+    setEditingHackathon(null);
+    setPrefillDates(null);
+    setDateRange({ start: null, end: null });
+    setIsSelectingOnCalendar(false);
+  };
+
   const handlePickOnCalendar = () => {
     setIsLogModalOpen(false);
     setIsSelectingOnCalendar(true);
@@ -176,65 +184,65 @@ export const App = () => {
           isSelectingOnCalendar={isSelectingOnCalendar}
         />
 
-        <div className="action-bar">
-          <h2 className="section-heading">
-            <span>📋</span> Pipeline Tracker
-            {selectedDate && (
-              <span
-                style={{
-                  fontSize: '0.75rem',
-                  color: 'var(--cyan-light)',
-                  fontWeight: 500,
-                  cursor: 'pointer',
-                  marginLeft: '0.5rem',
-                  background: 'rgba(6, 182, 212, 0.15)',
-                  padding: '2px 8px',
-                  borderRadius: '12px',
-                  border: '1px solid rgba(6, 182, 212, 0.3)'
-                }}
-                onClick={() => setSelectedDate(null)}
-                title="Click to clear day filter"
-              >
-                Filtered: {selectedDate} ✕
-              </span>
-            )}
-          </h2>
-          <button type="button" className="btn-primary" onClick={handleOpenAdd}>
-            <span>+</span> Log Hackathon
-          </button>
+        <div className="lower-content-section">
+          {isLogModalOpen && (
+            <div className="lower-popover-backdrop" onClick={handleCloseLogModal}>
+              <LogModal
+                isOpen={isLogModalOpen}
+                onClose={handleCloseLogModal}
+                onSave={handleSaveHackathon}
+                editingHackathon={editingHackathon}
+                initialYear={currentYear}
+                initialMonth={currentMonth}
+                prefillDates={prefillDates}
+                onPickOnCalendar={handlePickOnCalendar}
+              />
+            </div>
+          )}
+
+          <div className="action-bar">
+            <h2 className="section-heading">
+              <span>📋</span> Pipeline Tracker
+              {selectedDate && (
+                <span
+                  style={{
+                    fontSize: '0.75rem',
+                    color: 'var(--cyan-light)',
+                    fontWeight: 500,
+                    cursor: 'pointer',
+                    marginLeft: '0.5rem',
+                    background: 'rgba(6, 182, 212, 0.15)',
+                    padding: '2px 8px',
+                    borderRadius: '12px',
+                    border: '1px solid rgba(6, 182, 212, 0.3)'
+                  }}
+                  onClick={() => setSelectedDate(null)}
+                  title="Click to clear day filter"
+                >
+                  Filtered: {selectedDate} ✕
+                </span>
+              )}
+            </h2>
+            <button type="button" className="btn-primary" onClick={handleOpenAdd}>
+              <span>+</span> Log Hackathon
+            </button>
+          </div>
+
+          <PipelineTable
+            hackathons={tableHackathons}
+            onEdit={handleOpenEdit}
+            onDelete={handleDeleteHackathon}
+            onAddNew={handleOpenAdd}
+          />
+
+          <CapacityBar
+            year={currentYear}
+            month={currentMonth}
+            hackathons={visibleHackathons}
+            settings={settings}
+            onOpenSettings={() => setIsSettingsOpen(true)}
+          />
         </div>
-
-        <PipelineTable
-          hackathons={tableHackathons}
-          onEdit={handleOpenEdit}
-          onDelete={handleDeleteHackathon}
-          onAddNew={handleOpenAdd}
-        />
-
-        <CapacityBar
-          year={currentYear}
-          month={currentMonth}
-          hackathons={visibleHackathons}
-          settings={settings}
-          onOpenSettings={() => setIsSettingsOpen(true)}
-        />
-
-        <LogModal
-          isOpen={isLogModalOpen}
-          onClose={() => {
-            setIsLogModalOpen(false);
-            setEditingHackathon(null);
-            setPrefillDates(null);
-            setDateRange({ start: null, end: null });
-            setIsSelectingOnCalendar(false);
-          }}
-          onSave={handleSaveHackathon}
-          editingHackathon={editingHackathon}
-          initialYear={currentYear}
-          initialMonth={currentMonth}
-          prefillDates={prefillDates}
-          onPickOnCalendar={handlePickOnCalendar}
-        />
 
         <SettingsModal
           isOpen={isSettingsOpen}

@@ -346,7 +346,63 @@ body {
   color: var(--text-dim);
 }
 
-/* Modal Overlay */
+/* Lower Content Section (Action bar + Pipeline Table + Capacity) */
+.lower-content-section {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  flex: 1;
+}
+
+/* Dimmed backdrop covering only the lower section below the calendar */
+.lower-popover-backdrop {
+  position: absolute;
+  top: -0.5rem;
+  left: -0.75rem;
+  right: -0.75rem;
+  bottom: -0.75rem;
+  min-height: calc(100% + 1rem);
+  background: rgba(4, 8, 18, 0.78);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 95;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.25rem 0.75rem 1rem;
+  border-radius: var(--radius);
+  animation: fadeIn 0.18s ease;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.popup-form-card {
+  width: 100%;
+  max-width: 100%;
+  background: #0d1629;
+  border: 1px solid var(--border-hover);
+  border-radius: var(--radius);
+  padding: 1.15rem 1.25rem;
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.9), 0 0 24px rgba(6, 182, 212, 0.25);
+  display: flex;
+  flex-direction: column;
+  animation: formPopIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+
+@keyframes formPopIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Modal Overlay (Settings) */
 .modal-overlay {
   position: fixed;
   inset: 0;

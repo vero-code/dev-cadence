@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { COLOR_PALETTE, EMOJI_OPTIONS, STATUS_OPTIONS } from '../constants';
 
 export const LogModal = ({
@@ -11,6 +11,7 @@ export const LogModal = ({
   prefillDates,
   onPickOnCalendar,
 }) => {
+  const formCardRef = useRef(null);
   const [name, setName] = useState('');
   const [deadline, setDeadline] = useState('');
   const [status, setStatus] = useState('Not registered');
@@ -55,6 +56,32 @@ export const LogModal = ({
     setError('');
   }, [editingHackathon, isOpen, initialYear, initialMonth, prefillDates]);
 
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (formCardRef.current && !formCardRef.current.contains(e.target)) {
+        if (e.target.closest('.btn-primary') || e.target.closest('.calendar-day-cell') || e.target.closest('.action-btn')) {
+          return;
+        }
+        onClose();
+      }
+    };
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      window.addEventListener('mousedown', handleOutsideClick);
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => {
+      window.removeEventListener('mousedown', handleOutsideClick);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const handleSubmit = (e) => {
@@ -92,15 +119,14 @@ export const LogModal = ({
   };
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-card" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-header">
-          <h2 className="modal-title">
-            <span>{editingHackathon ? '✏️' : '🚀'}</span>
-            {editingHackathon ? 'Edit Hackathon' : 'Log Hackathon'}
-          </h2>
-          <button type="button" className="modal-close-btn" onClick={onClose}>&times;</button>
-        </div>
+    <div className="popup-form-card" ref={formCardRef} onClick={(e) => e.stopPropagation()}>
+      <div className="modal-header">
+        <h2 className="modal-title">
+          <span>{editingHackathon ? '✏️' : '🚀'}</span>
+          {editingHackathon ? 'Edit Hackathon' : 'Log Hackathon'}
+        </h2>
+        <button type="button" className="modal-close-btn" onClick={onClose} aria-label="Close form">&times;</button>
+      </div>
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -117,7 +143,7 @@ export const LogModal = ({
 
           <div className="form-row-2">
             <div className="form-group">
-              <label className="form-label">Submission Deadline</label>
+              <label className="form-label">Deadline</label>
               <input
                 type="date"
                 className="form-input"
@@ -127,7 +153,7 @@ export const LogModal = ({
             </div>
 
             <div className="form-group">
-              <label className="form-label">Application Status</label>
+              <label className="form-label">Status</label>
               <select
                 className="form-select"
                 value={status}
@@ -178,7 +204,7 @@ export const LogModal = ({
 
           <div className="form-group">
             <div className="label-with-hint">
-              <label className="form-label">Theme Color</label>
+              <label className="form-label">Color</label>
               <span className="field-hint">optional</span>
             </div>
             <div className="color-picker-row">
@@ -196,7 +222,7 @@ export const LogModal = ({
 
           <div className="form-group">
             <div className="label-with-hint">
-              <label className="form-label">Badge Emoji</label>
+              <label className="form-label">Emoji</label>
               <span className="field-hint">optional</span>
             </div>
             <div className="emoji-picker-row">
@@ -225,7 +251,6 @@ export const LogModal = ({
             </button>
           </div>
         </form>
-      </div>
     </div>
   );
 };

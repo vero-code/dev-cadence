@@ -252,9 +252,6 @@ export const CalendarGrid = ({
           <div className="tooltip-header">
             <div className="tooltip-title-wrap">
               <span className="tooltip-date">📅 {activeTooltip.dateString}</span>
-              {activeTooltip.isOverlap && (
-                <span className="tooltip-overlap-badge">⚠️ Overlap</span>
-              )}
             </div>
             <div className="tooltip-header-actions">
               <button
