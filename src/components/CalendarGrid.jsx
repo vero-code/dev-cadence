@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { generateCalendarDays, getDayCellBackground } from '../utils/calendarUtils';
 import { WEEKDAYS } from '../constants';
 
@@ -12,25 +12,117 @@ export const CalendarGrid = ({
   onCancelDateRange,
   isSelectingOnCalendar,
 }) => {
-  const [hoveredDay, setHoveredDay] = useState(null);
+  const [activeTooltip, setActiveTooltip] = useState(null);
+  const calendarCardRef = useRef(null);
   const days = generateCalendarDays(year, month, hackathons);
 
   const totalScheduledDays = days.filter((d) => !d.isPadding && d.events.length > 0).length;
-
-  // Calculate range preview between dateRange.start and hovered day
-  const isDayInRangePreview = (dateString) => {
-    if (!dateRange?.start || dateRange?.end || !hoveredDay?.dateString || !dateString) return false;
-    const [start, end] = [dateRange.start, hoveredDay.dateString].sort();
-    return dateString >= start && dateString <= end;
-  };
 
   const isDayInActiveRange = (dateString) => {
     if (!dateRange?.start || !dateRange?.end || !dateString) return false;
     return dateString >= dateRange.start && dateString <= dateRange.end;
   };
 
+  // Close tooltip on click outside or escape key
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (activeTooltip && !e.target.closest('.calendar-card')) {
+        setActiveTooltip(null);
+      }
+    };
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setActiveTooltip(null);
+    };
+    window.addEventListener('click', handleOutsideClick);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('click', handleOutsideClick);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [activeTooltip]);
+
+  // Reset tooltip when month changes or on window resize
+  useEffect(() => {
+    setActiveTooltip(null);
+  }, [year, month]);
+
+  useEffect(() => {
+    const handleResize = () => setActiveTooltip(null);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const handleCellClick = (e, day, idx) => {
+    e.stopPropagation();
+
+    // If user is actively selecting a date range (e.g. from banner or picking dates for LogModal)
+    if (isSelectingOnCalendar || (dateRange?.start && !dateRange?.end)) {
+      setActiveTooltip(null);
+      onDateRangeClick && onDateRangeClick(day.dateString);
+      return;
+    }
+
+    const hasEvents = day.events && day.events.length > 0;
+    const hasDeadlines = day.deadlines && day.deadlines.length > 0;
+
+    // If day is not empty, show or toggle the tooltip anchored to this cell
+    if (hasEvents || hasDeadlines) {
+      if (activeTooltip?.dateString === day.dateString) {
+        setActiveTooltip(null);
+      } else {
+        const cellEl = e.currentTarget;
+        const cardEl = calendarCardRef.current;
+        if (!cellEl || !cardEl) return;
+
+        const cellRect = cellEl.getBoundingClientRect();
+        const cardRect = cardEl.getBoundingClientRect();
+
+        const cellTop = cellRect.top - cardRect.top;
+        const cellLeft = cellRect.left - cardRect.left;
+        const cellWidth = cellRect.width;
+        const cellHeight = cellRect.height;
+        const cardWidth = cardRect.width;
+        const cardHeight = cardRect.height;
+
+        const cellCenterX = cellLeft + cellWidth / 2;
+
+        // Tooltip compact width
+        const tooltipWidth = Math.min(250, cardWidth - 20);
+
+        // Clamped horizontal position inside card
+        let left = cellCenterX - tooltipWidth / 2;
+        if (left < 10) left = 10;
+        if (left + tooltipWidth > cardWidth - 10) {
+          left = cardWidth - tooltipWidth - 10;
+        }
+
+        const arrowLeft = Math.max(12, Math.min(tooltipWidth - 12, cellCenterX - left));
+
+        // If cell is in lower half of card, position tooltip immediately above it; otherwise immediately below it
+        const showAbove = cellTop > cardHeight * 0.52;
+
+        setActiveTooltip({
+          ...day,
+          style: {
+            left: `${left}px`,
+            width: `${tooltipWidth}px`,
+            ...(showAbove
+              ? { bottom: `${cardHeight - cellTop + 6}px` }
+              : { top: `${cellTop + cellHeight + 6}px` }),
+            '--arrow-left': `${arrowLeft}px`,
+          },
+          showAbove,
+        });
+      }
+    } else {
+      // Empty day: close tooltip and trigger range selection
+      setActiveTooltip(null);
+      onDateRangeClick && onDateRangeClick(day.dateString);
+    }
+  };
+
   return (
-    <div className="calendar-card">
+    <div className="calendar-card" ref={calendarCardRef}>
       <div className="calendar-header-row">
         <h2 className="calendar-section-title">
           <span>📅</span> Monthly Schedule
@@ -80,22 +172,22 @@ export const CalendarGrid = ({
           const hasDeadlines = day.deadlines.length > 0;
           const isSelected = selectedDate === day.dateString;
           const isRangeStart = dateRange?.start === day.dateString;
-          const inRangePreview = isDayInRangePreview(day.dateString);
           const inActiveRange = isDayInActiveRange(day.dateString);
           const bgStyle = getDayCellBackground(day.events);
+          const isTooltipActive = activeTooltip?.dateString === day.dateString;
 
           return (
             <div
               key={day.dateString}
-              className={`calendar-day-cell ${day.isOverlap ? 'overlap-cell' : ''} ${hasEvents ? 'active-day' : ''} ${isSelected ? 'selected-day' : ''} ${isRangeStart ? 'range-start-cell' : ''} ${inRangePreview ? 'range-preview-cell' : ''} ${inActiveRange ? 'range-active-cell' : ''}`}
+              className={`calendar-day-cell ${day.isOverlap ? 'overlap-cell' : ''} ${hasEvents ? 'active-day' : ''} ${isSelected || isTooltipActive ? 'selected-day' : ''} ${isRangeStart ? 'range-start-cell' : ''} ${inActiveRange ? 'range-active-cell' : ''}`}
               style={{ background: bgStyle }}
-              onClick={() => onDateRangeClick && onDateRangeClick(day.dateString)}
-              onMouseEnter={() => setHoveredDay(day)}
-              onMouseLeave={() => setHoveredDay(null)}
+              onClick={(e) => handleCellClick(e, day, idx)}
               title={
                 isRangeStart
                   ? 'Selected Start Date'
-                  : day.events.map((e) => `${e.emoji} ${e.name}`).join(' | ') || `Click to select ${day.dateString}`
+                  : hasEvents || hasDeadlines
+                  ? `Click to view events for ${day.dateString}`
+                  : `Click to select ${day.dateString}`
               }
             >
               <div className="day-top-bar">
@@ -133,39 +225,48 @@ export const CalendarGrid = ({
         })}
       </div>
 
-      {hoveredDay && (
-        <div className="calendar-hover-tooltip">
-          <div className="tooltip-title">
-            <span>📅 {hoveredDay.dateString}</span>
-            {dateRange?.start && !dateRange?.end && hoveredDay.dateString && (
-              <span className="tooltip-range-action">
-                {hoveredDay.dateString === dateRange.start
-                  ? 'Click to set 1-day hackathon'
-                  : `Click to set as End Date`}
-              </span>
-            )}
-            {hoveredDay.isOverlap && (
-              <span className="tooltip-overlap-warning">⚠️ Overlap Collision</span>
-            )}
+      {activeTooltip && (
+        <div
+          className={`calendar-day-tooltip ${activeTooltip.showAbove ? 'tooltip-above' : ''}`}
+          style={activeTooltip.style}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="tooltip-header">
+            <div className="tooltip-title-wrap">
+              <span className="tooltip-date">📅 {activeTooltip.dateString}</span>
+              {activeTooltip.isOverlap && (
+                <span className="tooltip-overlap-badge">⚠️ Overlap</span>
+              )}
+            </div>
+            <button
+              type="button"
+              className="tooltip-close-btn"
+              onClick={() => setActiveTooltip(null)}
+              aria-label="Close tooltip"
+              title="Close"
+            >
+              ✕
+            </button>
           </div>
+
           <div className="tooltip-events-list">
-            {hoveredDay.events.length === 0 && hoveredDay.deadlines.length === 0 && (
-              <div className="tooltip-empty-day">
-                {dateRange?.start && !dateRange?.end
-                  ? 'Click to set this day as your hackathon end date'
-                  : '✨ Free day — available for new hackathon work'}
-              </div>
-            )}
-            {hoveredDay.events.map((e) => (
+            {activeTooltip.events.map((e) => (
               <div key={e.id} className="tooltip-event-row">
-                <span className="color-dot" style={{ backgroundColor: e.color }} />
-                <strong>{e.emoji} {e.name}</strong>
-                <span className="tooltip-event-status">({e.status})</span>
+                <span
+                  className="tooltip-color-dot"
+                  style={{ backgroundColor: e.color || 'var(--cyan-primary)' }}
+                />
+                <strong className="tooltip-event-name">
+                  {e.emoji ? `${e.emoji} ` : ''}{e.name}
+                </strong>
+                <span className="tooltip-status-pill">{e.status}</span>
               </div>
             ))}
-            {hoveredDay.deadlines.map((d) => (
+
+            {activeTooltip.deadlines && activeTooltip.deadlines.map((d) => (
               <div key={`dl-${d.id}`} className="tooltip-deadline-row">
-                🏁 <em>Submission deadline for: {d.name}</em>
+                <span>🏁</span>
+                <em>Deadline: {d.name}</em>
               </div>
             ))}
           </div>

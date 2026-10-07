@@ -36,21 +36,6 @@ export const CapacityBar = ({ year, month, hackathons, settings, onOpenSettings 
 
   return (
     <div className="capacity-card">
-      <div className="capacity-header-row">
-        <div className="capacity-title-wrap">
-          <span className="capacity-gear-icon">⚙️</span>
-          <span className="capacity-title">Workload & Rest Guardrail</span>
-        </div>
-        <button
-          type="button"
-          className="capacity-edit-btn"
-          onClick={onOpenSettings}
-          title="Adjust Target Rest Days"
-        >
-          Target: {targetRest} days off ✏️
-        </button>
-      </div>
-
       <div className="capacity-metrics-grid">
         <div className="capacity-metric-box">
           <span className="metric-label">Work</span>
@@ -79,23 +64,6 @@ export const CapacityBar = ({ year, month, hackathons, settings, onOpenSettings 
           style={{ width: `${restPercent}%` }}
         />
       </div>
-
-      {/* Dynamic Status / Overload Warning */}
-      {isOvercommitted ? (
-        <div className="capacity-warning-banner">
-          <span className="warning-icon">⚠️</span>
-          <div className="warning-text">
-            <strong>Rest Buffer Exceeded:</strong> Only {freeDays} free days remaining—short of your {targetRest}-day rest goal by <strong>{shortageDays} {shortageDays === 1 ? 'day' : 'days'}</strong>! Consider pacing your work windows.
-          </div>
-        </div>
-      ) : (
-        <div className="capacity-healthy-banner">
-          <span className="healthy-icon">✓</span>
-          <div className="healthy-text">
-            <strong>Healthy Cadence:</strong> You have {freeDays - targetRest} buffer days above your {targetRest}-day rest target.
-          </div>
-        </div>
-      )}
     </div>
   );
 };

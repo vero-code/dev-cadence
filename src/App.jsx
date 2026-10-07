@@ -83,8 +83,10 @@ export const App = () => {
     setIsLogModalOpen(true);
   };
 
-  const handleOpenAdd = () => {
-    if (dateRange.start) {
+  const handleOpenAdd = (targetDate = null) => {
+    if (typeof targetDate === 'string' && targetDate) {
+      setPrefillDates({ startDate: targetDate, endDate: targetDate, deadline: targetDate });
+    } else if (dateRange.start) {
       const end = dateRange.end || dateRange.start;
       setPrefillDates({ startDate: dateRange.start, endDate: end, deadline: end });
     } else {
@@ -161,13 +163,7 @@ export const App = () => {
           onOpenSettings={() => setIsSettingsOpen(true)}
         />
 
-        <CapacityBar
-          year={currentYear}
-          month={currentMonth}
-          hackathons={visibleHackathons}
-          settings={settings}
-          onOpenSettings={() => setIsSettingsOpen(true)}
-        />
+        
 
         <CalendarGrid
           year={currentYear}
@@ -213,6 +209,14 @@ export const App = () => {
           onEdit={handleOpenEdit}
           onDelete={handleDeleteHackathon}
           onAddNew={handleOpenAdd}
+        />
+
+        <CapacityBar
+          year={currentYear}
+          month={currentMonth}
+          hackathons={visibleHackathons}
+          settings={settings}
+          onOpenSettings={() => setIsSettingsOpen(true)}
         />
 
         <LogModal
