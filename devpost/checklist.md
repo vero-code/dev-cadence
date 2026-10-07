@@ -61,6 +61,7 @@ Build mode: learn
 - [x] Anchor floating tooltip popover directly next to clicked calendar cell with booking icon (dashed selection dismisses on clicking outside)
 - [x] Render Log Hackathon popup card over the lower section with a soft dimmed backdrop covering the button and table without layout shift
 - [x] Add confirmation modal before deleting a hackathon to prevent accidental loss
+- [x] Allow saving hackathons with only an emoji and truly optional color (removed forced cyan fallbacks in calendar, table, and form defaults)
 - [ ] Redesign pipeline table into a compact card-based list to prevent long hackathon names from getting squished in side panel
 - [ ] Final review complete — feedback resolved and learner confirms ready to ship
 

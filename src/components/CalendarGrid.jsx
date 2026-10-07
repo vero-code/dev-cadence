@@ -278,10 +278,12 @@ export const CalendarGrid = ({
           <div className="tooltip-events-list">
             {activeTooltip.events.map((e) => (
               <div key={e.id} className="tooltip-event-row">
-                <span
-                  className="tooltip-color-dot"
-                  style={{ backgroundColor: e.color || 'var(--cyan-primary)' }}
-                />
+                {e.color && (
+                  <span
+                    className="tooltip-color-dot"
+                    style={{ backgroundColor: e.color }}
+                  />
+                )}
                 <strong className="tooltip-event-name">
                   {e.emoji ? `${e.emoji} ` : ''}{e.name}
                 </strong>

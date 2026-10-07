@@ -17,7 +17,7 @@ export const LogModal = ({
   const [status, setStatus] = useState(STATUS_OPTIONS[0] || 'Interested');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [color, setColor] = useState(COLOR_PALETTE[0]);
+  const [color, setColor] = useState('');
   const [emoji, setEmoji] = useState('');
   const [error, setError] = useState('');
 
@@ -28,7 +28,7 @@ export const LogModal = ({
       setStatus(editingHackathon.status || STATUS_OPTIONS[0]);
       setStartDate(editingHackathon.startDate || '');
       setEndDate(editingHackathon.endDate || '');
-      setColor(editingHackathon.color || COLOR_PALETTE[0]);
+      setColor(editingHackathon.color || '');
       setEmoji(editingHackathon.emoji || '');
     } else if (prefillDates) {
       setName('');
@@ -36,7 +36,7 @@ export const LogModal = ({
       setStatus(STATUS_OPTIONS[0]);
       setStartDate(prefillDates.startDate || '');
       setEndDate(prefillDates.endDate || '');
-      setColor(COLOR_PALETTE[0]);
+      setColor('');
       setEmoji('');
     } else {
       // Default to current year & month for new entries
@@ -50,7 +50,7 @@ export const LogModal = ({
       setStatus(STATUS_OPTIONS[0]);
       setStartDate(defaultStart);
       setEndDate(defaultEnd);
-      setColor(COLOR_PALETTE[0]);
+      setColor('');
       setEmoji('');
     }
     setError('');
@@ -166,7 +166,7 @@ export const LogModal = ({
             </div>
           </div>
 
-          <div className="date-header-group">
+          {/* <div className="date-header-group">
             <label className="form-label">Work Schedule</label>
             {onPickOnCalendar && !editingHackathon && (
               <button
@@ -178,7 +178,7 @@ export const LogModal = ({
                 📅 Pick on Calendar
               </button>
             )}
-          </div>
+          </div> */}
 
           <div className="form-row-2">
             <div className="form-group">

@@ -74,20 +74,26 @@ export const generateCalendarDays = (year, month, hackathons = []) => {
  */
 export const getDayCellBackground = (events) => {
   if (!events || events.length === 0) return 'rgba(255, 255, 255, 0.03)';
-  if (events.length === 1) {
-    const c = events[0].color || '#06b6d4';
+
+  const coloredEvents = events.filter((e) => Boolean(e.color));
+  if (coloredEvents.length === 0) {
+    return 'rgba(255, 255, 255, 0.03)';
+  }
+
+  if (coloredEvents.length === 1) {
+    const c = coloredEvents[0].color;
     return `${c}33`; // 20% opacity
   }
 
   // 2 events: diagonal split
-  if (events.length === 2) {
-    const c1 = events[0].color || '#06b6d4';
-    const c2 = events[1].color || '#f59e0b';
+  if (coloredEvents.length === 2) {
+    const c1 = coloredEvents[0].color;
+    const c2 = coloredEvents[1].color;
     return `linear-gradient(135deg, ${c1}66 50%, ${c2}66 50%)`;
   }
 
   // 3+ events: multi-stop split
-  const colors = events.map((e) => e.color || '#06b6d4');
+  const colors = coloredEvents.map((e) => e.color);
   const step = 100 / colors.length;
   const stops = colors.map((col, idx) => {
     return `${col}66 ${idx * step}%, ${col}66 ${(idx + 1) * step}%`;

@@ -60,7 +60,9 @@ export const PipelineTable = ({ hackathons, onEdit, onDelete, onAddNew }) => {
             <tr key={h.id}>
               <td>
                 <div className="table-event-name">
-                  <span className="color-dot" style={{ backgroundColor: h.color || '#06b6d4' }} />
+                  {h.color && (
+                    <span className="color-dot" style={{ backgroundColor: h.color }} />
+                  )}
                   <span>{h.emoji ? `${h.emoji} ` : ''}{h.name}</span>
                 </div>
               </td>
