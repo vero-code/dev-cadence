@@ -116,3 +116,25 @@ export const ChevronDownIcon = ({ size = 10, className = '' }) => (
     <polyline points="4 6 8 10 12 6" />
   </svg>
 );
+
+/**
+ * Mathematically centered plus icon for buttons
+ */
+export const PlusIcon = ({ size = 11, className = '', strokeWidth = 2.4 }) => (
+  <svg
+    className={`tracker-plus-icon ${className}`}
+    width={size}
+    height={size}
+    viewBox="0 0 12 12"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={strokeWidth}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <line x1="6" y1="2" x2="6" y2="10" />
+    <line x1="2" y1="6" x2="10" y2="6" />
+  </svg>
+);
+

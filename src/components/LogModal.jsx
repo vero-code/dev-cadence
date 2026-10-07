@@ -80,23 +80,39 @@ export const LogModal = ({
     const avgDays = Number(avgTurnaroundDays) || 10;
 
     if (activeDateField === 'endDate') {
-      setEndDate(clickedDate);
-      if (!deadline || deadline === endDate) {
-        setDeadline(clickedDate);
+      if (startDate && clickedDate < startDate) {
+        setStartDate(clickedDate);
+        setEndDate(startDate);
+        if (!deadline || deadline < startDate) {
+          setDeadline(startDate);
+        }
+      } else {
+        setEndDate(clickedDate);
+        if (!deadline || deadline === endDate || deadline < clickedDate) {
+          setDeadline(clickedDate);
+        }
       }
       return;
     }
 
     if (activeDateField === 'deadline') {
+      if (endDate && clickedDate < endDate) {
+        setEndDate(clickedDate);
+        if (startDate && clickedDate < startDate) {
+          setStartDate(clickedDate);
+        }
+      }
       setDeadline(clickedDate);
       return;
     }
 
     if (activeDateField === 'startDate') {
       setStartDate(clickedDate);
-      const newEnd = addDaysToDateString(clickedDate, avgDays - 1);
-      setEndDate(newEnd);
-      setDeadline(newEnd);
+      if (endDate && clickedDate > endDate) {
+        const newEnd = addDaysToDateString(clickedDate, avgDays - 1);
+        setEndDate(newEnd);
+        setDeadline(newEnd);
+      }
       return;
     }
 
@@ -120,7 +136,7 @@ export const LogModal = ({
         clickStepRef.current = 1;
       }
     }
-  }, [calendarPickedDate, isOpen, avgTurnaroundDays, activeDateField]);
+  }, [calendarPickedDate, isOpen, avgTurnaroundDays, activeDateField, startDate, endDate, deadline]);
 
   // Broadcast full draft state for real-time visual calendar preview
   useEffect(() => {
@@ -232,9 +248,18 @@ export const LogModal = ({
                 value={startDate}
                 onFocus={() => setActiveDateField('startDate')}
                 onChange={(e) => {
-                  setStartDate(e.target.value);
+                  const val = e.target.value;
+                  setStartDate(val);
                   clickStepRef.current = 0;
                   setError('');
+                  if (val && endDate && val > endDate) {
+                    const avgDays = Number(avgTurnaroundDays) || 10;
+                    const newEnd = addDaysToDateString(val, avgDays - 1);
+                    setEndDate(newEnd);
+                    if (!deadline || deadline === endDate || deadline < newEnd) {
+                      setDeadline(newEnd);
+                    }
+                  }
                 }}
               />
             </div>
@@ -245,11 +270,19 @@ export const LogModal = ({
                 type="date"
                 className="form-input"
                 value={endDate}
+                min={startDate || undefined}
                 onFocus={() => setActiveDateField('endDate')}
                 onChange={(e) => {
-                  setEndDate(e.target.value);
+                  const val = e.target.value;
+                  setEndDate(val);
                   clickStepRef.current = 0;
                   setError('');
+                  if (val && startDate && val < startDate) {
+                    setStartDate(val);
+                  }
+                  if (val && (!deadline || deadline < val)) {
+                    setDeadline(val);
+                  }
                 }}
               />
             </div>
@@ -262,10 +295,12 @@ export const LogModal = ({
                 type="date"
                 className="form-input"
                 value={deadline}
+                min={endDate || startDate || undefined}
                 onFocus={() => setActiveDateField('deadline')}
                 onChange={(e) => {
                   setDeadline(e.target.value);
                   clickStepRef.current = 0;
+                  setError('');
                 }}
               />
             </div>

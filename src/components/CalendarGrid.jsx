@@ -288,19 +288,11 @@ export const CalendarGrid = ({
               } else {
                 bgStyle = `linear-gradient(rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0.32)), ${bgStyle}`;
               }
-            } else if (day.events.length === 0) {
-              bgStyle = 'rgba(245, 158, 11, 0.16)';
             }
           }
 
           const cellInlineStyle = {
             background: bgStyle,
-            ...(inModalRange && modalActiveRange?.color
-              ? {
-                  '--draft-outline-color': modalActiveRange.color,
-                  '--draft-shadow-color': `${modalActiveRange.color}44`,
-                }
-              : {}),
           };
 
           const isTooltipActive = activeTooltip?.dateString === day.dateString;
@@ -327,25 +319,6 @@ export const CalendarGrid = ({
               <div className="day-top-bar">
                 <span className="day-number">{day.dayNumber}</span>
                 {day.isToday && <span className="today-badge" title="Today">TODAY</span>}
-                {isRangeStart && <span className="range-badge">START</span>}
-                {isModalStartDay && !isRangeStart && (
-                  <span
-                    className="range-badge draft-start-badge"
-                    style={modalActiveRange?.color ? { backgroundColor: modalActiveRange.color, color: '#fff' } : undefined}
-                    title="Draft Start Date"
-                  >
-                    START
-                  </span>
-                )}
-                {isModalEndDay && !isRangeStart && (
-                  <span
-                    className="range-badge draft-end-badge"
-                    style={modalActiveRange?.color ? { backgroundColor: modalActiveRange.color, color: '#fff' } : undefined}
-                    title="Draft End Date"
-                  >
-                    END
-                  </span>
-                )}
                 {(hasDeadlines || isModalDeadlineDay) && (
                   <span
                     className={`deadline-flag ${isModalDeadlineDay ? 'draft-deadline-flag' : ''}`}
@@ -361,6 +334,23 @@ export const CalendarGrid = ({
               </div>
 
               <div className="day-badges-wrap">
+                {isRangeStart && <span className="range-badge">START</span>}
+                {isModalStartDay && !isRangeStart && (
+                  <span
+                    className="range-badge draft-start-badge"
+                    title="Draft Start Date"
+                  >
+                    START
+                  </span>
+                )}
+                {isModalEndDay && !isRangeStart && (
+                  <span
+                    className="range-badge draft-end-badge"
+                    title="Draft End Date"
+                  >
+                    END
+                  </span>
+                )}
                 {day.events.map((e) =>
                   e.emoji ? (
                     <span

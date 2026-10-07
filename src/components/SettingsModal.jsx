@@ -130,10 +130,7 @@ export const SettingsModal = ({
                       className={`theme-option-btn ${isSelected ? 'active' : ''}`}
                       onClick={() => handleThemeClick(t.id)}
                     >
-                      <span className="theme-option-icon">{t.icon}</span>
-                      <div className="theme-option-text">
-                        <div className="theme-option-name">{t.name}</div>
-                      </div>
+                      <span className="theme-option-title">{t.name}</span>
                       {isSelected && <span className="theme-option-check">✓</span>}
                     </button>
                   );
@@ -199,7 +196,7 @@ export const SettingsModal = ({
             </div>
 
             <div className="form-group">
-              <label className="form-label">Work Days / Hackathon</label>
+              <label className="form-label">Avg. Work Days</label>
               <input
                 type="number"
                 min="1"

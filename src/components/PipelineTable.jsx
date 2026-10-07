@@ -5,6 +5,7 @@ import {
   TableViewIcon,
   FilterArrowsIcon,
   ChevronDownIcon,
+  PlusIcon,
 } from './Icons';
 
 const MONTH_ABBR = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -200,8 +201,9 @@ export const PipelineTable = ({
               <TableViewIcon size={14} />
             </button>
           </div>
-          <button type="button" className="btn-primary" onClick={onAddNew}>
-            <span>+</span> Hackathon
+          <button type="button" className="btn-primary tracker-add-btn" onClick={onAddNew} title="Log Hackathon">
+            <PlusIcon size={11} strokeWidth={2.4} />
+            <span className="tracker-add-label">Hackathon</span>
           </button>
         </div>
       </div>
