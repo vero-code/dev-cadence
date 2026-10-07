@@ -268,12 +268,12 @@ export const CalendarGrid = ({
             <div className="tooltip-header-actions">
               <button
                 type="button"
-                className="tooltip-book-btn"
+                className="tooltip-add-btn"
                 onClick={() => handleBookFromTooltip(activeTooltip.dateString)}
                 title="Book hackathon starting from this date"
                 aria-label="Book date"
               >
-                📍
+                +
               </button>
               <button
                 type="button"
@@ -299,7 +299,7 @@ export const CalendarGrid = ({
                 <strong className="tooltip-event-name">
                   {e.emoji ? `${e.emoji} ` : ''}{e.name}
                 </strong>
-                <span className="tooltip-status-pill">{e.status}</span>
+                {/* <span className="tooltip-status-pill">{e.status}</span> */}
               </div>
             ))}
 

@@ -72,6 +72,7 @@ Build mode: learn
 - [x] Replace header theme switch button with a Settings cog icon (opening SettingsModal)
 - [x] Integrate interactive theme picker cards directly into SettingsModal
 - [x] Add future-ready engineer profile avatar badge into header actions
+- [x] Add Tracker layout view toggle (compact cards vs classic table) and fix top hover border clipping
 - [ ] Final review complete — feedback resolved and learner confirms ready to ship
 
 ## Code Tour and App Map

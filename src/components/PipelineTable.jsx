@@ -50,6 +50,21 @@ export const PipelineTable = ({
   onClearFilter,
 }) => {
   const [openMenuId, setOpenMenuId] = useState(null);
+  const [viewMode, setViewMode] = useState(() => {
+    try {
+      return localStorage.getItem('devcadence_view_mode') || 'cards';
+    } catch {
+      return 'cards';
+    }
+  });
+
+  const handleSetViewMode = (mode) => {
+    setViewMode(mode);
+    try {
+      localStorage.setItem('devcadence_view_mode', mode);
+    } catch {}
+  };
+
   const isEmpty = !hackathons || hackathons.length === 0;
 
   useEffect(() => {
@@ -86,9 +101,32 @@ export const PipelineTable = ({
             </span>
           )}
         </h2>
-        <button type="button" className="btn-primary" onClick={onAddNew}>
-          <span>+</span> Hackathon
-        </button>
+
+        <div className="pipeline-header-actions">
+          <div className="view-mode-toggle" title="Switch layout">
+            <button
+              type="button"
+              className={`view-toggle-btn ${viewMode === 'cards' ? 'active' : ''}`}
+              onClick={() => handleSetViewMode('cards')}
+              title="Cards view"
+              aria-label="Cards view"
+            >
+              🗂️
+            </button>
+            <button
+              type="button"
+              className={`view-toggle-btn ${viewMode === 'table' ? 'active' : ''}`}
+              onClick={() => handleSetViewMode('table')}
+              title="Table view"
+              aria-label="Table view"
+            >
+              📊
+            </button>
+          </div>
+          <button type="button" className="btn-primary" onClick={onAddNew}>
+            <span>+</span> Hackathon
+          </button>
+        </div>
       </div>
 
       {isEmpty ? (
@@ -102,6 +140,71 @@ export const PipelineTable = ({
               ? 'Click the filter tag above or choose another date to view events.'
               : 'Click "+ Hackathon" to start pacing your work dates and deadlines.'}
           </div>
+        </div>
+      ) : viewMode === 'table' ? (
+        <div className="pipeline-table-wrapper">
+          <table className="pipeline-table">
+            <thead>
+              <tr>
+                <th>Hackathon</th>
+                <th>Deadline</th>
+                <th>Status</th>
+                <th>Dates</th>
+                <th style={{ textAlign: 'right' }}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {hackathons.map((h) => (
+                <tr key={h.id}>
+                  <td>
+                    <div className="table-event-name">
+                      {h.color && (
+                        <span
+                          className="color-dot"
+                          style={{
+                            backgroundColor: h.color,
+                            boxShadow: `0 0 6px ${h.color}`,
+                          }}
+                        />
+                      )}
+                      <span>{h.emoji ? `${h.emoji} ` : ''}{h.name}</span>
+                    </div>
+                  </td>
+                  <td className="table-date">
+                    {h.deadline ? `by ${formatDisplayDate(h.deadline)}` : '—'}
+                  </td>
+                  <td>
+                    <span className={`status-chip ${getStatusChipClass(h.status)}`}>
+                      {h.status}
+                    </span>
+                  </td>
+                  <td className="table-date">
+                    {formatWorkRange(h.startDate, h.endDate)}
+                  </td>
+                  <td style={{ textAlign: 'right' }}>
+                    <div className="table-actions" style={{ justifyContent: 'flex-end' }}>
+                      <button
+                        type="button"
+                        className="action-icon-btn"
+                        title="Edit Hackathon"
+                        onClick={() => onEdit(h)}
+                      >
+                        ✏️
+                      </button>
+                      <button
+                        type="button"
+                        className="action-icon-btn delete-btn"
+                        title="Delete Hackathon"
+                        onClick={() => onDelete(h)}
+                      >
+                        🗑️
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       ) : (
         <div className="pipeline-list">
