@@ -23,7 +23,7 @@ export const getStoredData = async () => {
           resolve({
             hackathons: result[STORAGE_KEYS.HACKATHONS] || [],
             settings: result[STORAGE_KEYS.SETTINGS] || DEFAULT_SETTINGS,
-            theme: result[STORAGE_KEYS.THEME] || 'dark',
+            theme: result[STORAGE_KEYS.THEME] || 'steampunk',
           });
         });
       });
@@ -35,12 +35,12 @@ export const getStoredData = async () => {
       return {
         hackathons: rawHackathons ? JSON.parse(rawHackathons) : [],
         settings: rawSettings ? JSON.parse(rawSettings) : DEFAULT_SETTINGS,
-        theme: rawTheme || 'dark',
+        theme: rawTheme || 'steampunk',
       };
     }
   } catch (err) {
     console.error('Failed to load from storage, using defaults:', err);
-    return { hackathons: [], settings: DEFAULT_SETTINGS, theme: 'dark' };
+    return { hackathons: [], settings: DEFAULT_SETTINGS, theme: 'steampunk' };
   }
 };
 

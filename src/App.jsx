@@ -11,7 +11,7 @@ import { getStoredData, saveHackathons, saveSettings, saveTheme } from './utils/
 export const App = () => {
   const [hackathons, setHackathons] = useState([]);
   const [settings, setSettings] = useState({ targetRestDays: 8, avgTurnaroundDays: 10 });
-  const [theme, setTheme] = useState('dark');
+  const [theme, setTheme] = useState('steampunk');
   const [currentYear, setCurrentYear] = useState(2026);
   const [currentMonth, setCurrentMonth] = useState(9); // October (0-indexed)
   const [selectedDate, setSelectedDate] = useState(null);
@@ -28,7 +28,7 @@ export const App = () => {
       const data = await getStoredData();
       setHackathons(data.hackathons);
       setSettings(data.settings);
-      setTheme(data.theme || 'dark');
+      setTheme(data.theme || 'steampunk');
     };
     initData();
   }, []);
@@ -56,7 +56,14 @@ export const App = () => {
   };
 
   const handleToggleTheme = async () => {
-    const nextTheme = theme === 'parchment' ? 'dark' : 'parchment';
+    let nextTheme;
+    if (theme === 'dark') {
+      nextTheme = 'parchment';
+    } else if (theme === 'parchment') {
+      nextTheme = 'steampunk';
+    } else {
+      nextTheme = 'dark';
+    }
     setTheme(nextTheme);
     await saveTheme(nextTheme);
   };

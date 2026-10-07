@@ -4,11 +4,36 @@ import { MONTH_NAMES } from '../constants';
 export const Header = ({ currentYear, currentMonth, onPrevMonth, onNextMonth, onOpenSettings, theme, onToggleTheme }) => {
   const monthName = MONTH_NAMES[currentMonth] || '';
 
+  const getThemeDetails = () => {
+    switch (theme) {
+      case 'parchment':
+        return {
+          icon: '📜',
+          title: 'Current theme: Light Parchment & Brass. Click for Rich Automaton Dark (⚙️)',
+        };
+      case 'steampunk':
+        return {
+          icon: '⚙️',
+          title: 'Current theme: Rich Automaton Dark. Click for Midnight Dark (🌙)',
+        };
+      case 'dark':
+      default:
+        return {
+          icon: '🌙',
+          title: 'Current theme: Midnight Dark. Click for Light Parchment & Brass (📜)',
+        };
+    }
+  };
+
+  const themeInfo = getThemeDetails();
+
   return (
     <header className="panel-header">
       <div className="brand-row">
         <div className="brand-left">
-          <img src="/logo.jpg" alt="Dev Cadence Automaton" className="brand-logo" />
+          <div className="brand-logo-frame">
+            <img src="/logo.jpg" alt="Dev Cadence Automaton" className="brand-logo" />
+          </div>
           <div className="brand-title-wrap">
             <h1 className="brand-title">Dev Cadence</h1>
             <span className="brand-subtitle">Smart Pacing for Devpost</span>
@@ -19,10 +44,10 @@ export const Header = ({ currentYear, currentMonth, onPrevMonth, onNextMonth, on
             type="button"
             className="theme-toggle-btn"
             onClick={onToggleTheme}
-            title={theme === 'parchment' ? 'Switch to Rich Automaton Dark theme' : 'Switch to Light Parchment & Brass theme'}
+            title={themeInfo.title}
             aria-label="Toggle theme"
           >
-            {theme === 'parchment' ? '🌙' : '📜'}
+            {themeInfo.icon}
           </button>
           <button 
           type="button" 
