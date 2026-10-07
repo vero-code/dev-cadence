@@ -885,6 +885,34 @@ body {
   border-radius: 4px;
 }
 
+.tooltip-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.tooltip-book-btn {
+  background: rgba(6, 182, 212, 0.15);
+  border: 1px solid rgba(6, 182, 212, 0.35);
+  color: var(--cyan-light);
+  font-size: 0.8rem;
+  padding: 1px 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: all 0.15s ease;
+}
+
+.tooltip-book-btn:hover {
+  background: rgba(6, 182, 212, 0.3);
+  border-color: var(--cyan-primary);
+  color: #fff;
+  transform: scale(1.05);
+}
+
 .tooltip-close-btn {
   background: transparent;
   border: none;
