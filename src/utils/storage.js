@@ -22,6 +22,14 @@ const sanitizeTheme = (t) => {
   return t || 'devpost';
 };
 
+const sanitizeSettings = (s) => {
+  const merged = { ...DEFAULT_SETTINGS, ...(s || {}) };
+  if (merged.fontPreset === 'mono') {
+    merged.fontPreset = 'bahnschrift';
+  }
+  return merged;
+};
+
 export const getStoredData = async () => {
   try {
     if (isChromeStorageAvailable()) {
@@ -29,7 +37,7 @@ export const getStoredData = async () => {
         chrome.storage.local.get([STORAGE_KEYS.HACKATHONS, STORAGE_KEYS.SETTINGS, STORAGE_KEYS.THEME], (result) => {
           resolve({
             hackathons: result[STORAGE_KEYS.HACKATHONS] || [],
-            settings: { ...DEFAULT_SETTINGS, ...(result[STORAGE_KEYS.SETTINGS] || {}) },
+            settings: sanitizeSettings(result[STORAGE_KEYS.SETTINGS]),
             theme: sanitizeTheme(result[STORAGE_KEYS.THEME]),
           });
         });
@@ -41,7 +49,7 @@ export const getStoredData = async () => {
       const rawTheme = localStorage.getItem(STORAGE_KEYS.THEME);
       return {
         hackathons: rawHackathons ? JSON.parse(rawHackathons) : [],
-        settings: rawSettings ? { ...DEFAULT_SETTINGS, ...JSON.parse(rawSettings) } : DEFAULT_SETTINGS,
+        settings: sanitizeSettings(rawSettings ? JSON.parse(rawSettings) : null),
         theme: sanitizeTheme(rawTheme),
       };
     }

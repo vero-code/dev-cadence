@@ -13,8 +13,10 @@ export const LogModal = ({
   avgTurnaroundDays = 10,
   onPickOnCalendar,
   onDatesChange,
+  calendarPickedDate,
 }) => {
   const formCardRef = useRef(null);
+  const clickStepRef = useRef(0);
   const [name, setName] = useState('');
   const [deadline, setDeadline] = useState('');
   const [status, setStatus] = useState(STATUS_OPTIONS[0] || 'Interested');
@@ -23,9 +25,11 @@ export const LogModal = ({
   const [color, setColor] = useState('');
   const [emoji, setEmoji] = useState('');
   const [error, setError] = useState('');
+  const [activeDateField, setActiveDateField] = useState(null);
 
   useEffect(() => {
     const avgDays = Number(avgTurnaroundDays) || 10;
+    clickStepRef.current = 0;
     if (editingHackathon) {
       setName(editingHackathon.name || '');
       setDeadline(editingHackathon.deadline || '');
@@ -69,11 +73,70 @@ export const LogModal = ({
     setError('');
   }, [editingHackathon, isOpen, initialYear, initialMonth, prefillDates, avgTurnaroundDays]);
 
+  // Handle direct date clicks from calendar while this form is open
+  useEffect(() => {
+    if (!isOpen || !calendarPickedDate?.date) return;
+    const clickedDate = calendarPickedDate.date;
+    const avgDays = Number(avgTurnaroundDays) || 10;
+
+    if (activeDateField === 'endDate') {
+      setEndDate(clickedDate);
+      if (!deadline || deadline === endDate) {
+        setDeadline(clickedDate);
+      }
+      return;
+    }
+
+    if (activeDateField === 'deadline') {
+      setDeadline(clickedDate);
+      return;
+    }
+
+    if (activeDateField === 'startDate') {
+      setStartDate(clickedDate);
+      const newEnd = addDaysToDateString(clickedDate, avgDays - 1);
+      setEndDate(newEnd);
+      setDeadline(newEnd);
+      return;
+    }
+
+    // Default sequential calendar click behavior
+    if (clickStepRef.current === 0 || !startDate) {
+      setStartDate(clickedDate);
+      const newEnd = addDaysToDateString(clickedDate, avgDays - 1);
+      setEndDate(newEnd);
+      setDeadline(newEnd);
+      clickStepRef.current = 1;
+    } else {
+      if (clickedDate >= startDate) {
+        setEndDate(clickedDate);
+        setDeadline(clickedDate);
+        clickStepRef.current = 0;
+      } else {
+        setStartDate(clickedDate);
+        const newEnd = addDaysToDateString(clickedDate, avgDays - 1);
+        setEndDate(newEnd);
+        setDeadline(newEnd);
+        clickStepRef.current = 1;
+      }
+    }
+  }, [calendarPickedDate, isOpen, avgTurnaroundDays, activeDateField]);
+
+  // Broadcast full draft state for real-time visual calendar preview
   useEffect(() => {
     if (isOpen && onDatesChange) {
-      onDatesChange({ startDate, endDate, deadline });
+      onDatesChange({
+        startDate,
+        endDate,
+        deadline,
+        color,
+        emoji,
+        name,
+        status,
+        id: editingHackathon?.id,
+      });
     }
-  }, [startDate, endDate, deadline, isOpen, onDatesChange]);
+  }, [startDate, endDate, deadline, color, emoji, name, status, isOpen, onDatesChange, editingHackathon]);
 
   useEffect(() => {
     const handleOutsideClick = (e) => {
@@ -167,7 +230,12 @@ export const LogModal = ({
                 type="date"
                 className="form-input"
                 value={startDate}
-                onChange={(e) => { setStartDate(e.target.value); setError(''); }}
+                onFocus={() => setActiveDateField('startDate')}
+                onChange={(e) => {
+                  setStartDate(e.target.value);
+                  clickStepRef.current = 0;
+                  setError('');
+                }}
               />
             </div>
 
@@ -177,7 +245,12 @@ export const LogModal = ({
                 type="date"
                 className="form-input"
                 value={endDate}
-                onChange={(e) => { setEndDate(e.target.value); setError(''); }}
+                onFocus={() => setActiveDateField('endDate')}
+                onChange={(e) => {
+                  setEndDate(e.target.value);
+                  clickStepRef.current = 0;
+                  setError('');
+                }}
               />
             </div>
           </div>
@@ -189,7 +262,11 @@ export const LogModal = ({
                 type="date"
                 className="form-input"
                 value={deadline}
-                onChange={(e) => setDeadline(e.target.value)}
+                onFocus={() => setActiveDateField('deadline')}
+                onChange={(e) => {
+                  setDeadline(e.target.value);
+                  clickStepRef.current = 0;
+                }}
               />
             </div>
 

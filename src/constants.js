@@ -33,19 +33,19 @@ export const GITHUB_REPO_URL = 'https://github.com/vero-code/dev-cadence';
 export const THEMES = [
   {
     id: 'devpost',
-    name: 'Devpost Classic Navy',
+    name: 'Devpost Classic',
     icon: '🌐',
     desc: 'Original Devpost deep navy & electric cyan glow',
   },
   {
     id: 'steampunk',
-    name: 'Rich Automaton Dark',
+    name: 'Rich Dark',
     icon: '⚙️',
     desc: 'Clockwork brass, rich mahogany & warm glow',
   },
   {
     id: 'parchment',
-    name: 'Light Parchment & Brass',
+    name: 'Light Parchment',
     icon: '📜',
     desc: 'Devpost parchment paper',
   },
@@ -66,11 +66,6 @@ export const FONT_PRESETS = [
     id: 'sans',
     name: 'Modern Geometric',
     preview: 'Plus Jakarta Sans',
-  },
-  {
-    id: 'mono',
-    name: 'Terminal Developer',
-    preview: 'JetBrains Mono monospace',
   },
 ];
 

@@ -46,8 +46,6 @@ export const PipelineTable = ({
   onEdit,
   onDelete,
   onAddNew,
-  selectedDate,
-  onClearFilter,
 }) => {
   const [openMenuId, setOpenMenuId] = useState(null);
   const [viewMode, setViewMode] = useState(() => {
@@ -91,15 +89,6 @@ export const PipelineTable = ({
       <div className="pipeline-header-row">
         <h2 className="section-heading">
           <span>📋</span>Tracker
-          {selectedDate && (
-            <span
-              className="pipeline-filter-tag"
-              onClick={onClearFilter}
-              title="Click to clear day filter"
-            >
-              Filtered: {selectedDate} ✕
-            </span>
-          )}
         </h2>
 
         <div className="pipeline-header-actions">
@@ -132,13 +121,9 @@ export const PipelineTable = ({
       {isEmpty ? (
         <div className="empty-table-state">
           <div className="empty-icon">📋</div>
-          <div className="empty-title">
-            {selectedDate ? `No hackathons on ${selectedDate}` : 'No hackathons logged yet'}
-          </div>
+          <div className="empty-title">No hackathons logged yet</div>
           <div className="empty-desc">
-            {selectedDate
-              ? 'Click the filter tag above or choose another date to view events.'
-              : 'Click "+ Hackathon" to start pacing your work dates and deadlines.'}
+            Click "+ Hackathon" to start pacing your work dates and deadlines.
           </div>
         </div>
       ) : viewMode === 'table' ? (

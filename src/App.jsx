@@ -24,6 +24,7 @@ export const App = () => {
   const [editingHackathon, setEditingHackathon] = useState(null);
   const [deleteCandidate, setDeleteCandidate] = useState(null);
   const [modalDates, setModalDates] = useState(null);
+  const [calendarPickedDate, setCalendarPickedDate] = useState(null);
 
   useEffect(() => {
     const initData = async () => {
@@ -169,6 +170,12 @@ export const App = () => {
   };
 
   const handleDateRangeClick = (dateString) => {
+    // When creation/edit form is open, clicking any calendar cell immediately updates the form's dates
+    if (isLogModalOpen) {
+      setCalendarPickedDate({ date: dateString, timestamp: Date.now() });
+      return;
+    }
+
     if (!dateRange.start) {
       // First click: select start date
       setDateRange({ start: dateString, end: null });
@@ -205,6 +212,7 @@ export const App = () => {
     setDateRange({ start: null, end: null });
     setIsSelectingOnCalendar(false);
     setModalDates(null);
+    setCalendarPickedDate(null);
   };
 
   const handlePickOnCalendar = () => {
@@ -213,24 +221,73 @@ export const App = () => {
     setDateRange({ start: null, end: null });
   };
 
-  // Filter hackathons relevant to the current displayed month
+  // When user edits dates in the form, automatically navigate calendar to that month if needed
+  const handleDatesChange = (dates) => {
+    setModalDates(dates);
+    if (dates?.startDate && /^\d{4}-\d{2}-\d{2}$/.test(dates.startDate)) {
+      const [yStr, mStr] = dates.startDate.split('-');
+      const y = parseInt(yStr, 10);
+      const m = parseInt(mStr, 10) - 1;
+      if (!isNaN(y) && !isNaN(m) && m >= 0 && m <= 11) {
+        if (y !== currentYear || m !== currentMonth) {
+          setCurrentYear(y);
+          setCurrentMonth(m);
+        }
+      }
+    }
+  };
+
+  const handleJumpToMonth = (dateString) => {
+    if (!dateString || !/^\d{4}-\d{2}-\d{2}$/.test(dateString)) return;
+    const [yStr, mStr] = dateString.split('-');
+    const y = parseInt(yStr, 10);
+    const m = parseInt(mStr, 10) - 1;
+    if (!isNaN(y) && !isNaN(m) && m >= 0 && m <= 11) {
+      setCurrentYear(y);
+      setCurrentMonth(m);
+    }
+  };
+
+  // Only display hackathons that belong to or span across the active month
   const monthPadded = String(currentMonth + 1).padStart(2, '0');
   const monthPrefix = `${currentYear}-${monthPadded}`;
   const visibleHackathons = hackathons.filter((h) => {
-    return (
-      (h.startDate && h.startDate.startsWith(monthPrefix)) ||
-      (h.endDate && h.endDate.startsWith(monthPrefix)) ||
-      (h.deadline && h.deadline.startsWith(monthPrefix))
-    );
+    if (!h.startDate || !h.endDate) {
+      return (h.startDate && h.startDate.startsWith(monthPrefix)) ||
+             (h.endDate && h.endDate.startsWith(monthPrefix)) ||
+             (h.deadline && h.deadline.startsWith(monthPrefix));
+    }
+    const start = new Date(h.startDate);
+    const end = new Date(h.endDate);
+    const monthStart = new Date(currentYear, currentMonth, 1);
+    const monthEnd = new Date(currentYear, currentMonth + 1, 0, 23, 59, 59);
+
+    const spansMonth = start <= monthEnd && end >= monthStart;
+    const deadlineInMonth = Boolean(h.deadline && h.deadline.startsWith(monthPrefix));
+    return spansMonth || deadlineInMonth;
   });
 
-  // Filter by selected day if user clicked a calendar cell
-  const tableHackathons = selectedDate
-    ? visibleHackathons.filter((h) => {
-        const target = new Date(selectedDate);
-        return target >= new Date(h.startDate) && target <= new Date(h.endDate);
-      })
+  // If a hackathon is currently being edited, exclude its old static state so the draft highlight is pristine
+  const calendarHackathons = isLogModalOpen && editingHackathon
+    ? visibleHackathons.filter((h) => h.id !== editingHackathon.id)
     : visibleHackathons;
+
+  // Live capacity calculation including the active draft hackathon
+  const capacityHackathons = React.useMemo(() => {
+    if (!isLogModalOpen || !modalDates?.startDate || !modalDates?.endDate) {
+      return visibleHackathons;
+    }
+    const draftItem = {
+      id: editingHackathon ? editingHackathon.id : '__draft__',
+      startDate: modalDates.startDate,
+      endDate: modalDates.endDate,
+      deadline: modalDates.deadline,
+    };
+    if (editingHackathon) {
+      return visibleHackathons.map((h) => (h.id === editingHackathon.id ? { ...h, ...draftItem } : h));
+    }
+    return [...visibleHackathons, draftItem];
+  }, [visibleHackathons, isLogModalOpen, modalDates, editingHackathon]);
 
   return (
     <div
@@ -244,12 +301,10 @@ export const App = () => {
           onOpenSettings={handleOpenSettings}
         />
 
-        
-
         <CalendarGrid
           year={currentYear}
           month={currentMonth}
-          hackathons={visibleHackathons}
+          hackathons={calendarHackathons}
           selectedDate={selectedDate}
           dateRange={dateRange}
           modalActiveRange={isLogModalOpen ? modalDates : null}
@@ -260,6 +315,7 @@ export const App = () => {
           onPrevMonth={handlePrevMonth}
           onNextMonth={handleNextMonth}
           onEdit={handleOpenEdit}
+          onJumpToMonth={handleJumpToMonth}
         />
 
         <div className="lower-content-section">
@@ -275,18 +331,17 @@ export const App = () => {
                 prefillDates={prefillDates}
                 avgTurnaroundDays={settings?.avgTurnaroundDays || 10}
                 onPickOnCalendar={handlePickOnCalendar}
-                onDatesChange={setModalDates}
+                onDatesChange={handleDatesChange}
+                calendarPickedDate={calendarPickedDate}
               />
             </div>
           )}
 
           <PipelineTable
-            hackathons={tableHackathons}
+            hackathons={visibleHackathons}
             onEdit={handleOpenEdit}
             onDelete={handleRequestDelete}
             onAddNew={handleOpenAdd}
-            selectedDate={selectedDate}
-            onClearFilter={() => setSelectedDate(null)}
           />
         </div>
 
@@ -312,7 +367,7 @@ export const App = () => {
       <Footer
         year={currentYear}
         month={currentMonth}
-        hackathons={visibleHackathons}
+        hackathons={capacityHackathons}
         settings={settings}
         onOpenSettings={handleOpenSettings}
       />

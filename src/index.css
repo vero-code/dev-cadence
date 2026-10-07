@@ -1613,7 +1613,7 @@ body:has([data-theme="devpost"]) {
   border-radius: var(--radius);
   padding: 1.5rem;
   width: 100%;
-  max-width: 440px;
+  max-width: 500px;
   box-shadow: 
     inset 0 0 0 1px rgba(245, 158, 11, 0.12),
     inset 0 1px 0 rgba(255, 255, 255, 0.1),
@@ -1905,19 +1905,35 @@ body:has([data-theme="devpost"]) {
   box-shadow: 0 6px 18px rgba(244, 63, 94, 0.5);
 }
 
-/* Theme Selector in Settings Modal */
-.theme-options-grid {
+/* Settings Modal Two-Column Layout: Theme & Typography */
+.settings-columns-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+}
+
+.settings-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.theme-options-grid,
+.font-options-column {
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
   margin-top: 0.35rem;
 }
 
-.theme-option-btn {
+.theme-option-btn,
+.font-option-btn {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
-  padding: 0.6rem 0.8rem;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.55rem 0.75rem;
+  min-height: 44px;
   border-radius: 8px;
   border: 1.5px solid var(--border-subtle);
   background: var(--bg-input);
@@ -1926,34 +1942,41 @@ body:has([data-theme="devpost"]) {
   text-align: left;
   transition: all 0.2s ease;
   position: relative;
+  box-sizing: border-box;
 }
 
-.theme-option-btn:hover {
+.theme-option-btn:hover,
+.font-option-btn:hover {
   border-color: var(--amber-gear);
   transform: translateY(-1px);
 }
 
-.theme-option-btn.active {
+.theme-option-btn.active,
+.font-option-btn.active {
   border-color: #f59e0b;
   background: rgba(245, 158, 11, 0.12);
-  box-shadow: 0 0 12px rgba(245, 158, 11, 0.2);
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.2);
 }
 
-[data-theme="devpost"] .theme-option-btn.active {
+[data-theme="devpost"] .theme-option-btn.active,
+[data-theme="devpost"] .font-option-btn.active {
   border-color: #06b6d4;
   background: rgba(6, 182, 212, 0.14);
-  box-shadow: 0 0 14px rgba(6, 182, 212, 0.25);
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.25);
 }
 
-[data-theme="parchment"] .theme-option-btn.active {
+[data-theme="parchment"] .theme-option-btn.active,
+[data-theme="parchment"] .font-option-btn.active {
   border-color: #b8860b;
   background: rgba(184, 134, 11, 0.12);
   box-shadow: 0 0 10px rgba(184, 134, 11, 0.15);
 }
 
 .theme-option-icon {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
 }
 
 .theme-option-text {
@@ -1963,22 +1986,39 @@ body:has([data-theme="devpost"]) {
 
 .theme-option-name {
   font-family: var(--font-heading);
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.theme-option-desc {
-  font-size: 0.72rem;
-  color: var(--text-dim);
-  margin-top: 0.1rem;
+.font-option-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
 }
 
-.theme-option-check {
-  font-size: 0.95rem;
+.theme-option-check,
+.font-option-check {
+  font-size: 0.92rem;
   font-weight: 800;
   color: var(--emerald);
   flex-shrink: 0;
+  margin-left: auto;
+}
+
+[data-theme="parchment"] .theme-option-check,
+[data-theme="parchment"] .font-option-check {
+  color: #15803d;
+}
+
+.font-size-group {
+  margin-bottom: 1rem;
 }
 
 /* Confirmation Modal */
@@ -2389,21 +2429,22 @@ body:has([data-theme="devpost"]) {
 
 /* Dashed Border Range Highlight when Log/Edit Modal is open */
 .calendar-day-cell.modal-dashed-cell {
-  outline: 2px dashed #f59e0b !important;
+  outline: 2px dashed var(--draft-outline-color, #f59e0b) !important;
   outline-offset: -2px;
-  box-shadow: inset 0 0 10px rgba(245, 158, 11, 0.25) !important;
+  box-shadow: inset 0 0 12px var(--draft-shadow-color, rgba(245, 158, 11, 0.25)) !important;
   animation: pulseDashedBorder 1.8s ease-in-out infinite;
   z-index: 5;
+  cursor: pointer;
 }
 
 [data-theme="parchment"] .calendar-day-cell.modal-dashed-cell {
-  outline-color: #b45309 !important;
-  box-shadow: inset 0 0 8px rgba(180, 83, 9, 0.2) !important;
+  outline-color: var(--draft-outline-color, #b45309) !important;
+  box-shadow: inset 0 0 10px var(--draft-shadow-color, rgba(180, 83, 9, 0.22)) !important;
 }
 
 [data-theme="devpost"] .calendar-day-cell.modal-dashed-cell {
-  outline-color: #06b6d4 !important;
-  box-shadow: inset 0 0 12px rgba(6, 182, 212, 0.3) !important;
+  outline-color: var(--draft-outline-color, #06b6d4) !important;
+  box-shadow: inset 0 0 14px var(--draft-shadow-color, rgba(6, 182, 212, 0.35)) !important;
 }
 
 @keyframes pulseDashedBorder {
@@ -2411,8 +2452,56 @@ body:has([data-theme="devpost"]) {
     opacity: 1;
   }
   50% {
-    opacity: 0.8;
+    opacity: 0.82;
   }
+}
+
+/* Badges for Draft Start / End Dates */
+.draft-start-badge {
+  background: var(--amber-gear, #f59e0b);
+  color: #fff;
+  font-size: 0.52rem;
+  font-weight: 800;
+  padding: 1px 4px;
+  border-radius: 3px;
+  letter-spacing: 0.04em;
+  animation: pulseStart 1.8s infinite;
+}
+
+.draft-end-badge {
+  background: #10b981;
+  color: #fff;
+  font-size: 0.52rem;
+  font-weight: 800;
+  padding: 1px 4px;
+  border-radius: 3px;
+  letter-spacing: 0.04em;
+  animation: pulseStart 1.8s infinite;
+}
+
+/* Animated Deadline Flag for Draft */
+.draft-deadline-flag {
+  font-size: 0.82rem !important;
+  line-height: 1;
+  animation: bounceDeadline 1.1s ease-in-out infinite alternate !important;
+  filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.6));
+}
+
+@keyframes bounceDeadline {
+  0% { transform: translateY(0) scale(1); }
+  100% { transform: translateY(-3px) scale(1.22); }
+}
+
+/* Pulsing Draft Emoji */
+.draft-event-emoji {
+  animation: pulseEmoji 2.2s ease-in-out infinite;
+  display: inline-block;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.4));
+}
+
+@keyframes pulseEmoji {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.22); }
 }
 
 .day-top-bar {
@@ -3183,13 +3272,6 @@ html[data-font="sans"],
   --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
 
-[data-font="mono"],
-html[data-font="mono"],
-.app-container[data-font="mono"] {
-  --font-heading: 'JetBrains Mono', monospace !important;
-  --font-main: 'JetBrains Mono', monospace !important;
-}
-
 /* Font Size Scaling */
 [data-font-size="compact"] {
   font-size: 13.5px;
@@ -3203,56 +3285,7 @@ html[data-font="mono"],
   font-size: 16.5px;
 }
 
-/* Settings Modal Customizations */
-.font-options-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.5rem;
-}
-
-.font-option-btn {
-  background: var(--bg-card);
-  border: 1.5px solid var(--border-subtle);
-  border-radius: 8px;
-  padding: 0.55rem 0.65rem;
-  color: var(--text-main);
-  text-align: left;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  transition: all 0.2s ease;
-}
-
-.font-option-btn:hover {
-  border-color: var(--border-hover);
-  background: var(--bg-card-hover);
-  transform: translateY(-1px);
-}
-
-.font-option-btn.active {
-  border-color: #fbbf24;
-  box-shadow: 0 0 10px rgba(245, 158, 11, 0.35);
-  background: rgba(245, 158, 11, 0.08);
-}
-
-[data-theme="devpost"] .font-option-btn.active {
-  border-color: #22d3ee;
-  box-shadow: 0 0 10px rgba(6, 182, 212, 0.35);
-  background: rgba(6, 182, 212, 0.08);
-}
-
-[data-theme="parchment"] .font-option-btn.active {
-  border-color: #b8860b;
-  box-shadow: 0 0 8px rgba(184, 134, 11, 0.25);
-  background: rgba(184, 134, 11, 0.08);
-}
-
-.font-option-title {
-  font-size: 0.8rem;
-  font-weight: 700;
-}
-
+/* Font Preview Typography in Settings Modal */
 .font-option-btn[data-font-preview="bahnschrift"] .font-option-title {
   font-family: 'Bahnschrift', 'DIN Alternate', sans-serif;
 }
@@ -3263,15 +3296,6 @@ html[data-font="mono"],
 
 .font-option-btn[data-font-preview="sans"] .font-option-title {
   font-family: 'Plus Jakarta Sans', sans-serif;
-}
-
-.font-option-btn[data-font-preview="mono"] .font-option-title {
-  font-family: 'JetBrains Mono', monospace;
-}
-
-.font-option-preview {
-  font-size: 0.68rem;
-  color: var(--text-muted);
 }
 
 .font-size-row {

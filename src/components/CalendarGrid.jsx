@@ -17,6 +17,7 @@ export const CalendarGrid = ({
   onPrevMonth,
   onNextMonth,
   onEdit,
+  onJumpToMonth,
 }) => {
   const [activeTooltip, setActiveTooltip] = useState(null);
   const [hoveredRangeDate, setHoveredRangeDate] = useState(null);
@@ -39,12 +40,30 @@ export const CalendarGrid = ({
     return dateString >= start && dateString <= end;
   };
 
+  const isValidDate = (d) => typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d);
+
   // Check if day falls within the active create/edit form date range
   const isDayInModalRange = (dateString) => {
-    if (!modalActiveRange?.startDate || !dateString) return false;
-    const end = modalActiveRange.endDate || modalActiveRange.startDate;
+    if (!modalActiveRange?.startDate || !dateString || !isValidDate(modalActiveRange.startDate)) return false;
+    const end = (modalActiveRange.endDate && isValidDate(modalActiveRange.endDate)) ? modalActiveRange.endDate : modalActiveRange.startDate;
     const [startD, endD] = [modalActiveRange.startDate, end].sort();
     return dateString >= startD && dateString <= endD;
+  };
+
+  const isModalStart = (dateString) => {
+    return Boolean(modalActiveRange?.startDate && modalActiveRange.startDate === dateString);
+  };
+
+  const isModalEnd = (dateString) => {
+    return Boolean(
+      modalActiveRange?.endDate &&
+      modalActiveRange.endDate === dateString &&
+      modalActiveRange.endDate !== modalActiveRange.startDate
+    );
+  };
+
+  const isModalDeadline = (dateString) => {
+    return Boolean(modalActiveRange?.deadline && modalActiveRange.deadline === dateString);
   };
 
   // Close tooltip or cancel date booking when clicking on another area or pressing escape key
@@ -108,6 +127,14 @@ export const CalendarGrid = ({
 
   const handleCellClick = (e, day, idx) => {
     e.stopPropagation();
+
+    // If modal is actively open, clicking any calendar cell updates the dates in the form
+    if (modalActiveRange) {
+      setActiveTooltip(null);
+      setHoveredRangeDate(null);
+      onDateRangeClick && onDateRangeClick(day.dateString);
+      return;
+    }
 
     // If user is actively selecting a date range (e.g. from banner or picking dates for LogModal)
     if (isSelectingOnCalendar || (dateRange?.start && !dateRange?.end)) {
@@ -218,34 +245,85 @@ export const CalendarGrid = ({
           const inRangePreview = isDayInRangePreview(day.dateString);
           const inActiveRange = isDayInActiveRange(day.dateString);
           const inModalRange = isDayInModalRange(day.dateString);
-          const bgStyle = getDayCellBackground(day.events);
+          const isModalStartDay = isModalStart(day.dateString);
+          const isModalEndDay = isModalEnd(day.dateString);
+          const isModalDeadlineDay = isModalDeadline(day.dateString);
+
+          let bgStyle = getDayCellBackground(day.events);
+          if (inModalRange) {
+            if (modalActiveRange?.color) {
+              if (day.events.length === 0) {
+                bgStyle = `${modalActiveRange.color}33`;
+              } else {
+                bgStyle = `linear-gradient(rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0.32)), ${bgStyle}`;
+              }
+            } else if (day.events.length === 0) {
+              bgStyle = 'rgba(245, 158, 11, 0.16)';
+            }
+          }
+
+          const cellInlineStyle = {
+            background: bgStyle,
+            ...(inModalRange && modalActiveRange?.color
+              ? {
+                  '--draft-outline-color': modalActiveRange.color,
+                  '--draft-shadow-color': `${modalActiveRange.color}44`,
+                }
+              : {}),
+          };
+
           const isTooltipActive = activeTooltip?.dateString === day.dateString;
+
+          const cellTitle = isRangeStart
+            ? 'Selected Start Date'
+            : hasEvents || hasDeadlines
+            ? `Click to view events for ${day.dateString}`
+            : `Click to select ${day.dateString}`;
 
           return (
             <div
               key={day.dateString}
               className={`calendar-day-cell ${day.isToday ? 'today-cell' : ''} ${hasEvents ? 'active-day' : ''} ${isSelected || isTooltipActive ? 'selected-day' : ''} ${isRangeStart ? 'range-start-cell' : ''} ${inRangePreview ? 'range-preview-cell' : ''} ${inActiveRange ? 'range-active-cell' : ''} ${inModalRange ? 'modal-dashed-cell' : ''}`}
-              style={{ background: bgStyle }}
+              style={cellInlineStyle}
               onClick={(e) => handleCellClick(e, day, idx)}
               onMouseEnter={() => {
                 if (dateRange?.start && !dateRange?.end) {
                   setHoveredRangeDate(day.dateString);
                 }
               }}
-              title={
-                isRangeStart
-                  ? 'Selected Start Date'
-                  : hasEvents || hasDeadlines
-                  ? `Click to view events for ${day.dateString}`
-                  : `Click to select ${day.dateString}`
-              }
+              title={cellTitle}
             >
               <div className="day-top-bar">
                 <span className="day-number">{day.dayNumber}</span>
                 {day.isToday && <span className="today-badge" title="Today">TODAY</span>}
                 {isRangeStart && <span className="range-badge">START</span>}
-                {hasDeadlines && !isRangeStart && (
-                  <span className="deadline-flag" title={`Deadline: ${day.deadlines.map((d) => d.name).join(', ')}`}>
+                {isModalStartDay && !isRangeStart && (
+                  <span
+                    className="range-badge draft-start-badge"
+                    style={modalActiveRange?.color ? { backgroundColor: modalActiveRange.color, color: '#fff' } : undefined}
+                    title="Draft Start Date"
+                  >
+                    START
+                  </span>
+                )}
+                {isModalEndDay && !isRangeStart && (
+                  <span
+                    className="range-badge draft-end-badge"
+                    style={modalActiveRange?.color ? { backgroundColor: modalActiveRange.color, color: '#fff' } : undefined}
+                    title="Draft End Date"
+                  >
+                    END
+                  </span>
+                )}
+                {(hasDeadlines || isModalDeadlineDay) && (
+                  <span
+                    className={`deadline-flag ${isModalDeadlineDay ? 'draft-deadline-flag' : ''}`}
+                    title={
+                      isModalDeadlineDay
+                        ? `Draft Deadline: ${modalActiveRange?.name || 'Hackathon'}`
+                        : `Deadline: ${day.deadlines.map((d) => d.name).join(', ')}`
+                    }
+                  >
                     🏁
                   </span>
                 )}
@@ -263,6 +341,15 @@ export const CalendarGrid = ({
                       {e.emoji}
                     </span>
                   ) : null
+                )}
+                {inModalRange && modalActiveRange?.emoji && (
+                  <span
+                    className="day-event-emoji draft-event-emoji"
+                    title={`Draft: ${modalActiveRange.name || 'Hackathon'}`}
+                    style={modalActiveRange.color ? { color: modalActiveRange.color } : undefined}
+                  >
+                    {modalActiveRange.emoji}
+                  </span>
                 )}
               </div>
             </div>

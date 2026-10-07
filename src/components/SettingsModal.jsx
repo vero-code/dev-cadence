@@ -114,50 +114,57 @@ export const SettingsModal = ({
         </div>
 
         <div className="modal-body-content">
-          {/* Theme Selector */}
-          <div className="form-group">
-            <label className="form-label">Theme</label>
-            <div className="theme-options-grid">
-              {THEMES.map((t) => {
-                const isSelected = currentTheme === t.id;
-                return (
-                  <button
-                    key={t.id}
-                    type="button"
-                    className={`theme-option-btn ${isSelected ? 'active' : ''}`}
-                    onClick={() => handleThemeClick(t.id)}
-                  >
-                    <span className="theme-option-icon">{t.icon}</span>
-                    <div className="theme-option-text">
-                      <div className="theme-option-name">{t.name}</div>
-                    </div>
-                    {isSelected && <span className="theme-option-check">✓</span>}
-                  </button>
-                );
-              })}
+          {/* Two-Column Layout: Theme (left) & Typography (right) */}
+          <div className="settings-columns-row">
+            {/* Theme Selector */}
+            <div className="settings-column">
+              <label className="form-label">Theme</label>
+              <div className="theme-options-grid">
+                {THEMES.map((t) => {
+                  const isSelected = currentTheme === t.id;
+                  return (
+                    <button
+                      key={t.id}
+                      type="button"
+                      className={`theme-option-btn ${isSelected ? 'active' : ''}`}
+                      onClick={() => handleThemeClick(t.id)}
+                    >
+                      <span className="theme-option-icon">{t.icon}</span>
+                      <div className="theme-option-text">
+                        <div className="theme-option-name">{t.name}</div>
+                      </div>
+                      {isSelected && <span className="theme-option-check">✓</span>}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Typography Selector */}
+            <div className="settings-column">
+              <label className="form-label">Typography</label>
+              <div className="font-options-column">
+                {FONT_PRESETS.map((f) => {
+                  const isSelected = (settings?.fontPreset || 'bahnschrift') === f.id;
+                  return (
+                    <button
+                      key={f.id}
+                      type="button"
+                      className={`font-option-btn ${isSelected ? 'active' : ''}`}
+                      onClick={() => handleFontClick(f.id)}
+                      data-font-preview={f.id}
+                    >
+                      <span className="font-option-title">{f.name}</span>
+                      {isSelected && <span className="font-option-check">✓</span>}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
 
-          {/* Typography Settings */}
-          <div className="form-group">
-            <label className="form-label">Typography</label>
-            <div className="font-options-grid">
-              {FONT_PRESETS.map((f) => {
-                const isSelected = (settings?.fontPreset || 'bahnschrift') === f.id;
-                return (
-                  <button
-                    key={f.id}
-                    type="button"
-                    className={`font-option-btn ${isSelected ? 'active' : ''}`}
-                    onClick={() => handleFontClick(f.id)}
-                    data-font-preview={f.id}
-                  >
-                    <span className="font-option-title">{f.name}</span>
-                  </button>
-                );
-              })}
-            </div>
-
+          {/* Font Size Row */}
+          <div className="form-group font-size-group">
             <div className="font-size-row">
               {FONT_SIZES.map((s) => {
                 const isSelected = (settings?.fontSize || 'normal') === s.id;
