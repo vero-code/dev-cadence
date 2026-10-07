@@ -16,18 +16,6 @@ export const Header = ({ currentYear, currentMonth, onPrevMonth, onNextMonth, on
         </div>
         <div className="header-actions">
           <button 
-            type="button" 
-            className="icon-btn" 
-            title="Configure Capacity Settings"
-            onClick={onOpenSettings}
-          >
-            ⚙️
-          </button>
-        </div>
-      </div>
-
-      <div className="month-nav-row">
-        <button 
           type="button" 
           className="nav-arrow-btn" 
           onClick={onPrevMonth}
@@ -46,6 +34,7 @@ export const Header = ({ currentYear, currentMonth, onPrevMonth, onNextMonth, on
         >
           &rarr;
         </button>
+        </div>
       </div>
     </header>
   );

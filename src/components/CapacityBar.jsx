@@ -30,9 +30,14 @@ export const CapacityBar = ({ year, month, hackathons, settings, onOpenSettings 
   const isOvercommitted = freeDays < targetRest;
   const shortageDays = targetRest - freeDays;
 
+  // Split available days into flexible buffer and target rest
+  const surplusDays = Math.max(0, freeDays - targetRest);
+  const restDays = Math.min(targetRest, freeDays);
+
   // Percentage calculations for capacity progress bar
   const committedPercent = Math.min(100, Math.round((committedDaysCount / daysInMonth) * 100));
-  const restPercent = Math.min(100 - committedPercent, Math.round((targetRest / daysInMonth) * 100));
+  const availablePercent = Math.min(100 - committedPercent, Math.round((surplusDays / daysInMonth) * 100));
+  const restPercent = Math.max(0, 100 - committedPercent - availablePercent);
 
   return (
     <div className="capacity-card">
@@ -47,21 +52,42 @@ export const CapacityBar = ({ year, month, hackathons, settings, onOpenSettings 
             {freeDays} days
           </span>
         </div>
-        <div className="capacity-metric-box">
-          <span className="metric-label">Target Rest</span>
+        <div
+          className="capacity-metric-box"
+          style={onOpenSettings ? { cursor: 'pointer' } : undefined}
+          onClick={onOpenSettings}
+          title={onOpenSettings ? 'Click to configure Target Rest days' : undefined}
+        >
+          <span className="metric-label">Target Rest {onOpenSettings && '⚙️'}</span>
           <span className="metric-value rest-val">{targetRest} days</span>
         </div>
       </div>
 
       {/* Visual Capacity Bar */}
-      <div className="capacity-progress-track" title={`${committedDaysCount} committed, ${targetRest} target rest, ${freeDays} free`}>
+      <div
+        className="capacity-progress-track"
+        title={`Work: ${committedDaysCount}d (${committedPercent}%) | Available: ${freeDays}d (${surplusDays}d buffer + ${restDays}d rest) | Target Rest: ${targetRest}d`}
+      >
         <div
           className="progress-segment committed-seg"
           style={{ width: `${committedPercent}%` }}
+          title={`Work: ${committedDaysCount} days (${committedPercent}%)`}
         />
+        {availablePercent > 0 && (
+          <div
+            className="progress-segment available-seg"
+            style={{ width: `${availablePercent}%` }}
+            title={`Available: ${freeDays} days (${surplusDays} days flexible buffer)`}
+          />
+        )}
         <div
           className={`progress-segment ${isOvercommitted ? 'warning-seg' : 'rest-seg'}`}
           style={{ width: `${restPercent}%` }}
+          title={
+            isOvercommitted
+              ? `Warning: Only ${freeDays} free days remaining (short of ${targetRest}d target by ${shortageDays}d)`
+              : `Target Rest: ${targetRest} days (${restPercent}%)`
+          }
         />
       </div>
     </div>

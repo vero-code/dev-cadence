@@ -62,6 +62,9 @@ Build mode: learn
 - [x] Render Log Hackathon popup card over the lower section with a soft dimmed backdrop covering the button and table without layout shift
 - [x] Add confirmation modal before deleting a hackathon to prevent accidental loss
 - [x] Allow saving hackathons with only an emoji and truly optional color (removed forced cyan fallbacks in calendar, table, and form defaults)
+- [x] Pin Capacity Bar inside a sticky footer at the bottom of the screen with frosted glass dock styling
+- [x] Display Available days (emerald green segment) on the Capacity progress track alongside Work and Target Rest
+- [x] Add developer attribution and current year in footer with Devpost/GitHub link, and extract into dedicated Footer component
 - [ ] Redesign pipeline table into a compact card-based list to prevent long hackathon names from getting squished in side panel
 - [ ] Final review complete — feedback resolved and learner confirms ready to ship
 

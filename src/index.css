@@ -63,7 +63,7 @@ body {
 }
 
 .panel-content {
-  padding: 1.25rem;
+  padding: 1.25rem 1.25rem 1.75rem;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
@@ -1234,6 +1234,10 @@ body {
   background: linear-gradient(90deg, #0891b2, #06b6d4);
 }
 
+.available-seg {
+  background: linear-gradient(90deg, #059669, #10b981);
+}
+
 .rest-seg {
   background: #818cf8;
 }
@@ -1297,5 +1301,93 @@ body {
 .healthy-text strong {
   color: #34d399;
 }
+
+/* App Footer (Pinned to bottom of screen with Capacity Bar) */
+.app-footer {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(7, 13, 25, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--border-subtle);
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.65);
+  padding: 0.65rem 1.25rem 0.75rem;
+  z-index: 80;
+  margin-top: auto;
+}
+
+.app-footer .capacity-card {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  gap: 0.45rem;
+  box-shadow: none;
+}
+
+.app-footer .capacity-metrics-grid {
+  gap: 0.5rem;
+}
+
+.app-footer .capacity-metric-box {
+  padding: 0.35rem 0.5rem;
+  background: rgba(12, 19, 36, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+
+.app-footer .capacity-metric-box:hover {
+  background: rgba(18, 28, 54, 0.85);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.app-footer .metric-label {
+  font-size: 0.65rem;
+}
+
+.app-footer .metric-value {
+  font-size: 0.88rem;
+}
+
+.app-footer .capacity-progress-track {
+  height: 8px;
+}
+
+.footer-credits {
+  margin-top: 0.5rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  font-size: 0.72rem;
+  color: var(--text-dim);
+}
+
+.footer-credits .credits-dot {
+  font-size: 0.6rem;
+  opacity: 0.5;
+}
+
+.footer-author-link {
+  color: var(--cyan-light);
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: all 0.2s ease;
+}
+
+.footer-author-link:hover {
+  color: #fff;
+  text-decoration: underline;
+  text-shadow: 0 0 8px var(--cyan-glow);
+}
+
 
 

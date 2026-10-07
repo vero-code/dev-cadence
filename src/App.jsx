@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Header } from './components/Header';
-import { CapacityBar } from './components/CapacityBar';
+import { Footer } from './components/Footer';
 import { CalendarGrid } from './components/CalendarGrid';
 import { PipelineTable } from './components/PipelineTable';
 import { LogModal } from './components/LogModal';
@@ -252,14 +252,6 @@ export const App = () => {
             onDelete={handleRequestDelete}
             onAddNew={handleOpenAdd}
           />
-
-          <CapacityBar
-            year={currentYear}
-            month={currentMonth}
-            hackathons={visibleHackathons}
-            settings={settings}
-            onOpenSettings={() => setIsSettingsOpen(true)}
-          />
         </div>
 
         <SettingsModal
@@ -276,6 +268,14 @@ export const App = () => {
           onCancel={handleCancelDelete}
         />
       </div>
+
+      <Footer
+        year={currentYear}
+        month={currentMonth}
+        hackathons={visibleHackathons}
+        settings={settings}
+        onOpenSettings={() => setIsSettingsOpen(true)}
+      />
     </div>
   );
 };
