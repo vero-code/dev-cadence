@@ -29,9 +29,9 @@ export const Footer = ({
         </a>
         <span>&copy; {new Date().getFullYear()}</span>
         <span className="credits-dot">&bull;</span>
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Use</a>
-        <a href="#">Contact</a>
+        <a href="#" className="footer-legal-link">Privacy Policy</a>
+        <a href="#" className="footer-legal-link">Terms of Use</a>
+        <a href="#" className="footer-legal-link">Contact</a>
       </div>
     </footer>
   );

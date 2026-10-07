@@ -1,5 +1,6 @@
 import React from 'react';
 import { DEVPOST_PROFILE_URL } from '../constants';
+import { AgedGearIcon } from './Icons';
 
 export const Header = ({ onOpenSettings }) => {
   return (
@@ -22,7 +23,7 @@ export const Header = ({ onOpenSettings }) => {
             title="Settings & Themes"
             aria-label="Settings and Themes"
           >
-            <span className="settings-icon">⚙️</span>
+            <AgedGearIcon className="settings-gear-svg" size={20} />
           </button>
           <a
             href={DEVPOST_PROFILE_URL}

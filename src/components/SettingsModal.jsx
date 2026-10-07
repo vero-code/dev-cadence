@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { THEMES, FONT_PRESETS, FONT_SIZES } from '../constants';
+import { AgedGearIcon } from './Icons';
 
 export const SettingsModal = ({
   isOpen,
@@ -108,7 +109,7 @@ export const SettingsModal = ({
       <div className="modal-card" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2 className="modal-title">
-            <span>⚙️</span> Settings
+            <AgedGearIcon className="modal-title-gear" size={20} /> Settings
           </h2>
           <button type="button" className="modal-close-btn" onClick={onClose}>&times;</button>
         </div>

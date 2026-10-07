@@ -1,4 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import {
+  TrackerBadgeIcon,
+  CardsViewIcon,
+  TableViewIcon,
+  FilterArrowsIcon,
+  ChevronDownIcon,
+} from './Icons';
 
 const MONTH_ABBR = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -48,6 +55,8 @@ export const PipelineTable = ({
   onAddNew,
 }) => {
   const [openMenuId, setOpenMenuId] = useState(null);
+  const [statusFilter, setStatusFilter] = useState('ALL');
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [viewMode, setViewMode] = useState(() => {
     try {
       return localStorage.getItem('devcadence_view_mode') || 'cards';
@@ -63,6 +72,23 @@ export const PipelineTable = ({
     } catch {}
   };
 
+  const availableStatuses = useMemo(() => {
+    const set = new Set();
+    (hackathons || []).forEach((h) => {
+      if (h.status && h.status.trim()) {
+        set.add(h.status.trim());
+      }
+    });
+    return Array.from(set);
+  }, [hackathons]);
+
+  const displayedHackathons = useMemo(() => {
+    if (!hackathons) return [];
+    if (statusFilter === 'ALL') return hackathons;
+    const filterLower = statusFilter.toLowerCase();
+    return hackathons.filter((h) => (h.status || '').toLowerCase().includes(filterLower));
+  }, [hackathons, statusFilter]);
+
   const isEmpty = !hackathons || hackathons.length === 0;
 
   useEffect(() => {
@@ -70,10 +96,14 @@ export const PipelineTable = ({
       if (!e.target.closest('.pipeline-menu-container')) {
         setOpenMenuId(null);
       }
+      if (!e.target.closest('.tracker-filter-container')) {
+        setIsFilterOpen(false);
+      }
     };
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         setOpenMenuId(null);
+        setIsFilterOpen(false);
       }
     };
     window.addEventListener('click', handleOutsideClick);
@@ -87,9 +117,67 @@ export const PipelineTable = ({
   return (
     <div className="table-card pipeline-list-container">
       <div className="pipeline-header-row">
-        <h2 className="section-heading">
-          <span>📋</span>Tracker
-        </h2>
+        <div className="tracker-heading-group">
+          <h2 className="section-heading">
+            <TrackerBadgeIcon className="tracker-badge-icon" size={17} />
+            <span>Tracker</span>
+          </h2>
+
+          <div className="tracker-filter-container">
+            <button
+              type="button"
+              className={`tracker-filter-btn ${statusFilter !== 'ALL' ? 'active' : ''}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsFilterOpen((prev) => !prev);
+              }}
+              title="Filter hackathons by status"
+              aria-label="Filter hackathons by status"
+            >
+              <FilterArrowsIcon size={12} className="tracker-filter-arrows" />
+              <span className="tracker-filter-label">
+                {statusFilter === 'ALL' ? 'Filter' : statusFilter}
+              </span>
+              <ChevronDownIcon size={9} className={`tracker-filter-chevron ${isFilterOpen ? 'open' : ''}`} />
+            </button>
+
+            {isFilterOpen && (
+              <div className="tracker-filter-dropdown" onClick={(e) => e.stopPropagation()}>
+                <div className="tracker-filter-dropdown-title">Status Filter</div>
+                <button
+                  type="button"
+                  className={`tracker-filter-option ${statusFilter === 'ALL' ? 'selected' : ''}`}
+                  onClick={() => {
+                    setStatusFilter('ALL');
+                    setIsFilterOpen(false);
+                  }}
+                >
+                  <span>All</span>
+                  <span className="filter-count-badge">{(hackathons || []).length}</span>
+                </button>
+                {availableStatuses.map((st) => {
+                  const count = (hackathons || []).filter((h) =>
+                    (h.status || '').toLowerCase().includes(st.toLowerCase())
+                  ).length;
+                  return (
+                    <button
+                      key={st}
+                      type="button"
+                      className={`tracker-filter-option ${statusFilter === st ? 'selected' : ''}`}
+                      onClick={() => {
+                        setStatusFilter(st);
+                        setIsFilterOpen(false);
+                      }}
+                    >
+                      <span>{st}</span>
+                      <span className="filter-count-badge">{count}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </div>
 
         <div className="pipeline-header-actions">
           <div className="view-mode-toggle" title="Switch layout">
@@ -100,7 +188,7 @@ export const PipelineTable = ({
               title="Cards view"
               aria-label="Cards view"
             >
-              🗂️
+              <CardsViewIcon size={14} />
             </button>
             <button
               type="button"
@@ -109,7 +197,7 @@ export const PipelineTable = ({
               title="Table view"
               aria-label="Table view"
             >
-              📊
+              <TableViewIcon size={14} />
             </button>
           </div>
           <button type="button" className="btn-primary" onClick={onAddNew}>
@@ -120,11 +208,23 @@ export const PipelineTable = ({
 
       {isEmpty ? (
         <div className="empty-table-state">
-          <div className="empty-icon">📋</div>
+          <TrackerBadgeIcon size={28} className="empty-tracker-icon" />
           <div className="empty-title">No hackathons logged yet</div>
           <div className="empty-desc">
-            Click "+ Hackathon" to start pacing your work dates and deadlines.
+            Click "+ Hackathon" to start pacing your work dates.
           </div>
+        </div>
+      ) : displayedHackathons.length === 0 ? (
+        <div className="empty-table-state">
+          <FilterArrowsIcon size={26} className="empty-tracker-icon" />
+          <div className="empty-title">No hackathons match "{statusFilter}"</div>
+          <button
+            type="button"
+            className="filter-reset-link-btn"
+            onClick={() => setStatusFilter('ALL')}
+          >
+            Show all hackathons
+          </button>
         </div>
       ) : viewMode === 'table' ? (
         <div className="pipeline-table-wrapper">
@@ -144,9 +244,9 @@ export const PipelineTable = ({
               </tr>
             </thead>
             <tbody>
-              {hackathons.map((h, idx) => {
+              {displayedHackathons.map((h, idx) => {
                 const isMenuOpen = openMenuId === h.id;
-                const openUpward = idx >= hackathons.length - 2 && hackathons.length > 2;
+                const openUpward = idx >= displayedHackathons.length - 2 && displayedHackathons.length > 2;
 
                 return (
                   <tr key={h.id}>
@@ -234,9 +334,9 @@ export const PipelineTable = ({
         </div>
       ) : (
         <div className="pipeline-list">
-          {hackathons.map((h, idx) => {
+          {displayedHackathons.map((h, idx) => {
             const isMenuOpen = openMenuId === h.id;
-            const openUpward = idx === hackathons.length - 1 && hackathons.length > 1;
+            const openUpward = idx === displayedHackathons.length - 1 && displayedHackathons.length > 1;
 
             return (
               <div
@@ -244,89 +344,89 @@ export const PipelineTable = ({
                 className={`pipeline-item ${isMenuOpen ? 'menu-open' : ''}`}
                 style={{ zIndex: isMenuOpen ? 100 : 'auto' }}
               >
-              <div
-                className="pipeline-item-color-bar"
-                style={{
-                  backgroundColor: h.color || 'var(--amber-gear)',
-                }}
-              />
-              <div className="pipeline-item-content">
-                <div className="pipeline-item-header">
-                  <div className="pipeline-item-title-wrap">
-                    {h.emoji && <span className="pipeline-item-emoji">{h.emoji}</span>}
-                    <span className="pipeline-item-name" title={h.name}>
-                      {h.name}
-                    </span>
-                  </div>
-
-                  <div className="pipeline-menu-container">
-                    <button
-                      type="button"
-                      className="kebab-btn"
-                      title="Actions"
-                      aria-label="Actions menu"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setOpenMenuId(openMenuId === h.id ? null : h.id);
-                      }}
-                    >
-                      &#x22EE;
-                    </button>
-
-                    {openMenuId === h.id && (
-                      <div
-                        className={`pipeline-dropdown-menu ${openUpward ? 'dropdown-upward' : ''}`}
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <button
-                          type="button"
-                          className="pipeline-menu-item"
-                          onClick={() => {
-                            setOpenMenuId(null);
-                            onEdit(h);
-                          }}
-                        >
-                          <span className="menu-item-icon">✏️</span>
-                          <span>Edit</span>
-                        </button>
-                        <button
-                          type="button"
-                          className="pipeline-menu-item delete-item"
-                          onClick={() => {
-                            setOpenMenuId(null);
-                            onDelete(h);
-                          }}
-                        >
-                          <span className="menu-item-icon">🗑️</span>
-                          <span>Delete</span>
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <div className="pipeline-item-meta">
-                  <div className="pipeline-meta-pills">
-                    <span className="pipeline-meta-pill" title="Work Dates">
-                      <span className="meta-icon">🗓️</span>
-                      <span>{formatWorkRange(h.startDate, h.endDate)}</span>
-                    </span>
-                    {h.deadline && (
-                      <span className="pipeline-meta-pill deadline-pill" title="Submission Deadline">
-                        <span className="meta-icon">🏁</span>
-                        <span>Due {formatDisplayDate(h.deadline)}</span>
+                <div
+                  className="pipeline-item-color-bar"
+                  style={{
+                    backgroundColor: h.color || 'var(--amber-gear)',
+                  }}
+                />
+                <div className="pipeline-item-content">
+                  <div className="pipeline-item-header">
+                    <div className="pipeline-item-title-wrap">
+                      {h.emoji && <span className="pipeline-item-emoji">{h.emoji}</span>}
+                      <span className="pipeline-item-name" title={h.name}>
+                        {h.name}
                       </span>
-                    )}
+                    </div>
+
+                    <div className="pipeline-menu-container">
+                      <button
+                        type="button"
+                        className="kebab-btn"
+                        title="Actions"
+                        aria-label="Actions menu"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setOpenMenuId(openMenuId === h.id ? null : h.id);
+                        }}
+                      >
+                        &#x22EE;
+                      </button>
+
+                      {openMenuId === h.id && (
+                        <div
+                          className={`pipeline-dropdown-menu ${openUpward ? 'dropdown-upward' : ''}`}
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <button
+                            type="button"
+                            className="pipeline-menu-item"
+                            onClick={() => {
+                              setOpenMenuId(null);
+                              onEdit(h);
+                            }}
+                          >
+                            <span className="menu-item-icon">✏️</span>
+                            <span>Edit</span>
+                          </button>
+                          <button
+                            type="button"
+                            className="pipeline-menu-item delete-item"
+                            onClick={() => {
+                              setOpenMenuId(null);
+                              onDelete(h);
+                            }}
+                          >
+                            <span className="menu-item-icon">🗑️</span>
+                            <span>Delete</span>
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                  <span className={`status-chip ${getStatusChipClass(h.status)}`}>
-                    {h.status}
-                  </span>
+
+                  <div className="pipeline-item-meta">
+                    <div className="pipeline-meta-pills">
+                      <span className="pipeline-meta-pill" title="Work Dates">
+                        <span className="meta-icon">🗓️</span>
+                        <span>{formatWorkRange(h.startDate, h.endDate)}</span>
+                      </span>
+                      {h.deadline && (
+                        <span className="pipeline-meta-pill deadline-pill" title="Submission Deadline">
+                          <span className="meta-icon">🏁</span>
+                          <span>Due {formatDisplayDate(h.deadline)}</span>
+                        </span>
+                      )}
+                    </div>
+                    <span className={`status-chip ${getStatusChipClass(h.status)}`}>
+                      {h.status}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
       )}
     </div>
   );
