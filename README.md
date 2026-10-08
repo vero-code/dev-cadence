@@ -30,13 +30,15 @@ Logging multiple hackathons across disconnected calendars causes:
 - **Deadlines & Popovers:** Submission deadlines are flagged (`🏁`). Click any busy day for quick event details and edit triggers.
 
 ### 🔄 2. Real-Time Form & Calendar Sync
-- **Live Preview:** Editing dates in the form instantly highlights the calendar with a glowing dashed aura, translucent tint, and animated deadline flag.
-- **Direct Scheduling:** Click an empty day to start logging with pre-filled dates. Click calendar days to set sprint ranges.
-- **Date Guard:** Automatically enforces `startDate <= endDate` and spans new sprints by your target duration.
+- **Smart Range Anchor:** Click any empty day to auto-span a sprint by your configured turnaround. Click later days to dynamically stretch or shrink the sprint; click before the start to shift the start date; click the start day again to deselect.
+- **Live Preview Aura:** Editing dates in the form instantly highlights the calendar with a glowing dashed aura, translucent tint, and animated deadline flag (`🏁`).
+- **Date Safety Guard:** Automatically enforces `startDate <= endDate` and prevents invalid date collisions.
 
-### 🛡️ 3. Capacity Guardrail & Rest Buffer
-- **Workload Bar:** Real-time ratio of committed work days vs. remaining rest buffer.
-- **Custom Targets:** Set monthly rest targets (e.g. 8–12 days) and average sprint turnaround in Settings.
+### 🛡️ 3. Tri-Color Capacity Guardrail & Rest Buffer
+- **Tri-Color Capacity Bar:** Visual breakdown of your monthly days:
+  - 🔵 **Blue (Sprint Days):** Total scheduled hackathon commitment.
+  - 🟣 **Purple (Available Buffer):** Free days remaining before dipping into rest.
+  - 🟢 **Green (Target Rest):** Protected recharge buffer (configured in Settings, e.g. 8–12 days).
 - **Burnout Warning:** Prominent overload badge alerts you when work encroaches on your rest buffer.
 
 ### 📋 4. Dual-Layout Tracker (Cards & Table)
@@ -77,6 +79,7 @@ Logging multiple hackathons across disconnected calendars causes:
 - **Framework:** [React 19](https://react.dev/) + [Vite 6](https://vite.dev/)
 - **Styling:** Vanilla CSS with CSS tokens, container queries, and backdrop blur
 - **Platform:** Chrome Extension Manifest V3 (`side_panel`, `storage`, background worker)
+- **Built With AI:** Developed via **Devpost Learn Skill Pack** (`1-start` &rarr; `6-ship`) inside **Google Antigravity** using Flipped Interaction.
 
 ```text
 dev-cadence/
