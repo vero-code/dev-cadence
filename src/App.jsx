@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { CalendarGrid } from './components/CalendarGrid';
@@ -224,20 +224,34 @@ export const App = () => {
   };
 
   // When user edits dates in the form, automatically navigate calendar to that month if needed
-  const handleDatesChange = (dates) => {
-    setModalDates(dates);
+  const handleDatesChange = useCallback((dates) => {
+    setModalDates((prev) => {
+      if (
+        prev &&
+        prev.startDate === dates?.startDate &&
+        prev.endDate === dates?.endDate &&
+        prev.deadline === dates?.deadline &&
+        prev.color === dates?.color &&
+        prev.emoji === dates?.emoji &&
+        prev.name === dates?.name &&
+        prev.status === dates?.status &&
+        prev.id === dates?.id
+      ) {
+        return prev;
+      }
+      return dates;
+    });
+
     if (dates?.startDate && /^\d{4}-\d{2}-\d{2}$/.test(dates.startDate)) {
       const [yStr, mStr] = dates.startDate.split('-');
       const y = parseInt(yStr, 10);
       const m = parseInt(mStr, 10) - 1;
       if (!isNaN(y) && !isNaN(m) && m >= 0 && m <= 11) {
-        if (y !== currentYear || m !== currentMonth) {
-          setCurrentYear(y);
-          setCurrentMonth(m);
-        }
+        setCurrentYear((prevY) => (prevY !== y ? y : prevY));
+        setCurrentMonth((prevM) => (prevM !== m ? m : prevM));
       }
     }
-  };
+  }, []);
 
   const handleJumpToMonth = (dateString) => {
     if (!dateString || !/^\d{4}-\d{2}-\d{2}$/.test(dateString)) return;

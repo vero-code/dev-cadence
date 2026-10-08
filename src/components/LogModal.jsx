@@ -17,6 +17,9 @@ export const LogModal = ({
 }) => {
   const formCardRef = useRef(null);
   const clickStepRef = useRef(0);
+  const lastProcessedClickRef = useRef(null);
+  const prevBroadcastRef = useRef(null);
+  const currentValuesRef = useRef({});
   const [name, setName] = useState('');
   const [deadline, setDeadline] = useState('');
   const [status, setStatus] = useState(STATUS_OPTIONS[0] || 'Interested');
@@ -27,9 +30,14 @@ export const LogModal = ({
   const [error, setError] = useState('');
   const [activeDateField, setActiveDateField] = useState(null);
 
+  // Keep a fresh reference to current form values to avoid stale closures and redundant effect triggers
+  currentValuesRef.current = { startDate, endDate, deadline, activeDateField };
+
   useEffect(() => {
     const avgDays = Number(avgTurnaroundDays) || 10;
     clickStepRef.current = 0;
+    lastProcessedClickRef.current = null;
+    prevBroadcastRef.current = null;
     if (editingHackathon) {
       setName(editingHackathon.name || '');
       setDeadline(editingHackathon.deadline || '');
@@ -75,30 +83,34 @@ export const LogModal = ({
 
   // Handle direct date clicks from calendar while this form is open
   useEffect(() => {
-    if (!isOpen || !calendarPickedDate?.date) return;
+    if (!isOpen || !calendarPickedDate?.date || !calendarPickedDate?.timestamp) return;
+    if (lastProcessedClickRef.current === calendarPickedDate.timestamp) return;
+    lastProcessedClickRef.current = calendarPickedDate.timestamp;
+
     const clickedDate = calendarPickedDate.date;
     const avgDays = Number(avgTurnaroundDays) || 10;
+    const { startDate: curStart, endDate: curEnd, deadline: curDead, activeDateField: curField } = currentValuesRef.current;
 
-    if (activeDateField === 'endDate') {
-      if (startDate && clickedDate < startDate) {
+    if (curField === 'endDate') {
+      if (curStart && clickedDate < curStart) {
         setStartDate(clickedDate);
-        setEndDate(startDate);
-        if (!deadline || deadline < startDate) {
-          setDeadline(startDate);
+        setEndDate(curStart);
+        if (!curDead || curDead < curStart) {
+          setDeadline(curStart);
         }
       } else {
         setEndDate(clickedDate);
-        if (!deadline || deadline === endDate || deadline < clickedDate) {
+        if (!curDead || curDead === curEnd || curDead < clickedDate) {
           setDeadline(clickedDate);
         }
       }
       return;
     }
 
-    if (activeDateField === 'deadline') {
-      if (endDate && clickedDate < endDate) {
+    if (curField === 'deadline') {
+      if (curEnd && clickedDate < curEnd) {
         setEndDate(clickedDate);
-        if (startDate && clickedDate < startDate) {
+        if (curStart && clickedDate < curStart) {
           setStartDate(clickedDate);
         }
       }
@@ -106,9 +118,9 @@ export const LogModal = ({
       return;
     }
 
-    if (activeDateField === 'startDate') {
+    if (curField === 'startDate') {
       setStartDate(clickedDate);
-      if (endDate && clickedDate > endDate) {
+      if (curEnd && clickedDate > curEnd) {
         const newEnd = addDaysToDateString(clickedDate, avgDays - 1);
         setEndDate(newEnd);
         setDeadline(newEnd);
@@ -117,14 +129,14 @@ export const LogModal = ({
     }
 
     // Default sequential calendar click behavior
-    if (clickStepRef.current === 0 || !startDate) {
+    if (clickStepRef.current === 0 || !curStart) {
       setStartDate(clickedDate);
       const newEnd = addDaysToDateString(clickedDate, avgDays - 1);
       setEndDate(newEnd);
       setDeadline(newEnd);
       clickStepRef.current = 1;
     } else {
-      if (clickedDate >= startDate) {
+      if (clickedDate >= curStart) {
         setEndDate(clickedDate);
         setDeadline(clickedDate);
         clickStepRef.current = 0;
@@ -136,22 +148,37 @@ export const LogModal = ({
         clickStepRef.current = 1;
       }
     }
-  }, [calendarPickedDate, isOpen, avgTurnaroundDays, activeDateField, startDate, endDate, deadline]);
+  }, [calendarPickedDate, isOpen, avgTurnaroundDays]);
 
-  // Broadcast full draft state for real-time visual calendar preview
+  // Broadcast full draft state for real-time visual calendar preview (guarded against duplicate notifications)
   useEffect(() => {
-    if (isOpen && onDatesChange) {
-      onDatesChange({
-        startDate,
-        endDate,
-        deadline,
-        color,
-        emoji,
-        name,
-        status,
-        id: editingHackathon?.id,
-      });
+    if (!isOpen || !onDatesChange) return;
+    const prev = prevBroadcastRef.current;
+    if (
+      prev &&
+      prev.startDate === startDate &&
+      prev.endDate === endDate &&
+      prev.deadline === deadline &&
+      prev.color === color &&
+      prev.emoji === emoji &&
+      prev.name === name &&
+      prev.status === status &&
+      prev.id === editingHackathon?.id
+    ) {
+      return;
     }
+    const currentPayload = {
+      startDate,
+      endDate,
+      deadline,
+      color,
+      emoji,
+      name,
+      status,
+      id: editingHackathon?.id,
+    };
+    prevBroadcastRef.current = currentPayload;
+    onDatesChange(currentPayload);
   }, [startDate, endDate, deadline, color, emoji, name, status, isOpen, onDatesChange, editingHackathon]);
 
   useEffect(() => {
@@ -366,7 +393,7 @@ export const LogModal = ({
               Cancel
             </button>
             <button type="submit" className="btn-primary">
-              {editingHackathon ? 'Save Changes' : 'Add Hackathon'}
+              {editingHackathon ? 'Save' : 'Add Hackathon'}
             </button>
           </div>
         </form>
