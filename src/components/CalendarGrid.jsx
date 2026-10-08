@@ -137,8 +137,8 @@ export const CalendarGrid = ({
 
     // If create/edit modal is actively open (calendar has dashed range highlight)
     if (modalActiveRange) {
-      // Repeat click on cell with dashed outline: deselects / closes creation screen
-      if (isDayInModalRange(day.dateString)) {
+      // Repeat click on the start day itself: cancel selection / close modal
+      if (modalActiveRange.startDate && day.dateString === modalActiveRange.startDate) {
         setActiveTooltip(null);
         setHoveredRangeDate(null);
         if (onCancelModalRange) {
@@ -148,7 +148,7 @@ export const CalendarGrid = ({
         }
         return;
       }
-      // Clicking another day while modal is open updates form dates to that day
+      // Clicking any other day (inside or outside range) dynamically updates form dates
       setActiveTooltip(null);
       setHoveredRangeDate(null);
       onDateRangeClick && onDateRangeClick(day.dateString);

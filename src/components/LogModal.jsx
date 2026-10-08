@@ -91,22 +91,18 @@ export const LogModal = ({
     const avgDays = Number(avgTurnaroundDays) || 10;
     const { startDate: curStart, endDate: curEnd, deadline: curDead, activeDateField: curField } = currentValuesRef.current;
 
-    if (curField === 'endDate') {
-      if (curStart && clickedDate < curStart) {
-        setStartDate(clickedDate);
-        setEndDate(curStart);
-        if (!curDead || curDead < curStart) {
-          setDeadline(curStart);
-        }
-      } else {
-        setEndDate(clickedDate);
-        if (!curDead || curDead === curEnd || curDead < clickedDate) {
-          setDeadline(clickedDate);
-        }
+    // 1. If user explicitly focused on Start Date input in the form
+    if (curField === 'startDate') {
+      setStartDate(clickedDate);
+      if (curEnd && clickedDate > curEnd) {
+        const newEnd = addDaysToDateString(clickedDate, avgDays - 1);
+        setEndDate(newEnd);
+        setDeadline(newEnd);
       }
       return;
     }
 
+    // 2. If user explicitly focused on Deadline input in the form
     if (curField === 'deadline') {
       if (curEnd && clickedDate < curEnd) {
         setEndDate(clickedDate);
@@ -118,34 +114,28 @@ export const LogModal = ({
       return;
     }
 
-    if (curField === 'startDate') {
-      setStartDate(clickedDate);
-      if (curEnd && clickedDate > curEnd) {
-        const newEnd = addDaysToDateString(clickedDate, avgDays - 1);
-        setEndDate(newEnd);
-        setDeadline(newEnd);
-      }
-      return;
-    }
-
-    // Default sequential calendar click behavior
-    if (clickStepRef.current === 0 || !curStart) {
+    // 3. Smart Anchor mode (default or when activeDateField is 'endDate')
+    if (!curStart) {
       setStartDate(clickedDate);
       const newEnd = addDaysToDateString(clickedDate, avgDays - 1);
       setEndDate(newEnd);
       setDeadline(newEnd);
-      clickStepRef.current = 1;
-    } else {
-      if (clickedDate >= curStart) {
-        setEndDate(clickedDate);
+      return;
+    }
+
+    if (clickedDate >= curStart) {
+      // Clicked on or after start date: adjusts the End Date (lengthens or shortens the sprint smoothly)
+      setEndDate(clickedDate);
+      if (!curDead || curDead === curEnd || curDead < clickedDate) {
         setDeadline(clickedDate);
-        clickStepRef.current = 0;
-      } else {
-        setStartDate(clickedDate);
+      }
+    } else {
+      // Clicked before current start date: shifts the Start Date backward
+      setStartDate(clickedDate);
+      if (!curEnd || curEnd < clickedDate) {
         const newEnd = addDaysToDateString(clickedDate, avgDays - 1);
         setEndDate(newEnd);
         setDeadline(newEnd);
-        clickStepRef.current = 1;
       }
     }
   }, [calendarPickedDate, isOpen, avgTurnaroundDays]);
