@@ -63,14 +63,25 @@ Logging multiple hackathons across disconnected calendars causes:
 
 ---
 
-## 🎨 Theme Tokens
+## 📦 Changelog
 
-| Token | Devpost Classic Navy | Rich Automaton Dark | Light Parchment | Purpose |
-| :--- | :--- | :--- | :--- | :--- |
-| **Background** | `#070d19` | `#0c0804` | `#fbf6ee` | Panel background |
-| **Primary Accent** | `#06b6d4` (Cyan) | `#f59e0b` (Amber) | `#b8860b` (Gold) | Active buttons & highlights |
-| **Selection Aura** | `rgba(6, 182, 212, 0.35)` | `rgba(245, 158, 11, 0.3)` | `rgba(184, 134, 11, 0.2)` | Dashed calendar glow |
-| **Safe Buffer** | `#10b981` (Emerald) | `#10b981` (Emerald) | `#15803d` (Green) | Rest indicators & submissions |
+### v0.2.0 *(October 20, 2026)*
+
+- Added a hackathon URL field.
+
+- Added monthly hackathon count badges by status.
+
+- Updated status colors and names to align with the Devpost hackathon lifecycle.
+
+- Added analytics to estimate event durations and average work days.
+
+- Improved Tracker navigation with month switching.
+
+- Added Schedule highlighting for Tracker items on hover, with an option to disable the effect.
+
+- Refined Table View by removing emoji clutter.
+
+- Improved Tracker sorting by start date.
 
 ---
 
