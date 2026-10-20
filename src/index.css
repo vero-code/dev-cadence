@@ -779,7 +779,7 @@ body:has([data-theme="devpost"]) {
 .tracker-heading-group {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.65rem;
   min-width: 0;
   flex-shrink: 1;
 }
@@ -797,156 +797,6 @@ body:has([data-theme="devpost"]) {
 
 [data-theme="parchment"] .tracker-badge-icon {
   color: #854d0e;
-}
-
-.tracker-filter-container {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-.tracker-filter-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  background: var(--bg-input);
-  border: 1px solid var(--border-subtle);
-  border-radius: 6px;
-  padding: 0 0.45rem;
-  height: 28px;
-  box-sizing: border-box;
-  font-family: var(--font-heading);
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--text-dim);
-  cursor: pointer;
-  transition: all 0.18s ease;
-  user-select: none;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.tracker-filter-btn:hover {
-  color: var(--text-main);
-  border-color: rgba(245, 158, 11, 0.4);
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.tracker-filter-btn.active {
-  background: rgba(245, 158, 11, 0.15);
-  border-color: rgba(245, 158, 11, 0.5);
-  color: var(--amber-gear);
-}
-
-[data-theme="devpost"] .tracker-filter-btn:hover {
-  border-color: rgba(56, 189, 248, 0.45);
-}
-
-[data-theme="devpost"] .tracker-filter-btn.active {
-  background: rgba(6, 182, 212, 0.15);
-  border-color: rgba(6, 182, 212, 0.5);
-  color: #38bdf8;
-}
-
-[data-theme="parchment"] .tracker-filter-btn.active {
-  background: rgba(184, 134, 11, 0.14);
-  border-color: #b8860b;
-  color: #78350f;
-}
-
-.tracker-filter-arrows {
-  flex-shrink: 0;
-  opacity: 0.85;
-}
-
-.tracker-filter-label {
-  line-height: 1;
-}
-
-.tracker-filter-chevron {
-  flex-shrink: 0;
-  transition: transform 0.2s ease;
-  opacity: 0.65;
-}
-
-.tracker-filter-chevron.open {
-  transform: rotate(180deg);
-}
-
-.tracker-filter-dropdown {
-  position: absolute;
-  top: calc(100% + 5px);
-  left: 0;
-  z-index: 120;
-  min-width: 145px;
-  background: var(--card-solid-bg);
-  border: 1.5px solid var(--border-subtle);
-  border-radius: 8px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.65), 0 0 12px rgba(245, 158, 11, 0.08);
-  padding: 0.3rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  backdrop-filter: blur(12px);
-  animation: fadeInMenu 0.15s ease-out;
-}
-
-.tracker-filter-dropdown-title {
-  font-size: 0.65rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-  color: var(--text-dim);
-  padding: 0.2rem 0.45rem 0.25rem;
-  border-bottom: 1px solid var(--border-subtle);
-  margin-bottom: 2px;
-}
-
-.tracker-filter-option {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.28rem 0.5rem;
-  font-size: 0.73rem;
-  font-family: var(--font-heading);
-  color: var(--text-dim);
-  background: transparent;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  text-align: left;
-  width: 100%;
-}
-
-.tracker-filter-option:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--text-main);
-}
-
-.tracker-filter-option.selected {
-  background: rgba(245, 158, 11, 0.18);
-  color: var(--amber-gear);
-  font-weight: 700;
-}
-
-[data-theme="devpost"] .tracker-filter-option.selected {
-  background: rgba(6, 182, 212, 0.18);
-  color: #38bdf8;
-}
-
-[data-theme="parchment"] .tracker-filter-option.selected {
-  background: rgba(184, 134, 11, 0.14);
-  color: #78350f;
-}
-
-.filter-count-badge {
-  font-size: 0.67rem;
-  opacity: 0.7;
-  background: rgba(0, 0, 0, 0.25);
-  padding: 1px 5px;
-  border-radius: 9px;
 }
 
 .filter-reset-link-btn {
@@ -968,6 +818,218 @@ body:has([data-theme="devpost"]) {
   color: var(--text-dim);
   opacity: 0.45;
   margin-bottom: 0.35rem;
+}
+
+/* Quick Status Summary Pills in Tracker Header (Centered) */
+.tracker-status-pills {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0 auto;
+  flex-shrink: 0;
+}
+
+.tracker-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+  padding: 0 0.55rem;
+  height: 24px;
+  border-radius: 9999px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.tracker-status-pill:hover {
+  transform: translateY(-1px);
+  color: var(--text-main);
+  background: var(--bg-card-hover);
+  border-color: var(--border-hover);
+}
+
+.status-pill-dot {
+  width: 6.5px;
+  height: 6.5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dot-reg {
+  background: #38bdf8;
+  box-shadow: 0 0 6px rgba(56, 189, 248, 0.6);
+}
+
+.dot-early {
+  background: #818cf8;
+  box-shadow: 0 0 6px rgba(129, 140, 248, 0.6);
+}
+
+.dot-submitted {
+  background: #10b981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+}
+
+.status-pill-label {
+  line-height: 1;
+  font-weight: 600;
+}
+
+.status-pill-count {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text-main);
+}
+
+/* Zero state: keep text sharp, slight mute without blurry opacity */
+.tracker-status-pill.zero {
+  color: var(--text-muted);
+}
+.tracker-status-pill.zero .status-pill-dot {
+  opacity: 0.65;
+}
+
+/* Active States — NO harsh outline/border, soft solid tint cushion & crisp high-contrast text */
+.tracker-status-pill.active {
+  border-color: transparent !important;
+  box-shadow: none !important;
+  font-weight: 700;
+}
+
+/* Clear Cross on Active Pill — perfectly centered SVG vector without hover jumping */
+.status-pill-clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  min-width: 14px;
+  min-height: 14px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.22);
+  color: currentColor;
+  transition: background 0.15s ease;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  line-height: 0;
+  pointer-events: none;
+}
+
+.status-pill-clear svg {
+  display: block;
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  margin: auto;
+}
+
+.tracker-status-pill:hover .status-pill-clear {
+  background: rgba(0, 0, 0, 0.35);
+}
+
+/* Active in Dark Themes (Steampunk & Devpost) */
+.tracker-status-pill.pill-reg.active {
+  background: rgba(6, 182, 212, 0.22);
+  color: #38bdf8;
+}
+
+.tracker-status-pill.pill-submitted.active {
+  background: rgba(16, 185, 129, 0.22);
+  color: #34d399;
+}
+
+.tracker-status-pill.pill-early.active {
+  background: rgba(99, 102, 241, 0.24);
+  color: #c7d2fe;
+}
+
+/* Parchment Theme — Crisp, high contrast, no dirty outline */
+[data-theme="parchment"] .tracker-status-pill {
+  background: rgba(146, 104, 60, 0.08);
+  border-color: rgba(160, 110, 50, 0.2);
+  color: #4a3018;
+}
+
+[data-theme="parchment"] .tracker-status-pill:hover {
+  background: rgba(146, 104, 60, 0.15);
+  color: #1a0e05;
+  border-color: rgba(160, 110, 50, 0.35);
+}
+
+[data-theme="parchment"] .tracker-status-pill .status-pill-count {
+  color: #1a0e05;
+}
+
+[data-theme="parchment"] .tracker-status-pill.zero {
+  color: #7c624c;
+}
+
+[data-theme="parchment"] .tracker-status-pill.zero .status-pill-count {
+  color: #7c624c;
+}
+
+[data-theme="parchment"] .dot-reg {
+  background: #0284c7;
+  box-shadow: none;
+}
+
+[data-theme="parchment"] .dot-submitted {
+  background: #059669;
+  box-shadow: none;
+}
+
+[data-theme="parchment"] .dot-early {
+  background: #6366f1;
+  box-shadow: none;
+}
+
+[data-theme="parchment"] .tracker-status-pill.active {
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+[data-theme="parchment"] .status-pill-clear {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="parchment"] .tracker-status-pill:hover .status-pill-clear {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="parchment"] .tracker-status-pill.pill-reg.active {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+[data-theme="parchment"] .tracker-status-pill.pill-reg.active .status-pill-count {
+  color: #0369a1;
+}
+
+[data-theme="parchment"] .tracker-status-pill.pill-submitted.active {
+  background: #d1fae5;
+  color: #065f46;
+}
+[data-theme="parchment"] .tracker-status-pill.pill-submitted.active .status-pill-count {
+  color: #065f46;
+}
+
+[data-theme="parchment"] .tracker-status-pill.pill-early.active {
+  background: #ede9fe;
+  color: #4338ca;
+}
+[data-theme="parchment"] .tracker-status-pill.pill-early.active .status-pill-count {
+  color: #4338ca;
 }
 
 .pipeline-header-actions {
@@ -1014,8 +1076,15 @@ body:has([data-theme="devpost"]) {
     justify-content: center;
     border-radius: 7px;
   }
-  .tracker-filter-btn {
-    padding: 0 0.35rem;
+  .tracker-status-pills {
+    gap: 0.2rem;
+  }
+  .tracker-status-pill {
+    padding: 0 0.32rem;
+    height: 22px;
+  }
+  .status-pill-label {
+    display: none;
   }
 }
 
@@ -1037,8 +1106,15 @@ body:has([data-theme="devpost"]) {
     justify-content: center;
     border-radius: 7px;
   }
-  .tracker-filter-btn {
-    padding: 0 0.35rem;
+  .tracker-status-pills {
+    gap: 0.2rem;
+  }
+  .tracker-status-pill {
+    padding: 0 0.32rem;
+    height: 22px;
+  }
+  .status-pill-label {
+    display: none;
   }
 }
 
@@ -1702,7 +1778,7 @@ body:has([data-theme="devpost"]) {
   color: #92400e;
 }
 
-/* Enamel Plaque / Clockmaker Seal Badges */
+/* Enamel Plaque / Clockmaker Seal Badges — crisp, sharp, no blurry outer glow */
 .status-chip {
   display: inline-flex;
   align-items: center;
@@ -1712,105 +1788,116 @@ body:has([data-theme="devpost"]) {
   font-weight: 700;
   letter-spacing: 0.02em;
   white-space: nowrap;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: none;
 }
 
 .chip-registered { 
   background: var(--emerald-bg); 
   color: #34d399; 
   border: 1px solid rgba(16, 185, 129, 0.45); 
-  box-shadow: 0 0 8px rgba(16, 185, 129, 0.25);
+  box-shadow: none;
 }
 
 .chip-early { 
   background: rgba(0, 229, 255, 0.14); 
   color: #38bdf8; 
   border: 1px solid rgba(0, 229, 255, 0.45); 
-  box-shadow: 0 0 10px rgba(0, 229, 255, 0.25);
+  box-shadow: none;
 }
 
 .chip-waiting { 
   background: var(--amber-glow); 
   color: #fbbf24; 
   border: 1px solid rgba(245, 158, 11, 0.45); 
-  box-shadow: 0 0 10px rgba(245, 158, 11, 0.25);
+  box-shadow: none;
 }
 
 .chip-considering { 
   background: rgba(148, 163, 184, 0.14); 
   color: #cbd5e1; 
   border: 1px solid rgba(148, 163, 184, 0.3); 
+  box-shadow: none;
 }
 
 .chip-custom { 
   background: rgba(168, 85, 247, 0.16); 
   color: #c084fc; 
   border: 1px solid rgba(168, 85, 247, 0.4); 
-  box-shadow: 0 0 8px rgba(168, 85, 247, 0.25);
+  box-shadow: none;
+}
+
+[data-theme="parchment"] .status-chip {
+  box-shadow: none !important;
 }
 
 [data-theme="parchment"] .chip-registered { 
   background: rgba(4, 120, 87, 0.12); 
   color: #065f46; 
   border-color: rgba(4, 120, 87, 0.4); 
+  box-shadow: none !important;
 }
 
 [data-theme="parchment"] .chip-early { 
   background: rgba(2, 132, 199, 0.12); 
   color: #0369a1; 
   border-color: rgba(2, 132, 199, 0.4); 
+  box-shadow: none !important;
 }
 
 [data-theme="parchment"] .chip-waiting { 
   background: rgba(180, 83, 9, 0.14); 
   color: #92400e; 
   border-color: rgba(180, 83, 9, 0.4); 
+  box-shadow: none !important;
 }
 
 [data-theme="parchment"] .chip-considering { 
   background: rgba(100, 116, 139, 0.12); 
   color: #334155; 
   border-color: rgba(100, 116, 139, 0.3); 
+  box-shadow: none !important;
 }
 
 [data-theme="parchment"] .chip-custom { 
   background: rgba(147, 51, 234, 0.12); 
   color: #6b21a8; 
   border-color: rgba(147, 51, 234, 0.4); 
+  box-shadow: none !important;
 }
 
 [data-theme="steampunk"] .chip-registered { 
   background: rgba(16, 185, 129, 0.16); 
   color: #34d399; 
   border-color: rgba(16, 185, 129, 0.45); 
-  box-shadow: 0 0 10px rgba(16, 185, 129, 0.25);
+  box-shadow: none;
 }
 
 [data-theme="steampunk"] .chip-early { 
   background: rgba(0, 229, 255, 0.15); 
   color: #38bdf8; 
   border-color: rgba(0, 229, 255, 0.45); 
-  box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+  box-shadow: none;
 }
 
 [data-theme="steampunk"] .chip-waiting { 
   background: rgba(245, 158, 11, 0.18); 
   color: #fbbf24; 
   border-color: rgba(245, 158, 11, 0.45); 
-  box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+  box-shadow: none;
 }
 
 [data-theme="steampunk"] .chip-considering { 
   background: rgba(200, 172, 144, 0.14); 
   color: #e2d3c1; 
   border-color: rgba(200, 172, 144, 0.35); 
+  box-shadow: none;
 }
 
 [data-theme="steampunk"] .chip-custom { 
   background: rgba(192, 132, 252, 0.18); 
   color: #c084fc; 
   border-color: rgba(192, 132, 252, 0.45); 
-  box-shadow: 0 0 10px rgba(192, 132, 252, 0.3);
+  box-shadow: none;
 }
 
 .table-actions {

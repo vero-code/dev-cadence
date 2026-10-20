@@ -160,3 +160,26 @@ export const ExternalLinkIcon = ({ size = 12, className = '' }) => (
   </svg>
 );
 
+/**
+ * Mathematically centered cross / close icon
+ * 1:1 pixel grid alignment (viewBox 8x8, center 4x4)
+ */
+export const CloseIcon = ({ size = 8, className = '', strokeWidth = 1.5 }) => (
+  <svg
+    className={`close-icon ${className}`}
+    width={size}
+    height={size}
+    viewBox="0 0 8 8"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={strokeWidth}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+    style={{ display: 'block' }}
+  >
+    <line x1="2" y1="2" x2="6" y2="6" />
+    <line x1="6" y1="2" x2="2" y2="6" />
+  </svg>
+);
+

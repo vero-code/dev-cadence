@@ -13,11 +13,9 @@ export const EMOJI_OPTIONS = ['🔷', '🔴', '🟩', '⭐', '🫟', '❕', '▪
 export const STATUS_OPTIONS = [
   'Interested',
   'Registered',
-  'Awaiting API',
   'Early Bird',
   'Draft',
-  'Video Pending',
-  'Submitted',
+  'Done',
 ];
 
 export const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];

@@ -4,9 +4,9 @@ import {
   CardsViewIcon,
   TableViewIcon,
   FilterArrowsIcon,
-  ChevronDownIcon,
   PlusIcon,
   ExternalLinkIcon,
+  CloseIcon,
 } from './Icons';
 
 const MONTH_ABBR = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -43,7 +43,7 @@ const formatWorkRange = (startIso, endIso) => {
 
 const getStatusChipClass = (status) => {
   const s = (status || '').toLowerCase();
-  if (s.includes('registered') || s.includes('submitted')) return 'chip-registered';
+  if (s.includes('registered') || s.includes('submitted') || s.includes('done')) return 'chip-registered';
   if (s.includes('early')) return 'chip-early';
   if (s.includes('wait') || s.includes('api')) return 'chip-waiting';
   if (s.includes('consider')) return 'chip-considering';
@@ -58,7 +58,6 @@ export const PipelineTable = ({
 }) => {
   const [openMenuId, setOpenMenuId] = useState(null);
   const [statusFilter, setStatusFilter] = useState('ALL');
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [viewMode, setViewMode] = useState(() => {
     try {
       return localStorage.getItem('devcadence_view_mode') || 'cards';
@@ -74,22 +73,50 @@ export const PipelineTable = ({
     } catch {}
   };
 
-  const availableStatuses = useMemo(() => {
-    const set = new Set();
-    (hackathons || []).forEach((h) => {
-      if (h.status && h.status.trim()) {
-        set.add(h.status.trim());
-      }
-    });
-    return Array.from(set);
-  }, [hackathons]);
-
   const displayedHackathons = useMemo(() => {
     if (!hackathons) return [];
     if (statusFilter === 'ALL') return hackathons;
     const filterLower = statusFilter.toLowerCase();
+    if (filterLower.includes('done') || filterLower.includes('submitted')) {
+      return hackathons.filter((h) => {
+        const s = (h.status || '').toLowerCase();
+        return s.includes('done') || s.includes('submitted');
+      });
+    }
     return hackathons.filter((h) => (h.status || '').toLowerCase().includes(filterLower));
   }, [hackathons, statusFilter]);
+
+  const statusCounts = useMemo(() => {
+    const counts = {
+      registered: 0,
+      earlyBird: 0,
+      done: 0,
+    };
+    (hackathons || []).forEach((h) => {
+      const s = (h.status || '').toLowerCase();
+      if (s.includes('registered')) counts.registered += 1;
+      else if (s.includes('early')) counts.earlyBird += 1;
+      else if (s.includes('done') || s.includes('submitted')) counts.done += 1;
+    });
+    return counts;
+  }, [hackathons]);
+
+  const handleToggleStatusFilter = (targetStatus) => {
+    if (targetStatus === 'ALL') {
+      setStatusFilter('ALL');
+      return;
+    }
+    const isCurrentlyActive = statusFilter !== 'ALL' && (
+      statusFilter.toLowerCase().includes(targetStatus.toLowerCase()) ||
+      ((targetStatus.toLowerCase().includes('done') || targetStatus.toLowerCase().includes('submitted')) &&
+       (statusFilter.toLowerCase().includes('done') || statusFilter.toLowerCase().includes('submitted')))
+    );
+    if (isCurrentlyActive) {
+      setStatusFilter('ALL');
+    } else {
+      setStatusFilter(targetStatus);
+    }
+  };
 
   const isEmpty = !hackathons || hackathons.length === 0;
 
@@ -98,14 +125,10 @@ export const PipelineTable = ({
       if (!e.target.closest('.pipeline-menu-container')) {
         setOpenMenuId(null);
       }
-      if (!e.target.closest('.tracker-filter-container')) {
-        setIsFilterOpen(false);
-      }
     };
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         setOpenMenuId(null);
-        setIsFilterOpen(false);
       }
     };
     window.addEventListener('click', handleOutsideClick);
@@ -116,6 +139,10 @@ export const PipelineTable = ({
     };
   }, []);
 
+  const isRegActive = statusFilter !== 'ALL' && statusFilter.toLowerCase().includes('registered');
+  const isDoneActive = statusFilter !== 'ALL' && (statusFilter.toLowerCase().includes('done') || statusFilter.toLowerCase().includes('submitted'));
+  const isEarlyActive = statusFilter !== 'ALL' && statusFilter.toLowerCase().includes('early');
+
   return (
     <div className="table-card pipeline-list-container">
       <div className="pipeline-header-row">
@@ -124,61 +151,59 @@ export const PipelineTable = ({
             <TrackerBadgeIcon className="tracker-badge-icon" size={17} />
             <span>Tracker</span>
           </h2>
+        </div>
 
-          <div className="tracker-filter-container">
-            <button
-              type="button"
-              className={`tracker-filter-btn ${statusFilter !== 'ALL' ? 'active' : ''}`}
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsFilterOpen((prev) => !prev);
-              }}
-              title="Filter hackathons by status"
-              aria-label="Filter hackathons by status"
-            >
-              <FilterArrowsIcon size={12} className="tracker-filter-arrows" />
-              <span className="tracker-filter-label">
-                {statusFilter === 'ALL' ? 'Filter' : statusFilter}
+        <div className="tracker-status-pills">
+          <button
+            type="button"
+            className={`tracker-status-pill pill-reg ${isRegActive ? 'active' : ''} ${statusCounts.registered === 0 ? 'zero' : ''}`}
+            onClick={() => handleToggleStatusFilter('Registered')}
+            title={isRegActive ? 'Clear Registered filter' : `Filter by Registered (${statusCounts.registered})`}
+            aria-label={isRegActive ? 'Clear Registered filter' : `Filter by Registered (${statusCounts.registered})`}
+          >
+            <span className="status-pill-dot dot-reg" />
+            <span className="status-pill-label">Reg</span>
+            <span className="status-pill-count">{statusCounts.registered}</span>
+            {isRegActive && (
+              <span className="status-pill-clear" aria-hidden="true">
+                <CloseIcon />
               </span>
-              <ChevronDownIcon size={9} className={`tracker-filter-chevron ${isFilterOpen ? 'open' : ''}`} />
-            </button>
-
-            {isFilterOpen && (
-              <div className="tracker-filter-dropdown" onClick={(e) => e.stopPropagation()}>
-                <div className="tracker-filter-dropdown-title">Status Filter</div>
-                <button
-                  type="button"
-                  className={`tracker-filter-option ${statusFilter === 'ALL' ? 'selected' : ''}`}
-                  onClick={() => {
-                    setStatusFilter('ALL');
-                    setIsFilterOpen(false);
-                  }}
-                >
-                  <span>All</span>
-                  <span className="filter-count-badge">{(hackathons || []).length}</span>
-                </button>
-                {availableStatuses.map((st) => {
-                  const count = (hackathons || []).filter((h) =>
-                    (h.status || '').toLowerCase().includes(st.toLowerCase())
-                  ).length;
-                  return (
-                    <button
-                      key={st}
-                      type="button"
-                      className={`tracker-filter-option ${statusFilter === st ? 'selected' : ''}`}
-                      onClick={() => {
-                        setStatusFilter(st);
-                        setIsFilterOpen(false);
-                      }}
-                    >
-                      <span>{st}</span>
-                      <span className="filter-count-badge">{count}</span>
-                    </button>
-                  );
-                })}
-              </div>
             )}
-          </div>
+          </button>
+
+          <button
+            type="button"
+            className={`tracker-status-pill pill-submitted ${isDoneActive ? 'active' : ''} ${statusCounts.done === 0 ? 'zero' : ''}`}
+            onClick={() => handleToggleStatusFilter('Done')}
+            title={isDoneActive ? 'Clear Done filter' : `Filter by Done (${statusCounts.done})`}
+            aria-label={isDoneActive ? 'Clear Done filter' : `Filter by Done (${statusCounts.done})`}
+          >
+            <span className="status-pill-dot dot-submitted" />
+            <span className="status-pill-label">Done</span>
+            <span className="status-pill-count">{statusCounts.done}</span>
+            {isDoneActive && (
+              <span className="status-pill-clear" aria-hidden="true">
+                <CloseIcon />
+              </span>
+            )}
+          </button>
+
+          <button
+            type="button"
+            className={`tracker-status-pill pill-early ${isEarlyActive ? 'active' : ''} ${statusCounts.earlyBird === 0 ? 'zero' : ''}`}
+            onClick={() => handleToggleStatusFilter('Early Bird')}
+            title={isEarlyActive ? 'Clear Early Bird filter' : `Filter by Early Bird (${statusCounts.earlyBird})`}
+            aria-label={isEarlyActive ? 'Clear Early Bird filter' : `Filter by Early Bird (${statusCounts.earlyBird})`}
+          >
+            <span className="status-pill-dot dot-early" />
+            <span className="status-pill-label">Early</span>
+            <span className="status-pill-count">{statusCounts.earlyBird}</span>
+            {isEarlyActive && (
+              <span className="status-pill-clear" aria-hidden="true">
+                <CloseIcon />
+              </span>
+            )}
+          </button>
         </div>
 
         <div className="pipeline-header-actions">
@@ -204,7 +229,6 @@ export const PipelineTable = ({
           </div>
           <button type="button" className="btn-primary tracker-add-btn" onClick={onAddNew} title="Log Hackathon">
             <PlusIcon size={11} strokeWidth={2.4} />
-            <span className="tracker-add-label">Hackathon</span>
           </button>
         </div>
       </div>
