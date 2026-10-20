@@ -197,9 +197,25 @@ export const PipelineTable = ({
           <h2 className="section-heading">
             <TrackerBadgeIcon className="tracker-badge-icon" size={16} />
             <span>Tracker</span>
+            <button type="button" className="btn-primary tracker-add-btn" onClick={onAddNew} title="Log Hackathon">
+            <PlusIcon size={11} strokeWidth={2.4} />
+          </button>
           </h2>
         </div>
 
+        <div className="pipeline-header-actions">
+          <div className="calendar-month-nav">
+            <MonthNavigator
+              currentYear={activeYear}
+              currentMonth={activeMonth}
+              onPrevMonth={onPrevMonth}
+              onNextMonth={onNextMonth}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="tracker-status-row">
         <div className="tracker-status-pills">
           <button
             type="button"
@@ -209,7 +225,7 @@ export const PipelineTable = ({
             aria-label={isInterestActive ? 'Clear Interest filter' : `Filter by Interest (${statusCounts.interest})`}
           >
             <span className="status-pill-dot dot-interest" />
-            <span className="status-pill-label">Interest</span>
+            <span className="status-pill-label">Int</span>
             <span className="status-pill-count">{statusCounts.interest}</span>
             {isInterestActive && (
               <span className="status-pill-clear" aria-hidden="true">
@@ -243,7 +259,7 @@ export const PipelineTable = ({
             aria-label={isEarlyActive ? 'Clear Early filter' : `Filter by Early (${statusCounts.early})`}
           >
             <span className="status-pill-dot dot-early" />
-            <span className="status-pill-label">Early</span>
+            <span className="status-pill-label">Earl</span>
             <span className="status-pill-count">{statusCounts.early}</span>
             {isEarlyActive && (
               <span className="status-pill-clear" aria-hidden="true">
@@ -287,8 +303,7 @@ export const PipelineTable = ({
           </button>
         </div>
 
-        <div className="pipeline-header-actions">
-          <div className="view-mode-toggle" title="Switch layout">
+        <div className="view-mode-toggle" title="Switch layout">
             <button
               type="button"
               className={`view-toggle-btn ${viewMode === 'cards' ? 'active' : ''}`}
@@ -308,18 +323,6 @@ export const PipelineTable = ({
               <TableViewIcon size={14} />
             </button>
           </div>
-          <button type="button" className="btn-primary tracker-add-btn" onClick={onAddNew} title="Log Hackathon">
-            <PlusIcon size={11} strokeWidth={2.4} />
-          </button>
-          <div className="calendar-month-nav">
-            <MonthNavigator
-              currentYear={activeYear}
-              currentMonth={activeMonth}
-              onPrevMonth={onPrevMonth}
-              onNextMonth={onNextMonth}
-            />
-          </div>
-        </div>
       </div>
 
       {isEmpty ? (
