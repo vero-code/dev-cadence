@@ -210,6 +210,33 @@ export const SettingsModal = ({
             </div>
           </div>
 
+          {/* Schedule Highlight Toggle */}
+          <div className="form-group settings-toggle-group">
+            <div className="settings-toggle-row">
+              <div className="settings-toggle-info">
+                <label className="form-label settings-toggle-label" htmlFor="toggle-highlight-hover">
+                  Highlight in Schedule on Hover
+                </label>
+                <span className="settings-toggle-desc">
+                  Highlight dates in the calendar when hovering over hackathons in Tracker
+                </span>
+              </div>
+              <button
+                id="toggle-highlight-hover"
+                type="button"
+                role="switch"
+                aria-checked={settings?.highlightOnHover !== false}
+                className={`settings-switch-btn ${settings?.highlightOnHover !== false ? 'active' : ''}`}
+                onClick={() => {
+                  const currentVal = settings?.highlightOnHover !== false;
+                  if (onUpdateSettings) onUpdateSettings({ highlightOnHover: !currentVal });
+                }}
+              >
+                <span className="settings-switch-thumb" />
+              </button>
+            </div>
+          </div>
+
           {/* Danger Zone: Full Wipe / Reset Actions */}
           <div className="settings-danger-zone">
             <div className="danger-zone-title">

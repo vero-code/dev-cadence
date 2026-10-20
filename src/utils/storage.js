@@ -11,6 +11,7 @@ const DEFAULT_SETTINGS = {
   avgTurnaroundDays: 10,
   fontPreset: 'bahnschrift',
   fontSize: 'normal',
+  highlightOnHover: true,
 };
 
 const isChromeStorageAvailable = () => {
@@ -26,6 +27,9 @@ const sanitizeSettings = (s) => {
   const merged = { ...DEFAULT_SETTINGS, ...(s || {}) };
   if (merged.fontPreset === 'mono') {
     merged.fontPreset = 'bahnschrift';
+  }
+  if (typeof merged.highlightOnHover !== 'boolean') {
+    merged.highlightOnHover = true;
   }
   return merged;
 };

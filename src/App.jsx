@@ -312,7 +312,7 @@ export const App = () => {
           onNextMonth={handleNextMonth}
           onEdit={handleOpenEdit}
           onJumpToMonth={handleJumpToMonth}
-          hoveredHackathonId={hoveredHackathonId}
+          hoveredHackathonId={settings?.highlightOnHover !== false ? hoveredHackathonId : null}
         />
 
         <div className="lower-content-section">
