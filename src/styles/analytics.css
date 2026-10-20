@@ -18,7 +18,6 @@
 .stats-icon-btn:hover .analytics-icon {
   transform: translateY(-1px) scale(1.08);
   color: #fbbf24;
-  filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.7));
 }
 
 .stats-icon-btn.active {
@@ -38,7 +37,6 @@
 
 [data-theme="devpost"] .stats-icon-btn:hover .analytics-icon {
   color: #7dd3fc;
-  filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.6));
 }
 
 [data-theme="devpost"] .stats-icon-btn.active {
@@ -58,7 +56,6 @@
 
 [data-theme="parchment"] .stats-icon-btn:hover .analytics-icon {
   color: #78350f;
-  filter: drop-shadow(0 0 4px rgba(180, 83, 9, 0.4));
 }
 
 [data-theme="parchment"] .stats-icon-btn.active {

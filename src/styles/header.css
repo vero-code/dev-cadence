@@ -153,7 +153,6 @@
 .settings-icon-btn:hover .settings-gear-svg {
   transform: rotate(45deg);
   color: #fbbf24;
-  filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.7));
 }
 
 [data-theme="parchment"] .settings-icon-btn {
@@ -170,7 +169,6 @@
 
 [data-theme="parchment"] .settings-icon-btn:hover .settings-gear-svg {
   color: #78350f;
-  filter: drop-shadow(0 0 4px rgba(180, 83, 9, 0.4));
 }
 
 [data-theme="devpost"] .settings-icon-btn {
@@ -187,7 +185,6 @@
 
 [data-theme="devpost"] .settings-icon-btn:hover .settings-gear-svg {
   color: #38bdf8;
-  filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.6));
 }
 
 .modal-title-gear {
