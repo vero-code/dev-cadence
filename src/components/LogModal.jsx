@@ -229,9 +229,22 @@ export const LogModal = ({
         formattedUrl = `https://${formattedUrl}`;
       }
       try {
-        new URL(formattedUrl);
+        const parsed = new URL(formattedUrl);
+        if (!['http:', 'https:'].includes(parsed.protocol)) {
+          setError('Please enter a valid website URL (http or https).');
+          return;
+        }
+        const hostname = parsed.hostname;
+        const isLocal = hostname === 'localhost';
+        const isIp = /^(\d{1,3}\.){3}\d{1,3}$/.test(hostname);
+        const domainRegex = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*\.(?:[a-z]{2,}|xn--[a-z0-9]+)$/i;
+
+        if (!isLocal && (isIp || !domainRegex.test(hostname))) {
+          setError('Please enter a valid website URL (e.g. devpost.com or https://...)');
+          return;
+        }
       } catch {
-        setError('Please enter a valid website URL.');
+        setError('Please enter a valid website URL (e.g. devpost.com or https://...)');
         return;
       }
     }
@@ -282,7 +295,7 @@ export const LogModal = ({
             </div>
             <input
               type="text"
-              className="form-input"
+              className={`form-input ${error && (error.toLowerCase().includes('url') || error.toLowerCase().includes('website')) ? 'error' : ''}`}
               placeholder="e.g. https://devpost.com/hackathons/..."
               value={url}
               onChange={(e) => { setUrl(e.target.value); setError(''); }}
