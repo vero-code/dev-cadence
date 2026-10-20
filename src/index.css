@@ -1505,6 +1505,52 @@ body:has([data-theme="devpost"]) {
   border-color: rgba(184, 134, 11, 0.3);
 }
 
+.hackathon-link-icon-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--amber-gear);
+  opacity: 0.72;
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.hackathon-link-icon-btn:hover {
+  opacity: 1;
+  color: #fbbf24;
+  background: rgba(245, 158, 11, 0.14);
+  border-color: rgba(245, 158, 11, 0.35);
+  transform: translateY(-1px);
+}
+
+[data-theme="devpost"] .hackathon-link-icon-btn {
+  color: var(--cyan-primary);
+}
+
+[data-theme="devpost"] .hackathon-link-icon-btn:hover {
+  color: #38bdf8;
+  background: rgba(6, 182, 212, 0.14);
+  border-color: rgba(6, 182, 212, 0.35);
+}
+
+[data-theme="parchment"] .hackathon-link-icon-btn {
+  color: #854d0e;
+}
+
+[data-theme="parchment"] .hackathon-link-icon-btn:hover {
+  color: #451a03;
+  background: rgba(184, 134, 11, 0.14);
+  border-color: rgba(184, 134, 11, 0.35);
+}
+
 .pipeline-dropdown-menu {
   position: absolute;
   top: calc(100% + 4px);
@@ -3156,6 +3202,54 @@ body:has([data-theme="devpost"]) {
 }
 
 [data-theme="parchment"] .tooltip-event-edit-btn:hover {
+  background: rgba(184, 134, 11, 0.18);
+  border-color: rgba(184, 134, 11, 0.4);
+}
+
+.tooltip-event-link-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--amber-gear);
+  opacity: 0.75;
+  font-size: 0.75rem;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 0;
+  line-height: 1;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.tooltip-event-link-btn:hover {
+  background: rgba(245, 158, 11, 0.18);
+  border-color: rgba(245, 158, 11, 0.35);
+  color: #fbbf24;
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+[data-theme="devpost"] .tooltip-event-link-btn {
+  color: var(--cyan-primary);
+}
+
+[data-theme="devpost"] .tooltip-event-link-btn:hover {
+  color: #38bdf8;
+  background: rgba(6, 182, 212, 0.18);
+  border-color: rgba(6, 182, 212, 0.35);
+}
+
+[data-theme="parchment"] .tooltip-event-link-btn {
+  color: #854d0e;
+}
+
+[data-theme="parchment"] .tooltip-event-link-btn:hover {
+  color: #451a03;
   background: rgba(184, 134, 11, 0.18);
   border-color: rgba(184, 134, 11, 0.4);
 }

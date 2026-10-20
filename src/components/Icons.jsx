@@ -138,3 +138,25 @@ export const PlusIcon = ({ size = 11, className = '', strokeWidth = 2.4 }) => (
   </svg>
 );
 
+/**
+ * External link icon (open in new tab)
+ */
+export const ExternalLinkIcon = ({ size = 12, className = '' }) => (
+  <svg
+    className={`external-link-icon ${className}`}
+    width={size}
+    height={size}
+    viewBox="0 0 16 16"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M12 8.5v4.25a1.25 1.25 0 0 1-1.25 1.25H3.25A1.25 1.25 0 0 1 2 12.75V5.25A1.25 1.25 0 0 1 3.25 4H7.5" />
+    <polyline points="10 2 14 2 14 6" />
+    <line x1="6.5" y1="9.5" x2="14" y2="2" />
+  </svg>
+);
+

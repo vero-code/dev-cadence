@@ -11,7 +11,6 @@ export const LogModal = ({
   initialMonth,
   prefillDates,
   avgTurnaroundDays = 10,
-  onPickOnCalendar,
   onDatesChange,
   calendarPickedDate,
 }) => {
@@ -21,6 +20,7 @@ export const LogModal = ({
   const prevBroadcastRef = useRef(null);
   const currentValuesRef = useRef({});
   const [name, setName] = useState('');
+  const [url, setUrl] = useState('');
   const [deadline, setDeadline] = useState('');
   const [status, setStatus] = useState(STATUS_OPTIONS[0] || 'Interested');
   const [startDate, setStartDate] = useState('');
@@ -40,6 +40,7 @@ export const LogModal = ({
     prevBroadcastRef.current = null;
     if (editingHackathon) {
       setName(editingHackathon.name || '');
+      setUrl(editingHackathon.url || '');
       setDeadline(editingHackathon.deadline || '');
       setStatus(editingHackathon.status || STATUS_OPTIONS[0]);
       setStartDate(editingHackathon.startDate || '');
@@ -48,6 +49,7 @@ export const LogModal = ({
       setEmoji(editingHackathon.emoji || '');
     } else if (prefillDates) {
       setName('');
+      setUrl('');
       const start = prefillDates.startDate || '';
       // If only single date was selected, automatically extend by avgTurnaroundDays
       const end = prefillDates.endDate && prefillDates.endDate !== prefillDates.startDate
@@ -71,6 +73,7 @@ export const LogModal = ({
       const defaultDeadline = defaultEnd;
 
       setName('');
+      setUrl('');
       setDeadline(defaultDeadline);
       setStatus(STATUS_OPTIONS[0]);
       setStartDate(defaultStart);
@@ -152,6 +155,7 @@ export const LogModal = ({
       prev.color === color &&
       prev.emoji === emoji &&
       prev.name === name &&
+      prev.url === url &&
       prev.status === status &&
       prev.id === editingHackathon?.id
     ) {
@@ -164,12 +168,13 @@ export const LogModal = ({
       color,
       emoji,
       name,
+      url,
       status,
       id: editingHackathon?.id,
     };
     prevBroadcastRef.current = currentPayload;
     onDatesChange(currentPayload);
-  }, [startDate, endDate, deadline, color, emoji, name, status, isOpen, onDatesChange, editingHackathon]);
+  }, [startDate, endDate, deadline, color, emoji, name, url, status, isOpen, onDatesChange, editingHackathon]);
 
   useEffect(() => {
     const handleOutsideClick = (e) => {
@@ -218,9 +223,23 @@ export const LogModal = ({
       return;
     }
 
+    let formattedUrl = url.trim();
+    if (formattedUrl) {
+      if (!/^https?:\/\//i.test(formattedUrl)) {
+        formattedUrl = `https://${formattedUrl}`;
+      }
+      try {
+        new URL(formattedUrl);
+      } catch {
+        setError('Please enter a valid website URL.');
+        return;
+      }
+    }
+
     const payload = {
       id: editingHackathon ? editingHackathon.id : Date.now().toString(),
       name: name.trim(),
+      url: formattedUrl,
       deadline,
       status,
       startDate,
@@ -253,6 +272,20 @@ export const LogModal = ({
               value={name}
               onChange={(e) => { setName(e.target.value); setError(''); }}
               autoFocus
+            />
+          </div>
+
+          <div className="form-group">
+            <div className="label-with-hint">
+              <label className="form-label">Hackathon URL</label>
+              <span className="field-hint">optional</span>
+            </div>
+            <input
+              type="text"
+              className="form-input"
+              placeholder="e.g. https://devpost.com/hackathons/..."
+              value={url}
+              onChange={(e) => { setUrl(e.target.value); setError(''); }}
             />
           </div>
 

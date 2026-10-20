@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { generateCalendarDays, getDayCellBackground, addDaysToDateString } from '../utils/calendarUtils';
 import { WEEKDAYS } from '../constants';
 import { MonthNavigator } from './MonthNavigator';
-import { ScheduleBadgeIcon } from './Icons';
+import { ScheduleBadgeIcon, ExternalLinkIcon } from './Icons';
 
 export const CalendarGrid = ({
   year,
@@ -20,7 +20,6 @@ export const CalendarGrid = ({
   onPrevMonth,
   onNextMonth,
   onEdit,
-  onJumpToMonth,
 }) => {
   const [activeTooltip, setActiveTooltip] = useState(null);
   const [hoveredRangeDate, setHoveredRangeDate] = useState(null);
@@ -426,19 +425,33 @@ export const CalendarGrid = ({
                     {e.emoji ? `${e.emoji} ` : ''}{e.name}
                   </strong>
                 </div>
-                <button
-                  type="button"
-                  className="tooltip-event-edit-btn"
-                  title={`Edit ${e.name}`}
-                  aria-label={`Edit ${e.name}`}
-                  onClick={(ev) => {
-                    ev.stopPropagation();
-                    setActiveTooltip(null);
-                    onEdit && onEdit(e);
-                  }}
-                >
-                  ✏️
-                </button>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '3px', flexShrink: 0 }}>
+                  {e.url && (
+                    <a
+                      href={e.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="tooltip-event-link-btn"
+                      title={`Open ${e.url}`}
+                      onClick={(ev) => ev.stopPropagation()}
+                    >
+                      <ExternalLinkIcon size={11} />
+                    </a>
+                  )}
+                  <button
+                    type="button"
+                    className="tooltip-event-edit-btn"
+                    title={`Edit ${e.name}`}
+                    aria-label={`Edit ${e.name}`}
+                    onClick={(ev) => {
+                      ev.stopPropagation();
+                      setActiveTooltip(null);
+                      onEdit && onEdit(e);
+                    }}
+                  >
+                    ✏️
+                  </button>
+                </div>
               </div>
             ))}
 
@@ -448,19 +461,33 @@ export const CalendarGrid = ({
                   <span>🏁</span>
                   <em>Deadline: {d.name}</em>
                 </div>
-                <button
-                  type="button"
-                  className="tooltip-event-edit-btn"
-                  title={`Edit ${d.name}`}
-                  aria-label={`Edit ${d.name}`}
-                  onClick={(ev) => {
-                    ev.stopPropagation();
-                    setActiveTooltip(null);
-                    onEdit && onEdit(d);
-                  }}
-                >
-                  ✏️
-                </button>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '3px', flexShrink: 0 }}>
+                  {d.url && (
+                    <a
+                      href={d.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="tooltip-event-link-btn"
+                      title={`Open ${d.url}`}
+                      onClick={(ev) => ev.stopPropagation()}
+                    >
+                      <ExternalLinkIcon size={11} />
+                    </a>
+                  )}
+                  <button
+                    type="button"
+                    className="tooltip-event-edit-btn"
+                    title={`Edit ${d.name}`}
+                    aria-label={`Edit ${d.name}`}
+                    onClick={(ev) => {
+                      ev.stopPropagation();
+                      setActiveTooltip(null);
+                      onEdit && onEdit(d);
+                    }}
+                  >
+                    ✏️
+                  </button>
+                </div>
               </div>
             ))}
           </div>

@@ -6,6 +6,7 @@ import {
   FilterArrowsIcon,
   ChevronDownIcon,
   PlusIcon,
+  ExternalLinkIcon,
 } from './Icons';
 
 const MONTH_ABBR = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -264,6 +265,18 @@ export const PipelineTable = ({
                         )}
                         {h.emoji && <span className="table-event-emoji">{h.emoji}</span>}
                         <span className="table-event-text">{h.name}</span>
+                        {h.url && (
+                          <a
+                            href={h.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hackathon-link-icon-btn"
+                            title={`Open hackathon link: ${h.url}`}
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <ExternalLinkIcon size={11} />
+                          </a>
+                        )}
                       </div>
                     </td>
                     <td className="table-col-dates">
@@ -359,6 +372,18 @@ export const PipelineTable = ({
                       <span className="pipeline-item-name" title={h.name}>
                         {h.name}
                       </span>
+                      {h.url && (
+                        <a
+                          href={h.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hackathon-link-icon-btn"
+                          title={`Open hackathon link: ${h.url}`}
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <ExternalLinkIcon size={12} />
+                        </a>
+                      )}
                     </div>
 
                     <div className="pipeline-menu-container">
