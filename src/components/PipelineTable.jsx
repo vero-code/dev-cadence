@@ -374,15 +374,6 @@ export const PipelineTable = ({
                   >
                     <td className="table-col-name">
                       <div className="table-event-name" title={h.name}>
-                        {h.color && (
-                          <span
-                            className="color-dot"
-                            style={{
-                              backgroundColor: h.color,
-                            }}
-                          />
-                        )}
-                        {h.emoji && <span className="table-event-emoji">{h.emoji}</span>}
                         <span className="table-event-text">{h.name}</span>
                         {h.url && (
                           <a
