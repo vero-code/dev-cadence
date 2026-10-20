@@ -1,0 +1,228 @@
+/* ========================================================
+   BASE RESETS, APP CONTAINER & SHARED ATOMS
+   ======================================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-dark);
+  background-image: 
+    radial-gradient(ellipse at 50% 0%, rgba(180, 83, 9, 0.2) 0%, transparent 55%),
+    radial-gradient(circle at 10% 20%, rgba(120, 53, 15, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(0, 229, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 50% 100%, #170d06 0%, #080402 100%);
+  background-attachment: fixed;
+  color: var(--text-main);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+button, input, select, textarea, optgroup {
+  font-family: inherit;
+}
+
+body:has([data-theme="parchment"]) {
+  background-color: #dfcfb6;
+  background-image: 
+    radial-gradient(ellipse at 50% 10%, #fefcf7 0%, transparent 60%),
+    radial-gradient(circle at 10% 20%, #ebd8be 0%, transparent 45%),
+    radial-gradient(circle at 90% 30%, #dfc7a5 0%, transparent 50%),
+    radial-gradient(circle at 50% 90%, #caa97f 0%, transparent 65%);
+  color: #27190d;
+}
+
+body:has([data-theme="steampunk"]) {
+  background-color: #0e0804;
+  background-image: 
+    radial-gradient(ellipse at 50% 0%, rgba(217, 119, 6, 0.22) 0%, transparent 55%),
+    radial-gradient(circle at 15% 15%, #381a07 0%, transparent 45%),
+    radial-gradient(circle at 85% 25%, #082930 0%, transparent 45%),
+    radial-gradient(circle at 50% 95%, #241208 0%, transparent 65%);
+  color: #fef6e9;
+}
+
+body:has([data-theme="devpost"]) {
+  background-color: #070d19;
+  background-image: 
+    radial-gradient(circle at 10% 10%, #1e1b4b 0%, transparent 40%),
+    radial-gradient(circle at 90% 30%, #082f49 0%, transparent 45%),
+    radial-gradient(circle at 50% 90%, #18181b 0%, transparent 60%);
+  color: #f8fafc;
+}
+
+/* App Sidepanel Container — Fixed to 100vh Viewport */
+.app-container {
+  max-width: 520px;
+  width: 100%;
+  margin: 0 auto;
+  height: 100vh;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  border-left: 2px solid var(--border-brass);
+  border-right: 2px solid var(--border-brass);
+  box-shadow: 
+    inset 0 0 60px rgba(0, 0, 0, 0.8),
+    0 0 50px rgba(180, 83, 9, 0.3),
+    0 0 90px rgba(0, 0, 0, 0.95);
+  transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.app-container[data-theme="parchment"] {
+  border-left: 2px solid #b8860b;
+  border-right: 2px solid #b8860b;
+  box-shadow: 
+    inset 0 0 50px rgba(160, 110, 50, 0.14),
+    0 0 45px rgba(80, 50, 20, 0.25);
+}
+
+.app-container[data-theme="steampunk"] {
+  border-left: 2px solid #b45309;
+  border-right: 2px solid #b45309;
+  box-shadow: 
+    inset 0 0 70px rgba(0, 0, 0, 0.85),
+    0 0 45px rgba(245, 158, 11, 0.35),
+    0 0 100px rgba(0, 0, 0, 0.95);
+}
+
+.app-container[data-theme="devpost"] {
+  border-left: 2px solid rgba(6, 182, 212, 0.4);
+  border-right: 2px solid rgba(6, 182, 212, 0.4);
+  box-shadow: 
+    inset 0 0 50px rgba(0, 0, 0, 0.75),
+    0 0 40px rgba(6, 182, 212, 0.25),
+    0 0 80px rgba(0, 0, 0, 0.9);
+}
+
+.panel-content {
+  padding: 1rem 1.15rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+
+/* Shared Section Headings & Buttons */
+/* Primary Action Bar */
+.action-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section-heading {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  line-height: 1;
+  margin: 0;
+}
+
+.section-heading > span {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+  transform: translateY(1px);
+}
+
+/* Burnished Clockwork Brass Primary Button */
+.btn-primary {
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: linear-gradient(180deg, #f59e0b 0%, #d97706 45%, #b45309 85%, #78350f 100%);
+  color: #1a0e05;
+  border: 1.5px solid #fbbf24;
+  border-radius: 8px;
+  padding: 0.55rem 1.15rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.4),
+    0 4px 14px rgba(180, 83, 9, 0.5),
+    0 0 14px rgba(245, 158, 11, 0.25);
+  text-shadow: 0 1px 0 rgba(254, 243, 199, 0.7);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 45%, #d97706 85%, #92400e 100%);
+  box-shadow: 
+    inset 0 1px 0 #ffffff,
+    0 6px 20px rgba(245, 158, 11, 0.65),
+    0 0 22px rgba(245, 158, 11, 0.45);
+  transform: translateY(-2px);
+  color: #120903;
+}
+
+[data-theme="parchment"] .btn-primary {
+  background: linear-gradient(180deg, #d97706 0%, #b45309 55%, #78350f 100%);
+  color: #fffef9;
+  border: 1.5px solid #78350f;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 4px 14px rgba(180, 83, 9, 0.35);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="parchment"] .btn-primary:hover {
+  background: linear-gradient(180deg, #b45309 0%, #92400e 55%, #5a2408 100%);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 6px 18px rgba(180, 83, 9, 0.5);
+  color: #ffffff;
+}
+
+[data-theme="devpost"] .btn-primary {
+  font-family: var(--font-heading);
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: normal;
+  background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
+  color: #070d19;
+  border: 1px solid rgba(103, 232, 249, 0.5);
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(6, 182, 212, 0.35);
+  text-shadow: none;
+}
+
+[data-theme="devpost"] .btn-primary:hover {
+  background: linear-gradient(135deg, #06b6d4 0%, #22d3ee 100%);
+  color: #04101c;
+  box-shadow: 0 6px 20px rgba(6, 182, 212, 0.6), 0 0 16px rgba(6, 182, 212, 0.4);
+  transform: translateY(-1px);
+}
+

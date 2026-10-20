@@ -1,0 +1,460 @@
+/* ========================================================
+   APP FOOTER, CAPACITY METER & PROGRESS TRACK
+   ======================================================== */
+/* Capacity & Workload Bar Styles */
+.capacity-card {
+  background: var(--card-solid-bg);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.capacity-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.capacity-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.capacity-gear-icon {
+  font-size: 1rem;
+}
+
+.capacity-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.capacity-edit-btn {
+  background: var(--btn-secondary-bg);
+  border: 1px solid var(--border-subtle);
+  color: var(--amber-gear);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.capacity-edit-btn:hover {
+  background: var(--amber-glow);
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+.capacity-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.65rem;
+}
+
+.capacity-metric-box {
+  background: var(--metric-box-bg);
+  border: 1px solid var(--metric-box-border);
+  border-radius: 8px;
+  padding: 0.6rem 0.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.metric-label {
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.metric-value {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.committed-val { color: var(--cyan-primary); }
+.free-val { color: var(--emerald); }
+.warning-val { color: var(--amber-gear); }
+.rest-val { color: #818cf8; }
+
+.capacity-progress-track {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 9999px;
+  overflow: hidden;
+  display: flex;
+}
+
+[data-theme="parchment"] .capacity-progress-track {
+  background: rgba(146, 104, 60, 0.15);
+}
+
+[data-theme="steampunk"] .capacity-progress-track {
+  background: rgba(217, 119, 6, 0.14);
+}
+
+.progress-segment {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.committed-seg {
+  background: linear-gradient(90deg, #0891b2, #06b6d4);
+}
+
+[data-theme="parchment"] .committed-seg {
+  background: linear-gradient(90deg, #0284c7, #38bdf8);
+}
+
+[data-theme="steampunk"] .committed-seg {
+  background: linear-gradient(90deg, #d97706, #f59e0b);
+}
+
+.available-seg {
+  background: linear-gradient(90deg, #059669, #10b981);
+}
+
+.rest-seg {
+  background: #818cf8;
+}
+
+.warning-seg {
+  background: #f59e0b;
+}
+
+.capacity-warning-banner {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: 8px;
+  padding: 0.65rem 0.85rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.78rem;
+  color: #fef3c7;
+  animation: fadeIn 0.2s ease;
+}
+
+[data-theme="parchment"] .capacity-warning-banner {
+  background: rgba(180, 83, 9, 0.1);
+  border-color: rgba(180, 83, 9, 0.35);
+  color: #78350f;
+}
+
+[data-theme="parchment"] .capacity-warning-banner strong {
+  color: #92400e;
+}
+
+[data-theme="steampunk"] .capacity-warning-banner {
+  background: rgba(245, 158, 11, 0.14);
+  border-color: rgba(245, 158, 11, 0.4);
+  color: #fef3c7;
+}
+
+.warning-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+  line-height: 1.2;
+}
+
+.warning-text {
+  line-height: 1.4;
+}
+
+.warning-text strong {
+  color: #fbbf24;
+}
+
+.capacity-healthy-banner {
+  background: var(--emerald-bg);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: 8px;
+  padding: 0.65rem 0.85rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.78rem;
+  color: #d1fae5;
+  animation: fadeIn 0.2s ease;
+}
+
+[data-theme="parchment"] .capacity-healthy-banner {
+  background: rgba(4, 120, 87, 0.1);
+  border-color: rgba(4, 120, 87, 0.3);
+  color: #065f46;
+}
+
+[data-theme="parchment"] .capacity-healthy-banner strong {
+  color: #047857;
+}
+
+[data-theme="steampunk"] .capacity-healthy-banner {
+  background: rgba(16, 185, 129, 0.14);
+  border-color: rgba(16, 185, 129, 0.35);
+  color: #d1fae5;
+}
+
+.healthy-icon {
+  font-size: 1rem;
+  color: #34d399;
+  font-weight: 700;
+  flex-shrink: 0;
+  line-height: 1.2;
+}
+
+[data-theme="parchment"] .healthy-icon {
+  color: #047857;
+}
+
+.healthy-text {
+  line-height: 1.4;
+}
+
+.healthy-text strong {
+  color: #34d399;
+}
+
+/* App Footer (Pinned to bottom of screen with Capacity Bar) */
+.app-footer {
+  flex-shrink: 0;
+  position: relative;
+  background: var(--footer-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 2px solid var(--border-brass);
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.8), 0 0 20px rgba(180, 83, 9, 0.2);
+  padding: 0.55rem 1.15rem 0.65rem;
+  z-index: 80;
+  margin-top: auto;
+  transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+[data-theme="parchment"] .app-footer {
+  background: linear-gradient(180deg, #fcf6eb 0%, #efe2cb 100%);
+  border-top: 2px solid #b8860b;
+  box-shadow: 0 -8px 24px rgba(70, 45, 20, 0.16);
+}
+
+[data-theme="steampunk"] .app-footer {
+  background: linear-gradient(180deg, rgba(28, 17, 10, 0.98) 0%, rgba(16, 9, 5, 0.99) 100%);
+  border-top: 2px solid #b45309;
+  box-shadow: 
+    inset 0 1px 0 rgba(254, 240, 138, 0.25),
+    0 -10px 32px rgba(0, 0, 0, 0.9),
+    0 0 25px rgba(180, 83, 9, 0.3);
+}
+
+[data-theme="devpost"] .app-footer {
+  background: linear-gradient(180deg, rgba(14, 23, 44, 0.98) 0%, rgba(7, 13, 25, 0.99) 100%);
+  border-top: 2px solid rgba(6, 182, 212, 0.4);
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.85), 0 0 20px rgba(6, 182, 212, 0.2);
+}
+
+.app-footer .capacity-card {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  gap: 0.5rem;
+  box-shadow: none;
+}
+
+.app-footer .capacity-metrics-grid {
+  gap: 0.55rem;
+}
+
+/* Mechanical Steam Gauge Metric Box */
+.app-footer .capacity-metric-box {
+  padding: 0.4rem 0.55rem;
+  background: var(--metric-box-bg);
+  border: 1.5px solid var(--metric-box-border);
+  border-radius: 8px;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.65);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.app-footer .capacity-metric-box:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-hover);
+  transform: translateY(-1px);
+}
+
+.app-footer .metric-label {
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--amber-gear);
+}
+
+[data-theme="parchment"] .app-footer .metric-label {
+  color: #784918;
+}
+
+.app-footer .metric-value {
+  font-family: var(--font-heading);
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.committed-val { 
+  color: var(--cyan-primary); 
+  text-shadow: 0 0 8px var(--cyan-glow);
+}
+
+.free-val { 
+  color: var(--emerald); 
+  text-shadow: 0 0 8px rgba(16, 185, 129, 0.35);
+}
+
+.warning-val { 
+  color: var(--amber-gear); 
+  text-shadow: 0 0 8px var(--amber-glow);
+}
+
+.rest-val { 
+  color: #818cf8; 
+  text-shadow: 0 0 8px rgba(129, 140, 248, 0.45);
+}
+
+[data-theme="parchment"] .app-footer .metric-value {
+  text-shadow: none;
+}
+
+[data-theme="parchment"] .rest-val {
+  color: #6366f1;
+}
+
+/* Vacuum-Tube Style Progress Track */
+.app-footer .capacity-progress-track {
+  height: 10px;
+  background: rgba(0, 0, 0, 0.85);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: 9999px;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.9);
+  padding: 1px;
+}
+
+[data-theme="parchment"] .app-footer .capacity-progress-track {
+  background: rgba(146, 104, 60, 0.2);
+  border-color: rgba(160, 116, 72, 0.4);
+}
+
+.app-footer .committed-seg {
+  box-shadow: 0 0 8px var(--cyan-primary);
+}
+
+.app-footer .available-seg {
+  box-shadow: 0 0 8px var(--amber-gear);
+}
+
+.footer-credits {
+  margin-top: 0.55rem;
+  padding-top: 0.45rem;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+}
+
+.footer-credits .credits-dot {
+  font-size: 0.6rem;
+  opacity: 0.5;
+}
+
+.footer-author-link {
+  color: var(--amber-gear);
+  text-decoration: none;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: all 0.2s ease;
+}
+
+.footer-author-link:hover {
+  color: #fef08a;
+  text-decoration: underline;
+  text-shadow: 0 0 10px rgba(245, 158, 11, 0.65);
+}
+
+[data-theme="parchment"] .footer-author-link {
+  color: #8c531b;
+}
+
+[data-theme="parchment"] .footer-author-link:hover {
+  color: #451a03;
+  text-shadow: none;
+}
+
+[data-theme="devpost"] .footer-author-link {
+  color: var(--text-main, #f8fafc);
+}
+
+[data-theme="devpost"] .footer-author-link:hover {
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+}
+
+.footer-legal-link,
+.footer-legal-btn {
+  color: var(--text-dim);
+  background: transparent;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  font-family: var(--font-heading);
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.18s ease, text-decoration 0.18s ease;
+}
+
+.footer-legal-link:hover,
+.footer-legal-btn:hover {
+  color: var(--text-main);
+  text-decoration: underline;
+}
+
+[data-theme="devpost"] .footer-legal-link,
+[data-theme="devpost"] .footer-legal-btn {
+  color: #64748b;
+}
+
+[data-theme="devpost"] .footer-legal-link:hover,
+[data-theme="devpost"] .footer-legal-btn:hover {
+  color: #94a3b8;
+  text-decoration: underline;
+}
+
+[data-theme="parchment"] .footer-legal-link,
+[data-theme="parchment"] .footer-legal-btn {
+  color: #8c6d48;
+}

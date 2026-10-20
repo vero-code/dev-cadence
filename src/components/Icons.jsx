@@ -199,10 +199,10 @@ export const AnalyticsIcon = ({ size = 18, className = '' }) => (
     strokeLinejoin="round"
     aria-hidden="true"
   >
-    <line x1="2.5" y1="17" x2="17.5" y2="17" />
-    <rect x="4" y="10.5" width="2.8" height="6.5" rx="0.8" fill="currentColor" fillOpacity="0.22" stroke="currentColor" strokeWidth="1.5" />
-    <rect x="8.6" y="5.5" width="2.8" height="11.5" rx="0.8" fill="currentColor" fillOpacity="0.22" stroke="currentColor" strokeWidth="1.5" />
-    <rect x="13.2" y="8" width="2.8" height="9" rx="0.8" fill="currentColor" fillOpacity="0.22" stroke="currentColor" strokeWidth="1.5" />
+    <line x1="2.5" y1="15.5" x2="17.5" y2="15.5" />
+    <rect x="4" y="9" width="2.8" height="6.5" rx="0.8" fill="currentColor" fillOpacity="0.22" stroke="currentColor" strokeWidth="1.5" />
+    <rect x="8.6" y="4" width="2.8" height="11.5" rx="0.8" fill="currentColor" fillOpacity="0.22" stroke="currentColor" strokeWidth="1.5" />
+    <rect x="13.2" y="6.5" width="2.8" height="9" rx="0.8" fill="currentColor" fillOpacity="0.22" stroke="currentColor" strokeWidth="1.5" />
   </svg>
 );
 
