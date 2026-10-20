@@ -20,11 +20,15 @@ export const CalendarGrid = ({
   onPrevMonth,
   onNextMonth,
   onEdit,
+  hoveredHackathonId,
 }) => {
   const [activeTooltip, setActiveTooltip] = useState(null);
   const [hoveredRangeDate, setHoveredRangeDate] = useState(null);
   const calendarCardRef = useRef(null);
   const days = generateCalendarDays(year, month, hackathons);
+  const hoveredHackathon = hoveredHackathonId
+    ? (hackathons || []).find((h) => h.id === hoveredHackathonId)
+    : null;
 
   const totalScheduledDays = days.filter((d) => !d.isPadding && d.events.length > 0).length;
 
@@ -279,6 +283,14 @@ export const CalendarGrid = ({
           const isModalEndDay = isModalEnd(day.dateString);
           const isModalDeadlineDay = isModalDeadline(day.dateString);
 
+          // Tracker hover highlighting
+          const isHoveredEvent = Boolean(hoveredHackathonId && day.events.some((e) => e.id === hoveredHackathonId));
+          const isHoveredDeadline = Boolean(hoveredHackathonId && day.deadlines.some((d) => d.id === hoveredHackathonId));
+          const isHoveredHackathon = isHoveredEvent || isHoveredDeadline;
+          const isDimmedByHover = Boolean(hoveredHackathonId && !isHoveredHackathon);
+          const isHoveredStartDay = Boolean(hoveredHackathon && day.dateString === hoveredHackathon.startDate);
+          const isHoveredEndDay = Boolean(hoveredHackathon && day.dateString === hoveredHackathon.endDate);
+
           let bgStyle = getDayCellBackground(day.events);
           if (inModalRange) {
             if (modalActiveRange?.color) {
@@ -288,10 +300,20 @@ export const CalendarGrid = ({
                 bgStyle = `linear-gradient(rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0.32)), ${bgStyle}`;
               }
             }
+          } else if (isHoveredHackathon && hoveredHackathon?.color) {
+            if (day.events.length === 0 && isHoveredDeadline) {
+              bgStyle = `${hoveredHackathon.color}25`;
+            } else {
+              bgStyle = `linear-gradient(rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.05)), ${bgStyle}`;
+            }
           }
 
           const cellInlineStyle = {
             background: bgStyle,
+            ...(isHoveredHackathon && hoveredHackathon?.color ? {
+              '--hover-hack-color': hoveredHackathon.color,
+              '--hover-hack-glow': `${hoveredHackathon.color}66`,
+            } : {}),
           };
 
           const isTooltipActive = activeTooltip?.dateString === day.dateString;
@@ -305,7 +327,7 @@ export const CalendarGrid = ({
           return (
             <div
               key={day.dateString}
-              className={`calendar-day-cell ${day.isToday ? 'today-cell' : ''} ${hasEvents ? 'active-day' : ''} ${isSelected || isTooltipActive ? 'selected-day' : ''} ${isRangeStart ? 'range-start-cell' : ''} ${inRangePreview ? 'range-preview-cell' : ''} ${inActiveRange ? 'range-active-cell' : ''} ${inModalRange ? 'modal-dashed-cell' : ''}`}
+              className={`calendar-day-cell ${day.isToday ? 'today-cell' : ''} ${hasEvents ? 'active-day' : ''} ${isSelected || isTooltipActive ? 'selected-day' : ''} ${isRangeStart ? 'range-start-cell' : ''} ${inRangePreview ? 'range-preview-cell' : ''} ${inActiveRange ? 'range-active-cell' : ''} ${inModalRange ? 'modal-dashed-cell' : ''} ${isHoveredHackathon ? 'hackathon-hover-highlight' : ''} ${isHoveredDeadline && !isHoveredEvent ? 'hackathon-hover-deadline' : ''} ${isDimmedByHover ? 'hackathon-dimmed-by-hover' : ''}`}
               style={cellInlineStyle}
               onClick={(e) => handleCellClick(e, day, idx)}
               onMouseEnter={() => {
@@ -320,7 +342,7 @@ export const CalendarGrid = ({
                 {day.isToday && <span className="today-badge" title="Today">TODAY</span>}
                 {(hasDeadlines || isModalDeadlineDay) && (
                   <span
-                    className={`deadline-flag ${isModalDeadlineDay ? 'draft-deadline-flag' : ''}`}
+                    className={`deadline-flag ${isModalDeadlineDay ? 'draft-deadline-flag' : ''} ${isHoveredDeadline ? 'highlighted-deadline-flag' : ''}`}
                     title={
                       isModalDeadlineDay
                         ? `Draft Deadline: ${modalActiveRange?.name || 'Hackathon'}`
@@ -350,18 +372,37 @@ export const CalendarGrid = ({
                     END
                   </span>
                 )}
-                {day.events.map((e) =>
-                  e.emoji ? (
+                {isHoveredStartDay && !isRangeStart && !isModalStartDay && (
+                  <span
+                    className="range-badge hover-start-badge"
+                    style={{ backgroundColor: hoveredHackathon?.color || 'var(--amber-gear)' }}
+                    title={`${hoveredHackathon?.name || 'Hackathon'} Start`}
+                  >
+                    START
+                  </span>
+                )}
+                {isHoveredEndDay && hoveredHackathon?.endDate !== hoveredHackathon?.startDate && !isRangeStart && !isModalEndDay && (
+                  <span
+                    className="range-badge hover-end-badge"
+                    style={{ backgroundColor: hoveredHackathon?.color || 'var(--amber-gear)' }}
+                    title={`${hoveredHackathon?.name || 'Hackathon'} End`}
+                  >
+                    END
+                  </span>
+                )}
+                {day.events.map((e) => {
+                  const isThisEventHovered = hoveredHackathonId === e.id;
+                  return e.emoji ? (
                     <span
                       key={e.id}
-                      className="day-event-emoji"
+                      className={`day-event-emoji ${isThisEventHovered ? 'highlighted-event-emoji' : ''}`}
                       title={`${e.name} (${e.status})`}
                       style={{ color: e.color }}
                     >
                       {e.emoji}
                     </span>
-                  ) : null
-                )}
+                  ) : null;
+                })}
                 {inModalRange && modalActiveRange?.emoji && (
                   <span
                     className="day-event-emoji draft-event-emoji"

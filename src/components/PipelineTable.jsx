@@ -62,6 +62,8 @@ export const PipelineTable = ({
   currentMonth,
   onPrevMonth,
   onNextMonth,
+  hoveredHackathonId,
+  onHoverHackathon,
 }) => {
   const activeYear = year ?? currentYear ?? 2026;
   const activeMonth = month ?? currentMonth ?? 9;
@@ -305,7 +307,7 @@ export const PipelineTable = ({
           </button>
         </div>
       ) : viewMode === 'table' ? (
-        <div className="pipeline-table-wrapper">
+        <div className="pipeline-table-wrapper" onMouseLeave={() => onHoverHackathon && onHoverHackathon(null)}>
           <table className="pipeline-table">
             <colgroup>
               <col style={{ width: '38%' }} />
@@ -325,9 +327,15 @@ export const PipelineTable = ({
               {displayedHackathons.map((h, idx) => {
                 const isMenuOpen = openMenuId === h.id;
                 const openUpward = idx >= displayedHackathons.length - 2 && displayedHackathons.length > 2;
+                const isHovered = hoveredHackathonId === h.id;
 
                 return (
-                  <tr key={h.id}>
+                  <tr
+                    key={h.id}
+                    className={isHovered ? 'row-hovered' : ''}
+                    onMouseEnter={() => onHoverHackathon && onHoverHackathon(h.id)}
+                    onMouseLeave={() => onHoverHackathon && onHoverHackathon(null)}
+                  >
                     <td className="table-col-name">
                       <div className="table-event-name" title={h.name}>
                         {h.color && (
@@ -423,16 +431,19 @@ export const PipelineTable = ({
           </table>
         </div>
       ) : (
-        <div className="pipeline-list">
+        <div className="pipeline-list" onMouseLeave={() => onHoverHackathon && onHoverHackathon(null)}>
           {displayedHackathons.map((h, idx) => {
             const isMenuOpen = openMenuId === h.id;
             const openUpward = idx === displayedHackathons.length - 1 && displayedHackathons.length > 1;
+            const isHovered = hoveredHackathonId === h.id;
 
             return (
               <div
                 key={h.id}
-                className={`pipeline-item ${isMenuOpen ? 'menu-open' : ''}`}
+                className={`pipeline-item ${isMenuOpen ? 'menu-open' : ''} ${isHovered ? 'item-hovered' : ''}`}
                 style={{ zIndex: isMenuOpen ? 100 : 'auto' }}
+                onMouseEnter={() => onHoverHackathon && onHoverHackathon(h.id)}
+                onMouseLeave={() => onHoverHackathon && onHoverHackathon(null)}
               >
                 <div
                   className="pipeline-item-color-bar"

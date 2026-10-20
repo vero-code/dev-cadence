@@ -28,6 +28,7 @@ export const App = () => {
   const [modalDates, setModalDates] = useState(null);
   const [calendarPickedDate, setCalendarPickedDate] = useState(null);
   const [legalModalTab, setLegalModalTab] = useState(null);
+  const [hoveredHackathonId, setHoveredHackathonId] = useState(null);
 
   const {
     currentYear,
@@ -311,6 +312,7 @@ export const App = () => {
           onNextMonth={handleNextMonth}
           onEdit={handleOpenEdit}
           onJumpToMonth={handleJumpToMonth}
+          hoveredHackathonId={hoveredHackathonId}
         />
 
         <div className="lower-content-section">
@@ -350,6 +352,8 @@ export const App = () => {
               month={currentMonth}
               onPrevMonth={handlePrevMonth}
               onNextMonth={handleNextMonth}
+              hoveredHackathonId={hoveredHackathonId}
+              onHoverHackathon={setHoveredHackathonId}
             />
           )}
         </div>

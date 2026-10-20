@@ -600,16 +600,24 @@
   overflow: hidden;
 }
 
-.pipeline-table tr:hover td {
-  background: rgba(255, 255, 255, 0.04);
+.pipeline-table tr:hover td,
+.pipeline-table tr.row-hovered td {
+  background: rgba(255, 255, 255, 0.05);
 }
 
-[data-theme="parchment"] .pipeline-table tr:hover td {
-  background: rgba(184, 134, 11, 0.06);
+[data-theme="parchment"] .pipeline-table tr:hover td,
+[data-theme="parchment"] .pipeline-table tr.row-hovered td {
+  background: rgba(184, 134, 11, 0.08);
 }
 
-[data-theme="steampunk"] .pipeline-table tr:hover td {
-  background: rgba(245, 158, 11, 0.06);
+[data-theme="steampunk"] .pipeline-table tr:hover td,
+[data-theme="steampunk"] .pipeline-table tr.row-hovered td {
+  background: rgba(245, 158, 11, 0.08);
+}
+
+[data-theme="devpost"] .pipeline-table tr:hover td,
+[data-theme="devpost"] .pipeline-table tr.row-hovered td {
+  background: rgba(6, 182, 212, 0.08);
 }
 
 .table-event-name {
@@ -706,7 +714,8 @@
   box-shadow: inset 0 1px 0 rgba(254, 240, 138, 0.08), 0 2px 6px rgba(0, 0, 0, 0.5);
 }
 
-[data-theme="steampunk"] .pipeline-item:hover {
+[data-theme="steampunk"] .pipeline-item:hover,
+[data-theme="steampunk"] .pipeline-item.item-hovered {
   border-color: #f59e0b;
   transform: translateY(-1.5px);
   box-shadow: 
@@ -721,7 +730,8 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 2px 5px rgba(70, 45, 20, 0.08);
 }
 
-[data-theme="parchment"] .pipeline-item:hover {
+[data-theme="parchment"] .pipeline-item:hover,
+[data-theme="parchment"] .pipeline-item.item-hovered {
   border-color: #b8860b;
   transform: translateY(-1.5px);
   box-shadow: 0 5px 14px rgba(70, 45, 20, 0.15);
@@ -733,7 +743,8 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
 }
 
-[data-theme="devpost"] .pipeline-item:hover {
+[data-theme="devpost"] .pipeline-item:hover,
+[data-theme="devpost"] .pipeline-item.item-hovered {
   border-color: #06b6d4;
   transform: translateY(-1.5px);
   box-shadow: 0 5px 16px rgba(0, 0, 0, 0.7), 0 0 12px rgba(6, 182, 212, 0.25);
@@ -747,7 +758,8 @@
   transition: width 0.18s ease;
 }
 
-.pipeline-item:hover .pipeline-item-color-bar {
+.pipeline-item:hover .pipeline-item-color-bar,
+.pipeline-item.item-hovered .pipeline-item-color-bar {
   width: 5px;
   box-shadow: none !important;
 }
