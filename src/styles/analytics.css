@@ -225,38 +225,165 @@
 /* KPI Cards Grid */
 .stats-kpi-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
   gap: 0.55rem;
 }
 
 .stats-kpi-card {
   background: var(--bg-input);
   border: 1px solid var(--border-subtle);
-  border-radius: 9px;
-  padding: 0.65rem 0.7rem;
+  border-radius: 10px;
+  padding: 0.75rem 0.85rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   box-sizing: border-box;
   transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.stats-kpi-card.highlight-card {
-  background: linear-gradient(180deg, rgba(245, 158, 11, 0.12) 0%, rgba(245, 158, 11, 0.04) 100%);
-  border-color: rgba(245, 158, 11, 0.4);
+.stats-kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: transparent;
+}
+
+.stats-kpi-card.shortest-card::before {
+  background: linear-gradient(90deg, #10b981, rgba(16, 185, 129, 0.1));
+}
+
+.stats-kpi-card.longest-card::before {
+  background: linear-gradient(90deg, #a78bfa, rgba(167, 139, 250, 0.1));
+}
+
+.stats-kpi-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-bottom: 0.4rem;
+}
+
+.stats-kpi-badge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.12rem 0.38rem;
+  border-radius: 4px;
+}
+
+.stats-kpi-value-badge {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.28rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.stats-kpi-value-badge .stats-kpi-number {
+  font-family: var(--font-mono);
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.stats-kpi-value-badge .stats-kpi-unit {
+  font-size: 0.72rem;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+.shortest-card .stats-kpi-badge {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.shortest-card .stats-kpi-value-badge .stats-kpi-number {
+  color: #10b981;
+}
+
+.longest-card .stats-kpi-badge {
+  background: rgba(167, 139, 250, 0.15);
+  color: #c084fc;
+  border: 1px solid rgba(167, 139, 250, 0.3);
+}
+
+.longest-card .stats-kpi-value-badge .stats-kpi-number {
+  color: #a78bfa;
+}
+
+[data-theme="devpost"] .shortest-card .stats-kpi-value-badge .stats-kpi-number {
+  color: #2dd4bf;
+}
+
+[data-theme="devpost"] .longest-card .stats-kpi-value-badge .stats-kpi-number {
+  color: #c084fc;
+}
+
+[data-theme="parchment"] .shortest-card .stats-kpi-badge {
+  background: #d1fae5;
+  color: #065f46;
+  border-color: #a7f3d0;
+}
+
+[data-theme="parchment"] .shortest-card .stats-kpi-value-badge .stats-kpi-number {
+  color: #065f46;
+}
+
+[data-theme="parchment"] .longest-card .stats-kpi-badge {
+  background: #f3e8ff;
+  color: #6b21a8;
+  border-color: #e9d5ff;
+}
+
+[data-theme="parchment"] .longest-card .stats-kpi-value-badge .stats-kpi-number {
+  color: #6b21a8;
+}
+
+.stats-kpi-card.shortest-card {
+  background: linear-gradient(180deg, rgba(16, 185, 129, 0.08) 0%, rgba(16, 185, 129, 0.02) 100%);
+  border-color: rgba(16, 185, 129, 0.28);
+}
+
+.stats-kpi-card.longest-card {
+  background: linear-gradient(180deg, rgba(167, 139, 250, 0.08) 0%, rgba(167, 139, 250, 0.02) 100%);
+  border-color: rgba(167, 139, 250, 0.28);
 }
 
 .stats-kpi-card.shortest-card .stats-kpi-number {
   color: #10b981;
 }
 
-[data-theme="devpost"] .stats-kpi-card.highlight-card {
-  background: linear-gradient(180deg, rgba(6, 182, 212, 0.14) 0%, rgba(6, 182, 212, 0.04) 100%);
-  border-color: rgba(6, 182, 212, 0.45);
+.stats-kpi-card.longest-card .stats-kpi-number {
+  color: #a78bfa;
+}
+
+[data-theme="devpost"] .stats-kpi-card.shortest-card {
+  background: linear-gradient(180deg, rgba(45, 212, 191, 0.09) 0%, rgba(45, 212, 191, 0.02) 100%);
+  border-color: rgba(45, 212, 191, 0.35);
 }
 
 [data-theme="devpost"] .stats-kpi-card.shortest-card .stats-kpi-number {
   color: #2dd4bf;
+}
+
+[data-theme="devpost"] .stats-kpi-card.longest-card {
+  background: linear-gradient(180deg, rgba(192, 132, 252, 0.09) 0%, rgba(192, 132, 252, 0.02) 100%);
+  border-color: rgba(192, 132, 252, 0.35);
+}
+
+[data-theme="devpost"] .stats-kpi-card.longest-card .stats-kpi-number {
+  color: #c084fc;
 }
 
 [data-theme="parchment"] .stats-kpi-card {
@@ -264,17 +391,26 @@
   border-color: rgba(160, 110, 50, 0.25);
 }
 
-[data-theme="parchment"] .stats-kpi-card.highlight-card {
-  background: rgba(180, 83, 9, 0.1);
-  border-color: rgba(180, 83, 9, 0.38);
+[data-theme="parchment"] .stats-kpi-card.shortest-card {
+  background: #f0fdf4;
+  border-color: #86efac;
 }
 
 [data-theme="parchment"] .stats-kpi-card.shortest-card .stats-kpi-number {
   color: #065f46;
 }
 
+[data-theme="parchment"] .stats-kpi-card.longest-card {
+  background: #faf5ff;
+  border-color: #d8b4fe;
+}
+
+[data-theme="parchment"] .stats-kpi-card.longest-card .stats-kpi-number {
+  color: #6b21a8;
+}
+
 .stats-kpi-label {
-  font-size: 0.67rem;
+  font-size: 0.65rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -288,49 +424,44 @@
 .stats-kpi-value-row {
   display: flex;
   align-items: baseline;
-  gap: 0.3rem;
-  margin: 0.3rem 0 0.15rem 0;
+  gap: 0.35rem;
+  margin: 0.2rem 0 0.25rem 0;
 }
 
 .stats-kpi-number {
   font-family: var(--font-mono);
-  font-size: 1.55rem;
+  font-size: 1.65rem;
   font-weight: 800;
   line-height: 1;
   color: var(--text-main);
   letter-spacing: -0.02em;
 }
 
-.highlight-card .stats-kpi-number {
-  color: var(--amber-gear);
-}
-
-[data-theme="devpost"] .highlight-card .stats-kpi-number {
-  color: #38bdf8;
-}
-
-[data-theme="parchment"] .stats-kpi-number {
-  color: #27190d;
-}
-
-[data-theme="parchment"] .highlight-card .stats-kpi-number {
-  color: #92400e;
-}
-
 .stats-kpi-unit {
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   font-weight: 600;
   color: var(--text-muted);
 }
 
-.stats-kpi-sub {
-  font-size: 0.67rem;
-  color: var(--text-muted);
-  line-height: 1.25;
+.stats-kpi-footer-row {
+  border-top: 1px dashed var(--border-subtle);
+  padding-top: 0.3rem;
+  margin-top: 0.2rem;
+  overflow: hidden;
 }
 
-[data-theme="parchment"] .stats-kpi-sub {
-  color: #5c4533;
+.stats-kpi-event-name {
+  font-size: 0.69rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+[data-theme="parchment"] .stats-kpi-event-name {
+  color: #4a3320;
 }
 
 .stats-apply-btn {
@@ -523,6 +654,18 @@
   color: var(--text-main);
 }
 
+.stats-pill-completed {
+  color: #10b981;
+}
+
+[data-theme="devpost"] .stats-pill-completed {
+  color: #34d399;
+}
+
+[data-theme="parchment"] .stats-pill-completed {
+  color: #047857;
+}
+
 [data-theme="parchment"] .stats-pill-num {
   color: #27190d;
 }
@@ -629,6 +772,13 @@
   flex-shrink: 0;
 }
 
+.stats-footer-hint-group {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
 .stats-footer-hint {
   font-size: 0.72rem;
   color: var(--text-muted);
@@ -640,6 +790,48 @@
 
 [data-theme="parchment"] .stats-footer-hint strong {
   color: #1a0e05;
+}
+
+.stats-footer-sync-btn {
+  background: rgba(245, 158, 11, 0.16);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: var(--amber-gear);
+  font-family: var(--font-heading);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.stats-footer-sync-btn:hover {
+  background: var(--amber-gear);
+  color: #000000;
+  transform: translateY(-1px);
+}
+
+[data-theme="devpost"] .stats-footer-sync-btn {
+  background: rgba(6, 182, 212, 0.18);
+  border-color: rgba(6, 182, 212, 0.45);
+  color: #38bdf8;
+}
+
+[data-theme="devpost"] .stats-footer-sync-btn:hover {
+  background: #38bdf8;
+  color: #000000;
+}
+
+[data-theme="parchment"] .stats-footer-sync-btn {
+  background: #e0f2fe;
+  border-color: #0284c7;
+  color: #0369a1;
+}
+
+[data-theme="parchment"] .stats-footer-sync-btn:hover {
+  background: #0284c7;
+  color: #ffffff;
 }
 
 .stats-return-btn {

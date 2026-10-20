@@ -73,46 +73,44 @@ export const StatsModal = ({
 
         {/* Primary Metric KPI Cards */}
         <div className="stats-kpi-grid">
-          {/* Card 1: All-Time Average Duration per Hackathon */}
-          <div className="stats-kpi-card highlight-card">
-            <span className="stats-kpi-label">Avg Days / Hackathon</span>
-            <div className="stats-kpi-value-row">
-              <span className="stats-kpi-number">
-                {hasPastData ? stats.overallAvgDaysPerHackathon : '—'}
-              </span>
-              {hasPastData && <span className="stats-kpi-unit">days</span>}
+          {/* Card 1: Shortest Hackathon (Minimum Days Spent All-Time) */}
+          <div className="stats-kpi-card shortest-card">
+            <div className="stats-kpi-top">
+              <div className="stats-kpi-badge stats-kpi-value-badge">
+                <span className="stats-kpi-number">
+                  {stats.minDaysSpent > 0 ? stats.minDaysSpent : '—'}
+                </span>
+                {stats.minDaysSpent > 0 && <span className="stats-kpi-unit">days</span>}
+              </div>
+              <span className="stats-kpi-label">Shortest Event</span>
             </div>
-            <span className="stats-kpi-sub">
-              {hasPastData
-                ? `All-time pace across ${stats.totalPastHackathonsCount} past/active`
-                : 'No past dates logged yet'}
-            </span>
-            {hasPastData && (
-              <button
-                type="button"
-                className="stats-apply-btn"
-                onClick={handleApplyAverageToDefault}
-                title={`Set default planning turnaround to ${Math.round(stats.overallAvgDaysPerHackathon)} days`}
-              >
-                Use for new hackathons
-              </button>
-            )}
+            <div className="stats-kpi-footer-row" title={stats.shortestHackathon?.name || ''}>
+              <span className="stats-kpi-event-name">
+                {stats.shortestHackathon
+                  ? `${stats.shortestHackathon.emoji ? stats.shortestHackathon.emoji + ' ' : ''}${stats.shortestHackathon.name || 'Fastest event'}`
+                  : 'No past dates logged yet'}
+              </span>
+            </div>
           </div>
 
-          {/* Card 2: Shortest Hackathon (Minimum Days Spent) */}
-          <div className="stats-kpi-card shortest-card">
-            <span className="stats-kpi-label">Shortest Hackathon</span>
-            <div className="stats-kpi-value-row">
-              <span className="stats-kpi-number">
-                {stats.minDaysSpent > 0 ? stats.minDaysSpent : '—'}
-              </span>
-              {stats.minDaysSpent > 0 && <span className="stats-kpi-unit">days</span>}
+          {/* Card 2: Longest Hackathon (Maximum Days Spent All-Time) */}
+          <div className="stats-kpi-card longest-card">
+            <div className="stats-kpi-top">
+              <div className="stats-kpi-badge stats-kpi-value-badge">
+                <span className="stats-kpi-number">
+                  {stats.maxDaysSpent > 0 ? stats.maxDaysSpent : '—'}
+                </span>
+                {stats.maxDaysSpent > 0 && <span className="stats-kpi-unit">days</span>}
+              </div>
+              <span className="stats-kpi-label">Longest Event</span>
             </div>
-            <span className="stats-kpi-sub" title={stats.shortestHackathon?.name || ''}>
-              {stats.shortestHackathon
-                ? `${stats.shortestHackathon.emoji ? stats.shortestHackathon.emoji + ' ' : ''}${stats.shortestHackathon.name || 'Fastest event'}`
-                : 'No past dates logged yet'}
-            </span>
+            <div className="stats-kpi-footer-row" title={stats.longestHackathon?.name || ''}>
+              <span className="stats-kpi-event-name">
+                {stats.longestHackathon
+                  ? `${stats.longestHackathon.emoji ? stats.longestHackathon.emoji + ' ' : ''}${stats.longestHackathon.name || 'Longest event'}`
+                  : 'No past dates logged yet'}
+              </span>
+            </div>
           </div>
         </div>
 
@@ -120,7 +118,7 @@ export const StatsModal = ({
         <div className="stats-section-header">
           <h3 className="stats-section-title">Monthly Breakdown</h3>
           <span className="stats-section-badge">
-            {stats.monthlyBreakdown.length} {stats.monthlyBreakdown.length === 1 ? 'month' : 'months'}
+            Total: {stats.monthlyBreakdown.length} {stats.monthlyBreakdown.length === 1 ? 'month' : 'months'}
           </span>
         </div>
 
@@ -138,8 +136,9 @@ export const StatsModal = ({
               <thead>
                 <tr>
                   <th className="stats-th-month">Month</th>
-                  <th className="stats-th-events">Hackathons</th>
-                  <th className="stats-th-days">Work Days</th>
+                  <th className="stats-th-done">Done</th>
+                  <th className="stats-th-total">Total</th>
+                  <th className="stats-th-days">Devposter's Days</th>
                   <th className="stats-th-avg">Avg / Event</th>
                 </tr>
               </thead>
@@ -148,16 +147,16 @@ export const StatsModal = ({
                   <tr key={m.monthKey} className={m.isCurrentMonth ? 'row-current-month' : ''}>
                     <td className="stats-td-month">
                       <span className="month-name-text">{m.displayName}</span>
-                      {m.isCurrentMonth && (
-                        <span className="current-month-badge">Elapsed</span>
-                      )}
                     </td>
-                    <td className="stats-td-events">
-                      <span className="stats-pill-num">{m.hackathonCount}</span>
+                    <td className="stats-td-done">
+                      <span className="stats-pill-num stats-pill-completed">{m.completedCount}</span>
+                    </td>
+                    <td className="stats-td-total">
+                      <span className="stats-pill-num">{m.totalCount}</span>
                     </td>
                     <td className="stats-td-days">
                       <strong>{m.uniqueWorkDays}</strong>
-                      <span className="stats-sub-dim">/{m.elapsedDaysInMonth}d</span>
+                      {/* <span className="stats-sub-dim">/{m.elapsedDaysInMonth}d</span> */}
                     </td>
                     <td className="stats-td-avg">
                       <span className="stats-avg-badge">
@@ -174,8 +173,20 @@ export const StatsModal = ({
 
       {/* Panel Footer */}
       <div className="stats-panel-footer">
-        <div className="stats-footer-hint">
-          Avg. work days in Settings: <strong>{settings?.avgTurnaroundDays || 10} days</strong>
+        <div className="stats-footer-hint-group">
+          <span className="stats-footer-hint">
+            Avg. work days in settings: <strong>{settings?.avgTurnaroundDays || 10} days</strong>
+          </span>
+          {hasPastData && stats.overallAvgDaysPerHackathon > 0 && Math.round(stats.overallAvgDaysPerHackathon) !== (settings?.avgTurnaroundDays || 10) && (
+            <button
+              type="button"
+              className="stats-footer-sync-btn"
+              onClick={handleApplyAverageToDefault}
+              title={`Sync settings default to empirical all-time average (${Math.round(stats.overallAvgDaysPerHackathon)} days)`}
+            >
+              Sync to avg ({Math.round(stats.overallAvgDaysPerHackathon)}d)
+            </button>
+          )}
         </div>
         <button
           type="button"

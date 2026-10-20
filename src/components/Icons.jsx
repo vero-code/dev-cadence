@@ -191,18 +191,18 @@ export const AnalyticsIcon = ({ size = 18, className = '' }) => (
     className={`analytics-icon ${className}`}
     width={size}
     height={size}
-    viewBox="0 0 20 20"
+    viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="1.7"
+    strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
     aria-hidden="true"
   >
-    <line x1="2.5" y1="15.5" x2="17.5" y2="15.5" />
-    <rect x="4" y="9" width="2.8" height="6.5" rx="0.8" fill="currentColor" fillOpacity="0.22" stroke="currentColor" strokeWidth="1.5" />
-    <rect x="8.6" y="4" width="2.8" height="11.5" rx="0.8" fill="currentColor" fillOpacity="0.22" stroke="currentColor" strokeWidth="1.5" />
-    <rect x="13.2" y="6.5" width="2.8" height="9" rx="0.8" fill="currentColor" fillOpacity="0.22" stroke="currentColor" strokeWidth="1.5" />
+    {/* Clean, unmistakable financial/metrics trend graph: axes-free ascending bars with trend line */}
+    <path d="M3 3v18h18" strokeWidth="2.2" />
+    <path d="M19 9l-5 5-4-4-4 4" strokeWidth="2.2" />
+    <polyline points="15 9 19 9 19 13" strokeWidth="2.2" />
   </svg>
 );
 

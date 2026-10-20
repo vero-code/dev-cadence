@@ -85,9 +85,11 @@ export const calculateCadenceStats = (hackathons = [], referenceDate = getTodayD
     ? Number((completedEntries.reduce((acc, h) => acc + h.pastDaysCount, 0) / completedEntries.length).toFixed(1))
     : 0;
 
-  // Shortest hackathon (minimum days spent on a hackathon)
+  // Shortest and Longest hackathons (min and max days spent on a hackathon all-time)
   let shortestHackathon = null;
   let minDaysSpent = 0;
+  let longestHackathon = null;
+  let maxDaysSpent = 0;
 
   if (pastHackathonEntries.length > 0) {
     // Prefer completed hackathons for definitive duration; if none completed yet, use active past
@@ -99,6 +101,15 @@ export const calculateCadenceStats = (hackathons = [], referenceDate = getTodayD
 
     if (shortestHackathon) {
       minDaysSpent = shortestHackathon.pastDaysCount;
+    }
+
+    longestHackathon = pool.reduce((max, curr) => {
+      if (!max) return curr;
+      return curr.pastDaysCount > max.pastDaysCount ? curr : max;
+    }, null);
+
+    if (longestHackathon) {
+      maxDaysSpent = longestHackathon.pastDaysCount;
     }
   }
 
@@ -113,13 +124,15 @@ export const calculateCadenceStats = (hackathons = [], referenceDate = getTodayD
         monthKey,
         uniqueDaysSet: new Set(),
         hackathonsSet: new Set(),
+        completedHackathonsSet: new Set(),
+        allStatusHackathonsSet: new Set(),
         hackathonDaysMap: new Map(), // hackathonId -> count of past days in this month
       });
     }
     monthMap.get(monthKey).uniqueDaysSet.add(dateStr);
   });
 
-  // Also account for hackathons spanning months
+  // Track past active hackathons in month
   pastHackathonEntries.forEach((h) => {
     h.pastDates.forEach((dateStr) => {
       const monthKey = dateStr.slice(0, 7);
@@ -128,6 +141,24 @@ export const calculateCadenceStats = (hackathons = [], referenceDate = getTodayD
         mObj.hackathonsSet.add(h.id);
         const prevCount = mObj.hackathonDaysMap.get(h.id) || 0;
         mObj.hackathonDaysMap.set(h.id, prevCount + 1);
+      }
+    });
+  });
+
+  // Also collect all hackathons (any status) that intersect or belong to each month
+  // and hackathons completed in that month (status === 'Done' or h.isCompleted)
+  (hackathons || []).forEach((h) => {
+    if (!h.startDate || !h.endDate) return;
+    const allDates = getDateRangeArray(h.startDate, h.endDate);
+    const monthsIntersected = new Set(allDates.map((d) => d.slice(0, 7)));
+
+    monthsIntersected.forEach((monthKey) => {
+      if (monthMap.has(monthKey)) {
+        const mObj = monthMap.get(monthKey);
+        mObj.allStatusHackathonsSet.add(h.id);
+        if (h.status === 'Done' || h.isCompleted) {
+          mObj.completedHackathonsSet.add(h.id);
+        }
       }
     });
   });
@@ -142,6 +173,10 @@ export const calculateCadenceStats = (hackathons = [], referenceDate = getTodayD
 
     const uniqueWorkDays = mObj.uniqueDaysSet.size;
     const hackathonCount = mObj.hackathonsSet.size;
+    // Completed hackathons in this month (explicit 'Done' status or completed in past)
+    const completedCount = mObj.completedHackathonsSet.size;
+    // Total hackathons of any status active/spanning this month
+    const totalCount = Math.max(mObj.allStatusHackathonsSet.size, hackathonCount);
 
     // Total days logged for all hackathons in this month
     let totalHackathonDaysInMonth = 0;
@@ -172,6 +207,8 @@ export const calculateCadenceStats = (hackathons = [], referenceDate = getTodayD
       isCurrentMonth,
       uniqueWorkDays,
       hackathonCount,
+      completedCount,
+      totalCount,
       totalHackathonDaysInMonth,
       avgDaysPerHackathon,
       elapsedDaysInMonth,
@@ -194,6 +231,8 @@ export const calculateCadenceStats = (hackathons = [], referenceDate = getTodayD
     isCurrentMonth: true,
     uniqueWorkDays: 0,
     hackathonCount: 0,
+    completedCount: 0,
+    totalCount: 0,
     totalHackathonDaysInMonth: 0,
     avgDaysPerHackathon: 0,
     elapsedDaysInMonth: Math.max(0, now.getDate() - 1),
@@ -217,6 +256,16 @@ export const calculateCadenceStats = (hackathons = [], referenceDate = getTodayD
           emoji: shortestHackathon.emoji,
           days: minDaysSpent,
           isCompleted: shortestHackathon.isCompleted,
+        }
+      : null,
+    maxDaysSpent,
+    longestHackathon: longestHackathon
+      ? {
+          id: longestHackathon.id,
+          name: longestHackathon.name,
+          emoji: longestHackathon.emoji,
+          days: maxDaysSpent,
+          isCompleted: longestHackathon.isCompleted,
         }
       : null,
     completedCount: completedEntries.length,
