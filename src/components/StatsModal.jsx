@@ -114,47 +114,6 @@ export const StatsModal = ({
                 : 'No past dates logged yet'}
             </span>
           </div>
-
-          {/* Card 3: Current Month Activity */}
-          <div className="stats-kpi-card">
-            <span className="stats-kpi-label">This Month Worked</span>
-            <div className="stats-kpi-value-row">
-              <span className="stats-kpi-number">
-                {stats.currentMonthStats.uniqueWorkDays}
-              </span>
-              <span className="stats-kpi-unit">days</span>
-            </div>
-            <span className="stats-kpi-sub">
-              {stats.currentMonthStats.elapsedDaysInMonth > 0
-                ? `out of ${stats.currentMonthStats.elapsedDaysInMonth} elapsed days (${stats.currentMonthStats.cadenceLoadPercent}% load)`
-                : 'No elapsed days yet'}
-            </span>
-            <div
-              className="stats-month-load-bar"
-              title={`Workload: ${stats.currentMonthStats.cadenceLoadPercent}% of elapsed month`}
-            >
-              <div
-                className="stats-month-load-fill"
-                style={{ width: `${stats.currentMonthStats.cadenceLoadPercent}%` }}
-              />
-            </div>
-          </div>
-
-          {/* Card 4: All-Time Work Days */}
-          <div className="stats-kpi-card">
-            <span className="stats-kpi-label">Total Work Days</span>
-            <div className="stats-kpi-value-row">
-              <span className="stats-kpi-number">
-                {hasPastData ? stats.totalUniqueCalendarDays : 0}
-              </span>
-              <span className="stats-kpi-unit">days</span>
-            </div>
-            <span className="stats-kpi-sub">
-              {hasPastData
-                ? `${stats.completedCount} finished, ${stats.inProgressCount} in progress`
-                : 'Start pacing to build history'}
-            </span>
-          </div>
         </div>
 
         {/* Monthly Cadence Breakdown */}
@@ -182,7 +141,6 @@ export const StatsModal = ({
                   <th className="stats-th-events">Hackathons</th>
                   <th className="stats-th-days">Work Days</th>
                   <th className="stats-th-avg">Avg / Event</th>
-                  <th className="stats-th-load">Pacing Load</th>
                 </tr>
               </thead>
               <tbody>
@@ -206,15 +164,6 @@ export const StatsModal = ({
                         {m.avgDaysPerHackathon > 0 ? `${m.avgDaysPerHackathon}d` : '—'}
                       </span>
                     </td>
-                    <td className="stats-td-load">
-                      <div className="stats-row-bar-wrap" title={`${m.cadenceLoadPercent}% of days spent on hackathons`}>
-                        <div
-                          className="stats-row-bar-fill"
-                          style={{ width: `${m.cadenceLoadPercent}%` }}
-                        />
-                        <span className="stats-row-bar-text">{m.cadenceLoadPercent}%</span>
-                      </div>
-                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -226,7 +175,7 @@ export const StatsModal = ({
       {/* Panel Footer */}
       <div className="stats-panel-footer">
         <div className="stats-footer-hint">
-          Default turnaround: <strong>{settings?.avgTurnaroundDays || 10} days</strong>
+          Avg. work days in Settings: <strong>{settings?.avgTurnaroundDays || 10} days</strong>
         </div>
         <button
           type="button"

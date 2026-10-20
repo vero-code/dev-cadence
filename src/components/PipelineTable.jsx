@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { MonthNavigator } from './MonthNavigator';
 import {
   TrackerBadgeIcon,
   CardsViewIcon,
@@ -55,7 +56,15 @@ export const PipelineTable = ({
   onEdit,
   onDelete,
   onAddNew,
+  year,
+  month,
+  currentYear,
+  currentMonth,
+  onPrevMonth,
+  onNextMonth,
 }) => {
+  const activeYear = year ?? currentYear ?? 2026;
+  const activeMonth = month ?? currentMonth ?? 9;
   const [openMenuId, setOpenMenuId] = useState(null);
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [viewMode, setViewMode] = useState(() => {
@@ -264,6 +273,14 @@ export const PipelineTable = ({
           <button type="button" className="btn-primary tracker-add-btn" onClick={onAddNew} title="Log Hackathon">
             <PlusIcon size={11} strokeWidth={2.4} />
           </button>
+          <div className="calendar-month-nav">
+            <MonthNavigator
+              currentYear={activeYear}
+              currentMonth={activeMonth}
+              onPrevMonth={onPrevMonth}
+              onNextMonth={onNextMonth}
+            />
+          </div>
         </div>
       </div>
 

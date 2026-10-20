@@ -10,13 +10,12 @@ import { ConfirmModal } from './components/ConfirmModal';
 import { LegalModal } from './components/LegalModal';
 import { getStoredData, saveHackathons, saveSettings, saveTheme, clearAllHackathons, clearAllData } from './utils/storage';
 import { addDaysToDateString } from './utils/calendarUtils';
+import { useMonthNavigation } from './hooks/useMonthNavigation';
 
 export const App = () => {
   const [hackathons, setHackathons] = useState([]);
   const [settings, setSettings] = useState({ targetRestDays: 8, avgTurnaroundDays: 10, fontPreset: 'bahnschrift', fontSize: 'normal' });
   const [theme, setTheme] = useState('steampunk');
-  const [currentYear, setCurrentYear] = useState(2026);
-  const [currentMonth, setCurrentMonth] = useState(9); // October (0-indexed)
   const [selectedDate, setSelectedDate] = useState(null);
   const [dateRange, setDateRange] = useState({ start: null, end: null });
   const [prefillDates, setPrefillDates] = useState(null);
@@ -30,6 +29,19 @@ export const App = () => {
   const [calendarPickedDate, setCalendarPickedDate] = useState(null);
   const [legalModalTab, setLegalModalTab] = useState(null);
 
+  const {
+    currentYear,
+    currentMonth,
+    setCurrentYear,
+    setCurrentMonth,
+    handlePrevMonth,
+    handleNextMonth,
+    handleJumpToMonth,
+  } = useMonthNavigation(2026, 9, () => {
+    setSelectedDate(null);
+    setDateRange({ start: null, end: null });
+  });
+
   useEffect(() => {
     const initData = async () => {
       const data = await getStoredData();
@@ -41,28 +53,6 @@ export const App = () => {
     };
     initData();
   }, []);
-
-  const handlePrevMonth = () => {
-    setSelectedDate(null);
-    setDateRange({ start: null, end: null });
-    if (currentMonth === 0) {
-      setCurrentMonth(11);
-      setCurrentYear((y) => y - 1);
-    } else {
-      setCurrentMonth((m) => m - 1);
-    }
-  };
-
-  const handleNextMonth = () => {
-    setSelectedDate(null);
-    setDateRange({ start: null, end: null });
-    if (currentMonth === 11) {
-      setCurrentMonth(0);
-      setCurrentYear((y) => y + 1);
-    } else {
-      setCurrentMonth((m) => m + 1);
-    }
-  };
 
   const handleSelectTheme = async (newTheme) => {
     setTheme(newTheme);
@@ -245,26 +235,9 @@ export const App = () => {
     });
 
     if (dates?.startDate && /^\d{4}-\d{2}-\d{2}$/.test(dates.startDate)) {
-      const [yStr, mStr] = dates.startDate.split('-');
-      const y = parseInt(yStr, 10);
-      const m = parseInt(mStr, 10) - 1;
-      if (!isNaN(y) && !isNaN(m) && m >= 0 && m <= 11) {
-        setCurrentYear((prevY) => (prevY !== y ? y : prevY));
-        setCurrentMonth((prevM) => (prevM !== m ? m : prevM));
-      }
+      handleJumpToMonth(dates.startDate);
     }
-  }, []);
-
-  const handleJumpToMonth = (dateString) => {
-    if (!dateString || !/^\d{4}-\d{2}-\d{2}$/.test(dateString)) return;
-    const [yStr, mStr] = dateString.split('-');
-    const y = parseInt(yStr, 10);
-    const m = parseInt(mStr, 10) - 1;
-    if (!isNaN(y) && !isNaN(m) && m >= 0 && m <= 11) {
-      setCurrentYear(y);
-      setCurrentMonth(m);
-    }
-  };
+  }, [handleJumpToMonth]);
 
   // Only display hackathons that belong to or span across the active month
   const monthPadded = String(currentMonth + 1).padStart(2, '0');
@@ -373,6 +346,10 @@ export const App = () => {
               onEdit={handleOpenEdit}
               onDelete={handleRequestDelete}
               onAddNew={handleOpenAdd}
+              year={currentYear}
+              month={currentMonth}
+              onPrevMonth={handlePrevMonth}
+              onNextMonth={handleNextMonth}
             />
           )}
         </div>
