@@ -44,10 +44,11 @@ const formatWorkRange = (startIso, endIso) => {
 
 const getStatusChipClass = (status) => {
   const s = (status || '').toLowerCase();
-  if (s.includes('registered') || s.includes('submitted') || s.includes('done')) return 'chip-registered';
+  if (s.includes('interest') || s.includes('consider')) return 'chip-interest';
+  if (s.includes('join') || s.includes('registered')) return 'chip-join';
   if (s.includes('early')) return 'chip-early';
-  if (s.includes('wait') || s.includes('api')) return 'chip-waiting';
-  if (s.includes('consider')) return 'chip-considering';
+  if (s.includes('draft') || s.includes('wait') || s.includes('progress')) return 'chip-draft';
+  if (s.includes('done') || s.includes('submitted')) return 'chip-done';
   return 'chip-custom';
 };
 
@@ -89,20 +90,30 @@ export const PipelineTable = ({
     let list = hackathons;
     if (statusFilter !== 'ALL') {
       const filterLower = statusFilter.toLowerCase();
-      if (filterLower.includes('done') || filterLower.includes('submitted')) {
+      if (filterLower.includes('interest') || filterLower.includes('consider')) {
         list = hackathons.filter((h) => {
           const s = (h.status || '').toLowerCase();
-          return s.includes('done') || s.includes('submitted');
+          return s.includes('interest') || s.includes('consider');
         });
-      } else if (filterLower.includes('registered') || filterLower.includes('join')) {
+      } else if (filterLower.includes('join') || filterLower.includes('registered')) {
         list = hackathons.filter((h) => {
           const s = (h.status || '').toLowerCase();
-          return s.includes('registered') || s.includes('join');
+          return s.includes('join') || s.includes('registered');
         });
       } else if (filterLower.includes('early')) {
         list = hackathons.filter((h) => {
           const s = (h.status || '').toLowerCase();
           return s.includes('early');
+        });
+      } else if (filterLower.includes('draft') || filterLower.includes('wait')) {
+        list = hackathons.filter((h) => {
+          const s = (h.status || '').toLowerCase();
+          return s.includes('draft') || s.includes('wait');
+        });
+      } else if (filterLower.includes('done') || filterLower.includes('submitted')) {
+        list = hackathons.filter((h) => {
+          const s = (h.status || '').toLowerCase();
+          return s.includes('done') || s.includes('submitted');
         });
       } else {
         list = hackathons.filter((h) => (h.status || '').toLowerCase().includes(filterLower));
@@ -127,47 +138,25 @@ export const PipelineTable = ({
 
   const statusCounts = useMemo(() => {
     const counts = {
-      registered: 0,
-      earlyBird: 0,
+      interest: 0,
+      join: 0,
+      early: 0,
+      draft: 0,
       done: 0,
     };
     (hackathons || []).forEach((h) => {
       const s = (h.status || '').toLowerCase();
-      if (s.includes('registered') || s.includes('join')) counts.registered += 1;
-      else if (s.includes('early')) counts.earlyBird += 1;
+      if (s.includes('interest') || s.includes('consider')) counts.interest += 1;
+      else if (s.includes('join') || s.includes('registered')) counts.join += 1;
+      else if (s.includes('early')) counts.early += 1;
+      else if (s.includes('draft') || s.includes('wait')) counts.draft += 1;
       else if (s.includes('done') || s.includes('submitted')) counts.done += 1;
     });
     return counts;
   }, [hackathons]);
 
   const handleToggleStatusFilter = (targetStatus) => {
-    if (targetStatus === 'ALL') {
-      setStatusFilter('ALL');
-      return;
-    }
-    const targetLower = targetStatus.toLowerCase();
-    const filterLower = statusFilter.toLowerCase();
-
-    let isCurrentlyActive = false;
-    if (statusFilter !== 'ALL') {
-      if (
-        (targetLower.includes('join') || targetLower.includes('registered')) &&
-        (filterLower.includes('join') || filterLower.includes('registered'))
-      ) {
-        isCurrentlyActive = true;
-      } else if (
-        (targetLower.includes('done') || targetLower.includes('submitted')) &&
-        (filterLower.includes('done') || filterLower.includes('submitted'))
-      ) {
-        isCurrentlyActive = true;
-      } else if (targetLower.includes('early') && filterLower.includes('early')) {
-        isCurrentlyActive = true;
-      } else if (filterLower.includes(targetLower)) {
-        isCurrentlyActive = true;
-      }
-    }
-
-    if (isCurrentlyActive) {
+    if (targetStatus === 'ALL' || statusFilter === targetStatus) {
       setStatusFilter('ALL');
     } else {
       setStatusFilter(targetStatus);
@@ -195,14 +184,11 @@ export const PipelineTable = ({
     };
   }, []);
 
-  const isRegActive =
-    statusFilter !== 'ALL' &&
-    (statusFilter.toLowerCase().includes('registered') || statusFilter.toLowerCase().includes('join'));
-  const isDoneActive =
-    statusFilter !== 'ALL' &&
-    (statusFilter.toLowerCase().includes('done') || statusFilter.toLowerCase().includes('submitted'));
-  const isEarlyActive =
-    statusFilter !== 'ALL' && statusFilter.toLowerCase().includes('early');
+  const isInterestActive = statusFilter === 'Interest';
+  const isJoinActive = statusFilter === 'Join';
+  const isEarlyActive = statusFilter === 'Early';
+  const isDraftActive = statusFilter === 'Draft';
+  const isDoneActive = statusFilter === 'Done';
 
   return (
     <div className="table-card pipeline-list-container">
@@ -217,15 +203,32 @@ export const PipelineTable = ({
         <div className="tracker-status-pills">
           <button
             type="button"
-            className={`tracker-status-pill pill-reg ${isRegActive ? 'active' : ''} ${statusCounts.registered === 0 ? 'zero' : ''}`}
+            className={`tracker-status-pill pill-interest ${isInterestActive ? 'active' : ''} ${statusCounts.interest === 0 ? 'zero' : ''}`}
+            onClick={() => handleToggleStatusFilter('Interest')}
+            title={isInterestActive ? 'Clear Interest filter' : `Filter by Interest (${statusCounts.interest})`}
+            aria-label={isInterestActive ? 'Clear Interest filter' : `Filter by Interest (${statusCounts.interest})`}
+          >
+            <span className="status-pill-dot dot-interest" />
+            <span className="status-pill-label">Interest</span>
+            <span className="status-pill-count">{statusCounts.interest}</span>
+            {isInterestActive && (
+              <span className="status-pill-clear" aria-hidden="true">
+                <CloseIcon />
+              </span>
+            )}
+          </button>
+
+          <button
+            type="button"
+            className={`tracker-status-pill pill-join ${isJoinActive ? 'active' : ''} ${statusCounts.join === 0 ? 'zero' : ''}`}
             onClick={() => handleToggleStatusFilter('Join')}
-            title={isRegActive ? 'Clear Registered filter' : `Filter by registered (${statusCounts.registered})`}
-            aria-label={isRegActive ? 'Clear Registered filter' : `Filter by Registered (${statusCounts.registered})`}
+            title={isJoinActive ? 'Clear Join filter' : `Filter by Join (${statusCounts.join})`}
+            aria-label={isJoinActive ? 'Clear Join filter' : `Filter by Join (${statusCounts.join})`}
           >
-            <span className="status-pill-dot dot-reg" />
+            <span className="status-pill-dot dot-join" />
             <span className="status-pill-label">Join</span>
-            <span className="status-pill-count">{statusCounts.registered}</span>
-            {isRegActive && (
+            <span className="status-pill-count">{statusCounts.join}</span>
+            {isJoinActive && (
               <span className="status-pill-clear" aria-hidden="true">
                 <CloseIcon />
               </span>
@@ -234,32 +237,49 @@ export const PipelineTable = ({
 
           <button
             type="button"
-            className={`tracker-status-pill pill-submitted ${isDoneActive ? 'active' : ''} ${statusCounts.done === 0 ? 'zero' : ''}`}
-            onClick={() => handleToggleStatusFilter('Done')}
-            title={isDoneActive ? 'Clear Done filter' : `Filter by completed (${statusCounts.done})`}
-            aria-label={isDoneActive ? 'Clear Done filter' : `Filter by Done (${statusCounts.done})`}
-          >
-            <span className="status-pill-dot dot-submitted" />
-            <span className="status-pill-label">Done</span>
-            <span className="status-pill-count">{statusCounts.done}</span>
-            {isDoneActive && (
-              <span className="status-pill-clear" aria-hidden="true">
-                <CloseIcon />
-              </span>
-            )}
-          </button>
-
-          <button
-            type="button"
-            className={`tracker-status-pill pill-early ${isEarlyActive ? 'active' : ''} ${statusCounts.earlyBird === 0 ? 'zero' : ''}`}
+            className={`tracker-status-pill pill-early ${isEarlyActive ? 'active' : ''} ${statusCounts.early === 0 ? 'zero' : ''}`}
             onClick={() => handleToggleStatusFilter('Early')}
-            title={isEarlyActive ? 'Clear Early Bird filter' : `Filter by early submission (${statusCounts.earlyBird})`}
-            aria-label={isEarlyActive ? 'Clear Early Bird filter' : `Filter by Early Bird (${statusCounts.earlyBird})`}
+            title={isEarlyActive ? 'Clear Early filter' : `Filter by Early (${statusCounts.early})`}
+            aria-label={isEarlyActive ? 'Clear Early filter' : `Filter by Early (${statusCounts.early})`}
           >
             <span className="status-pill-dot dot-early" />
             <span className="status-pill-label">Early</span>
-            <span className="status-pill-count">{statusCounts.earlyBird}</span>
+            <span className="status-pill-count">{statusCounts.early}</span>
             {isEarlyActive && (
+              <span className="status-pill-clear" aria-hidden="true">
+                <CloseIcon />
+              </span>
+            )}
+          </button>
+
+          <button
+            type="button"
+            className={`tracker-status-pill pill-draft ${isDraftActive ? 'active' : ''} ${statusCounts.draft === 0 ? 'zero' : ''}`}
+            onClick={() => handleToggleStatusFilter('Draft')}
+            title={isDraftActive ? 'Clear Draft filter' : `Filter by Draft (${statusCounts.draft})`}
+            aria-label={isDraftActive ? 'Clear Draft filter' : `Filter by Draft (${statusCounts.draft})`}
+          >
+            <span className="status-pill-dot dot-draft" />
+            <span className="status-pill-label">Draft</span>
+            <span className="status-pill-count">{statusCounts.draft}</span>
+            {isDraftActive && (
+              <span className="status-pill-clear" aria-hidden="true">
+                <CloseIcon />
+              </span>
+            )}
+          </button>
+
+          <button
+            type="button"
+            className={`tracker-status-pill pill-done ${isDoneActive ? 'active' : ''} ${statusCounts.done === 0 ? 'zero' : ''}`}
+            onClick={() => handleToggleStatusFilter('Done')}
+            title={isDoneActive ? 'Clear Done filter' : `Filter by Done (${statusCounts.done})`}
+            aria-label={isDoneActive ? 'Clear Done filter' : `Filter by Done (${statusCounts.done})`}
+          >
+            <span className="status-pill-dot dot-done" />
+            <span className="status-pill-label">Done</span>
+            <span className="status-pill-count">{statusCounts.done}</span>
+            {isDoneActive && (
               <span className="status-pill-clear" aria-hidden="true">
                 <CloseIcon />
               </span>
