@@ -86,27 +86,43 @@ export const PipelineTable = ({
 
   const displayedHackathons = useMemo(() => {
     if (!hackathons) return [];
-    if (statusFilter === 'ALL') return hackathons;
-    const filterLower = statusFilter.toLowerCase();
-    if (filterLower.includes('done') || filterLower.includes('submitted')) {
-      return hackathons.filter((h) => {
-        const s = (h.status || '').toLowerCase();
-        return s.includes('done') || s.includes('submitted');
-      });
+    let list = hackathons;
+    if (statusFilter !== 'ALL') {
+      const filterLower = statusFilter.toLowerCase();
+      if (filterLower.includes('done') || filterLower.includes('submitted')) {
+        list = hackathons.filter((h) => {
+          const s = (h.status || '').toLowerCase();
+          return s.includes('done') || s.includes('submitted');
+        });
+      } else if (filterLower.includes('registered') || filterLower.includes('join')) {
+        list = hackathons.filter((h) => {
+          const s = (h.status || '').toLowerCase();
+          return s.includes('registered') || s.includes('join');
+        });
+      } else if (filterLower.includes('early')) {
+        list = hackathons.filter((h) => {
+          const s = (h.status || '').toLowerCase();
+          return s.includes('early');
+        });
+      } else {
+        list = hackathons.filter((h) => (h.status || '').toLowerCase().includes(filterLower));
+      }
     }
-    if (filterLower.includes('registered') || filterLower.includes('join')) {
-      return hackathons.filter((h) => {
-        const s = (h.status || '').toLowerCase();
-        return s.includes('registered') || s.includes('join');
-      });
-    }
-    if (filterLower.includes('early')) {
-      return hackathons.filter((h) => {
-        const s = (h.status || '').toLowerCase();
-        return s.includes('early');
-      });
-    }
-    return hackathons.filter((h) => (h.status || '').toLowerCase().includes(filterLower));
+
+    // Default: chronological ordering by startDate ascending (fallback to deadline, then name)
+    return [...list].sort((a, b) => {
+      const dateA = a.startDate || a.deadline || '9999-99-99';
+      const dateB = b.startDate || b.deadline || '9999-99-99';
+      if (dateA !== dateB) {
+        return dateA.localeCompare(dateB);
+      }
+      const deadlineA = a.deadline || '9999-99-99';
+      const deadlineB = b.deadline || '9999-99-99';
+      if (deadlineA !== deadlineB) {
+        return deadlineA.localeCompare(deadlineB);
+      }
+      return (a.name || '').localeCompare(b.name || '');
+    });
   }, [hackathons, statusFilter]);
 
   const statusCounts = useMemo(() => {
