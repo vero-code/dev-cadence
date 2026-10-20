@@ -45,6 +45,10 @@ export const Footer = ({
         >
           Terms of Use
         </button>
+        <span className="credits-dot">&bull;</span>
+        <span className="footer-version" title="Release: October 20, 2026">
+          v0.2.0
+        </span>
       </div>
     </footer>
   );

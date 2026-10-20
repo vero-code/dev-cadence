@@ -175,7 +175,7 @@ export const StatsModal = ({
       <div className="stats-panel-footer">
         <div className="stats-footer-hint-group">
           <span className="stats-footer-hint">
-            Avg. work days in settings: <strong>{settings?.avgTurnaroundDays || 10} days</strong>
+            Current average work days in settings: <strong>{settings?.avgTurnaroundDays || 10} days</strong>
           </span>
           {hasPastData && stats.overallAvgDaysPerHackathon > 0 && Math.round(stats.overallAvgDaysPerHackathon) !== (settings?.avgTurnaroundDays || 10) && (
             <button
