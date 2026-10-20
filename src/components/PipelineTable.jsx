@@ -83,6 +83,18 @@ export const PipelineTable = ({
         return s.includes('done') || s.includes('submitted');
       });
     }
+    if (filterLower.includes('registered') || filterLower.includes('join')) {
+      return hackathons.filter((h) => {
+        const s = (h.status || '').toLowerCase();
+        return s.includes('registered') || s.includes('join');
+      });
+    }
+    if (filterLower.includes('early')) {
+      return hackathons.filter((h) => {
+        const s = (h.status || '').toLowerCase();
+        return s.includes('early');
+      });
+    }
     return hackathons.filter((h) => (h.status || '').toLowerCase().includes(filterLower));
   }, [hackathons, statusFilter]);
 
@@ -94,7 +106,7 @@ export const PipelineTable = ({
     };
     (hackathons || []).forEach((h) => {
       const s = (h.status || '').toLowerCase();
-      if (s.includes('registered')) counts.registered += 1;
+      if (s.includes('registered') || s.includes('join')) counts.registered += 1;
       else if (s.includes('early')) counts.earlyBird += 1;
       else if (s.includes('done') || s.includes('submitted')) counts.done += 1;
     });
@@ -106,11 +118,28 @@ export const PipelineTable = ({
       setStatusFilter('ALL');
       return;
     }
-    const isCurrentlyActive = statusFilter !== 'ALL' && (
-      statusFilter.toLowerCase().includes(targetStatus.toLowerCase()) ||
-      ((targetStatus.toLowerCase().includes('done') || targetStatus.toLowerCase().includes('submitted')) &&
-       (statusFilter.toLowerCase().includes('done') || statusFilter.toLowerCase().includes('submitted')))
-    );
+    const targetLower = targetStatus.toLowerCase();
+    const filterLower = statusFilter.toLowerCase();
+
+    let isCurrentlyActive = false;
+    if (statusFilter !== 'ALL') {
+      if (
+        (targetLower.includes('join') || targetLower.includes('registered')) &&
+        (filterLower.includes('join') || filterLower.includes('registered'))
+      ) {
+        isCurrentlyActive = true;
+      } else if (
+        (targetLower.includes('done') || targetLower.includes('submitted')) &&
+        (filterLower.includes('done') || filterLower.includes('submitted'))
+      ) {
+        isCurrentlyActive = true;
+      } else if (targetLower.includes('early') && filterLower.includes('early')) {
+        isCurrentlyActive = true;
+      } else if (filterLower.includes(targetLower)) {
+        isCurrentlyActive = true;
+      }
+    }
+
     if (isCurrentlyActive) {
       setStatusFilter('ALL');
     } else {
@@ -139,16 +168,21 @@ export const PipelineTable = ({
     };
   }, []);
 
-  const isRegActive = statusFilter !== 'ALL' && statusFilter.toLowerCase().includes('registered');
-  const isDoneActive = statusFilter !== 'ALL' && (statusFilter.toLowerCase().includes('done') || statusFilter.toLowerCase().includes('submitted'));
-  const isEarlyActive = statusFilter !== 'ALL' && statusFilter.toLowerCase().includes('early');
+  const isRegActive =
+    statusFilter !== 'ALL' &&
+    (statusFilter.toLowerCase().includes('registered') || statusFilter.toLowerCase().includes('join'));
+  const isDoneActive =
+    statusFilter !== 'ALL' &&
+    (statusFilter.toLowerCase().includes('done') || statusFilter.toLowerCase().includes('submitted'));
+  const isEarlyActive =
+    statusFilter !== 'ALL' && statusFilter.toLowerCase().includes('early');
 
   return (
     <div className="table-card pipeline-list-container">
       <div className="pipeline-header-row">
         <div className="tracker-heading-group">
           <h2 className="section-heading">
-            <TrackerBadgeIcon className="tracker-badge-icon" size={17} />
+            <TrackerBadgeIcon className="tracker-badge-icon" size={16} />
             <span>Tracker</span>
           </h2>
         </div>
@@ -157,12 +191,12 @@ export const PipelineTable = ({
           <button
             type="button"
             className={`tracker-status-pill pill-reg ${isRegActive ? 'active' : ''} ${statusCounts.registered === 0 ? 'zero' : ''}`}
-            onClick={() => handleToggleStatusFilter('Registered')}
-            title={isRegActive ? 'Clear Registered filter' : `Filter by Registered (${statusCounts.registered})`}
+            onClick={() => handleToggleStatusFilter('Join')}
+            title={isRegActive ? 'Clear Registered filter' : `Filter by registered (${statusCounts.registered})`}
             aria-label={isRegActive ? 'Clear Registered filter' : `Filter by Registered (${statusCounts.registered})`}
           >
             <span className="status-pill-dot dot-reg" />
-            <span className="status-pill-label">Reg</span>
+            <span className="status-pill-label">Join</span>
             <span className="status-pill-count">{statusCounts.registered}</span>
             {isRegActive && (
               <span className="status-pill-clear" aria-hidden="true">
@@ -175,7 +209,7 @@ export const PipelineTable = ({
             type="button"
             className={`tracker-status-pill pill-submitted ${isDoneActive ? 'active' : ''} ${statusCounts.done === 0 ? 'zero' : ''}`}
             onClick={() => handleToggleStatusFilter('Done')}
-            title={isDoneActive ? 'Clear Done filter' : `Filter by Done (${statusCounts.done})`}
+            title={isDoneActive ? 'Clear Done filter' : `Filter by completed (${statusCounts.done})`}
             aria-label={isDoneActive ? 'Clear Done filter' : `Filter by Done (${statusCounts.done})`}
           >
             <span className="status-pill-dot dot-submitted" />
@@ -191,8 +225,8 @@ export const PipelineTable = ({
           <button
             type="button"
             className={`tracker-status-pill pill-early ${isEarlyActive ? 'active' : ''} ${statusCounts.earlyBird === 0 ? 'zero' : ''}`}
-            onClick={() => handleToggleStatusFilter('Early Bird')}
-            title={isEarlyActive ? 'Clear Early Bird filter' : `Filter by Early Bird (${statusCounts.earlyBird})`}
+            onClick={() => handleToggleStatusFilter('Early')}
+            title={isEarlyActive ? 'Clear Early Bird filter' : `Filter by early submission (${statusCounts.earlyBird})`}
             aria-label={isEarlyActive ? 'Clear Early Bird filter' : `Filter by Early Bird (${statusCounts.earlyBird})`}
           >
             <span className="status-pill-dot dot-early" />

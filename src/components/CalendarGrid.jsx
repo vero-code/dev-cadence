@@ -237,7 +237,7 @@ export const CalendarGrid = ({
     <div className="calendar-card" ref={calendarCardRef}>
       <div className="calendar-header-row">
         <h2 className="calendar-section-title">
-          <ScheduleBadgeIcon className="schedule-badge-icon" size={17} />
+          <ScheduleBadgeIcon className="schedule-badge-icon" size={16} />
           <span>Schedule</span>
         </h2>
         <div className="calendar-month-nav">

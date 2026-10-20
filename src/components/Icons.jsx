@@ -183,3 +183,27 @@ export const CloseIcon = ({ size = 8, className = '', strokeWidth = 1.5 }) => (
   </svg>
 );
 
+/**
+ * Clean stats chart / analytics icon
+ */
+export const AnalyticsIcon = ({ size = 18, className = '' }) => (
+  <svg
+    className={`analytics-icon ${className}`}
+    width={size}
+    height={size}
+    viewBox="0 0 20 20"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.7"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <line x1="2.5" y1="17" x2="17.5" y2="17" />
+    <rect x="4" y="10.5" width="2.8" height="6.5" rx="0.8" fill="currentColor" fillOpacity="0.22" stroke="currentColor" strokeWidth="1.5" />
+    <rect x="8.6" y="5.5" width="2.8" height="11.5" rx="0.8" fill="currentColor" fillOpacity="0.22" stroke="currentColor" strokeWidth="1.5" />
+    <rect x="13.2" y="8" width="2.8" height="9" rx="0.8" fill="currentColor" fillOpacity="0.22" stroke="currentColor" strokeWidth="1.5" />
+  </svg>
+);
+
+

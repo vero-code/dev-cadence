@@ -5,6 +5,7 @@ import { CalendarGrid } from './components/CalendarGrid';
 import { PipelineTable } from './components/PipelineTable';
 import { LogModal } from './components/LogModal';
 import { SettingsModal } from './components/SettingsModal';
+import { StatsModal } from './components/StatsModal';
 import { ConfirmModal } from './components/ConfirmModal';
 import { LegalModal } from './components/LegalModal';
 import { getStoredData, saveHackathons, saveSettings, saveTheme, clearAllHackathons, clearAllData } from './utils/storage';
@@ -22,6 +23,7 @@ export const App = () => {
   const [isSelectingOnCalendar, setIsSelectingOnCalendar] = useState(false);
   const [isLogModalOpen, setIsLogModalOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isStatsOpen, setIsStatsOpen] = useState(false);
   const [editingHackathon, setEditingHackathon] = useState(null);
   const [deleteCandidate, setDeleteCandidate] = useState(null);
   const [modalDates, setModalDates] = useState(null);
@@ -315,6 +317,8 @@ export const App = () => {
       <div className="panel-content">
         <Header
           onOpenSettings={handleOpenSettings}
+          onOpenStats={() => setIsStatsOpen((prev) => !prev)}
+          isStatsOpen={isStatsOpen}
         />
 
         <CalendarGrid
@@ -355,12 +359,22 @@ export const App = () => {
             </div>
           )}
 
-          <PipelineTable
-            hackathons={visibleHackathons}
-            onEdit={handleOpenEdit}
-            onDelete={handleRequestDelete}
-            onAddNew={handleOpenAdd}
-          />
+          {isStatsOpen ? (
+            <StatsModal
+              isOpen={isStatsOpen}
+              onClose={() => setIsStatsOpen(false)}
+              hackathons={hackathons}
+              settings={settings}
+              onUpdateSettings={handleUpdateSettings}
+            />
+          ) : (
+            <PipelineTable
+              hackathons={visibleHackathons}
+              onEdit={handleOpenEdit}
+              onDelete={handleRequestDelete}
+              onAddNew={handleOpenAdd}
+            />
+          )}
         </div>
 
         <SettingsModal

@@ -1,8 +1,8 @@
 import React from 'react';
 import { DEVPOST_PROFILE_URL } from '../constants';
-import { AgedGearIcon } from './Icons';
+import { AgedGearIcon, AnalyticsIcon } from './Icons';
 
-export const Header = ({ onOpenSettings }) => {
+export const Header = ({ onOpenSettings, onOpenStats, isStatsOpen }) => {
   return (
     <header className="panel-header">
       <div className="brand-row">
@@ -16,6 +16,15 @@ export const Header = ({ onOpenSettings }) => {
           </div>
         </div>
         <div className="header-actions">
+          <button
+            type="button"
+            className={`settings-icon-btn stats-icon-btn ${isStatsOpen ? 'active' : ''}`}
+            onClick={onOpenStats}
+            title={isStatsOpen ? "Close Analytics (return to Tracker)" : "Cadence Analytics & History"}
+            aria-label={isStatsOpen ? "Close Analytics" : "Cadence Analytics and History"}
+          >
+            <AnalyticsIcon size={19} />
+          </button>
           <button
             type="button"
             className="settings-icon-btn"

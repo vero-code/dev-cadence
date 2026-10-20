@@ -11,9 +11,9 @@ export const COLOR_PALETTE = [
 export const EMOJI_OPTIONS = ['🔷', '🔴', '🟩', '⭐', '🫟', '❕', '▪️'];
 
 export const STATUS_OPTIONS = [
-  'Interested',
-  'Registered',
-  'Early Bird',
+  'Interest',
+  'Join',
+  'Early',
   'Draft',
   'Done',
 ];

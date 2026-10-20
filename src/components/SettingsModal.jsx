@@ -109,7 +109,8 @@ export const SettingsModal = ({
       <div className="modal-card" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2 className="modal-title">
-            <AgedGearIcon className="modal-title-gear" size={20} /> Settings
+            <AgedGearIcon className="modal-title-gear" size={16} />
+            <span>Settings</span>
           </h2>
           <button type="button" className="modal-close-btn" onClick={onClose}>&times;</button>
         </div>
