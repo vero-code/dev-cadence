@@ -7,6 +7,11 @@
 ![Chrome Extension](https://img.shields.io/badge/Manifest_V3-Side_Panel-4285f4?logo=google-chrome&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 
+
+> 📺 **Video Tutorial**
+>
+> [![Video tutorial on Dev Cadence](https://img.youtube.com/vi/HrIht2-ZHvk/hqdefault.jpg)](https://youtu.be/HrIht2-ZHvk)
+
 ---
 
 ## 💡 The Problem
