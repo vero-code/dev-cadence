@@ -91,3 +91,48 @@ export const validateAndFormatUrl = (rawUrl) => {
     return { url: '', error: 'Please enter a valid website URL (e.g. devpost.com or https://...)' };
   }
 };
+
+export const computeDatesFromCalendarClick = (clickedDate, currentValues, avgTurnaroundDays) => {
+  const avgDays = Number(avgTurnaroundDays) || 10;
+  const { startDate: curStart, endDate: curEnd, deadline: curDead, activeDateField: curField } = currentValues;
+
+  if (curField === 'startDate') {
+    if (curEnd && clickedDate > curEnd) {
+      const newEnd = addDaysToDateString(clickedDate, avgDays - 1);
+      return { startDate: clickedDate, endDate: newEnd, deadline: newEnd };
+    }
+    return { startDate: clickedDate };
+  }
+
+  if (curField === 'deadline') {
+    const patch = { deadline: clickedDate };
+    if (curEnd && clickedDate < curEnd) {
+      patch.endDate = clickedDate;
+      if (curStart && clickedDate < curStart) {
+        patch.startDate = clickedDate;
+      }
+    }
+    return patch;
+  }
+
+  if (!curStart) {
+    const newEnd = addDaysToDateString(clickedDate, avgDays - 1);
+    return { startDate: clickedDate, endDate: newEnd, deadline: newEnd };
+  }
+
+  if (clickedDate >= curStart) {
+    const patch = { endDate: clickedDate };
+    if (!curDead || curDead === curEnd || curDead < clickedDate) {
+      patch.deadline = clickedDate;
+    }
+    return patch;
+  }
+
+  const patch = { startDate: clickedDate };
+  if (!curEnd || curEnd < clickedDate) {
+    const newEnd = addDaysToDateString(clickedDate, avgDays - 1);
+    patch.endDate = newEnd;
+    patch.deadline = newEnd;
+  }
+  return patch;
+};

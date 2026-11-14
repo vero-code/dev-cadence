@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { STATUS_OPTIONS } from '../constants';
-import { addDaysToDateString } from '../utils/calendarUtils';
-import { getInitialFormState, validateAndFormatUrl } from '../utils/logFormUtils';
+import { getInitialFormState, validateAndFormatUrl, computeDatesFromCalendarClick } from '../utils/logFormUtils';
 import { ColorEmojiPicker } from './ColorEmojiPicker';
+import { LogDateFields } from './LogDateFields';
 
 export const LogModal = ({
   isOpen,
@@ -48,63 +47,19 @@ export const LogModal = ({
     currentValuesRef.current = { startDate, endDate, deadline, activeDateField };
   });
 
-  // Handle direct date clicks from calendar while this form is open
   useEffect(() => {
     if (!isOpen || !calendarPickedDate?.date || !calendarPickedDate?.timestamp) return;
     if (lastProcessedClickRef.current === calendarPickedDate.timestamp) return;
     lastProcessedClickRef.current = calendarPickedDate.timestamp;
 
-    const clickedDate = calendarPickedDate.date;
-    const avgDays = Number(avgTurnaroundDays) || 10;
-    const { startDate: curStart, endDate: curEnd, deadline: curDead, activeDateField: curField } = currentValuesRef.current;
-
-    // 1. If user explicitly focused on Start Date input in the form
-    if (curField === 'startDate') {
-      setStartDate(clickedDate);
-      if (curEnd && clickedDate > curEnd) {
-        const newEnd = addDaysToDateString(clickedDate, avgDays - 1);
-        setEndDate(newEnd);
-        setDeadline(newEnd);
-      }
-      return;
-    }
-
-    // 2. If user explicitly focused on Deadline input in the form
-    if (curField === 'deadline') {
-      if (curEnd && clickedDate < curEnd) {
-        setEndDate(clickedDate);
-        if (curStart && clickedDate < curStart) {
-          setStartDate(clickedDate);
-        }
-      }
-      setDeadline(clickedDate);
-      return;
-    }
-
-    // 3. Smart Anchor mode (default or when activeDateField is 'endDate')
-    if (!curStart) {
-      setStartDate(clickedDate);
-      const newEnd = addDaysToDateString(clickedDate, avgDays - 1);
-      setEndDate(newEnd);
-      setDeadline(newEnd);
-      return;
-    }
-
-    if (clickedDate >= curStart) {
-      // Clicked on or after start date: adjusts the End Date (lengthens or shortens the sprint smoothly)
-      setEndDate(clickedDate);
-      if (!curDead || curDead === curEnd || curDead < clickedDate) {
-        setDeadline(clickedDate);
-      }
-    } else {
-      // Clicked before current start date: shifts the Start Date backward
-      setStartDate(clickedDate);
-      if (!curEnd || curEnd < clickedDate) {
-        const newEnd = addDaysToDateString(clickedDate, avgDays - 1);
-        setEndDate(newEnd);
-        setDeadline(newEnd);
-      }
-    }
+    const patch = computeDatesFromCalendarClick(
+      calendarPickedDate.date,
+      currentValuesRef.current,
+      avgTurnaroundDays
+    );
+    if (patch.startDate !== undefined) setStartDate(patch.startDate);
+    if (patch.endDate !== undefined) setEndDate(patch.endDate);
+    if (patch.deadline !== undefined) setDeadline(patch.deadline);
   }, [calendarPickedDate, isOpen, avgTurnaroundDays]);
 
   // Broadcast full draft state for real-time visual calendar preview (guarded against duplicate notifications)
@@ -246,85 +201,22 @@ export const LogModal = ({
             />
           </div>
 
-          <div className="form-row-2">
-            <div className="form-group">
-              <label className="form-label">Start Date</label>
-              <input
-                type="date"
-                className="form-input"
-                value={startDate}
-                onFocus={() => setActiveDateField('startDate')}
-                onChange={(e) => {
-                  const val = e.target.value;
-                  setStartDate(val);
-                  clickStepRef.current = 0;
-                  setError('');
-                  if (val && endDate && val > endDate) {
-                    const avgDays = Number(avgTurnaroundDays) || 10;
-                    const newEnd = addDaysToDateString(val, avgDays - 1);
-                    setEndDate(newEnd);
-                    if (!deadline || deadline === endDate || deadline < newEnd) {
-                      setDeadline(newEnd);
-                    }
-                  }
-                }}
-              />
-            </div>
-
-            <div className="form-group">
-              <label className="form-label">End Date</label>
-              <input
-                type="date"
-                className="form-input"
-                value={endDate}
-                min={startDate || undefined}
-                onFocus={() => setActiveDateField('endDate')}
-                onChange={(e) => {
-                  const val = e.target.value;
-                  setEndDate(val);
-                  clickStepRef.current = 0;
-                  setError('');
-                  if (val && startDate && val < startDate) {
-                    setStartDate(val);
-                  }
-                  if (val && (!deadline || deadline < val)) {
-                    setDeadline(val);
-                  }
-                }}
-              />
-            </div>
-          </div>
-
-          <div className="form-row-2">
-            <div className="form-group">
-              <label className="form-label">Deadline</label>
-              <input
-                type="date"
-                className="form-input"
-                value={deadline}
-                min={endDate || startDate || undefined}
-                onFocus={() => setActiveDateField('deadline')}
-                onChange={(e) => {
-                  setDeadline(e.target.value);
-                  clickStepRef.current = 0;
-                  setError('');
-                }}
-              />
-            </div>
-
-            <div className="form-group">
-              <label className="form-label">Status</label>
-              <select
-                className="form-select"
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-              >
-                {STATUS_OPTIONS.map((opt) => (
-                  <option key={opt} value={opt}>{opt}</option>
-                ))}
-              </select>
-            </div>
-          </div>
+          <LogDateFields
+            startDate={startDate}
+            endDate={endDate}
+            deadline={deadline}
+            status={status}
+            avgTurnaroundDays={avgTurnaroundDays}
+            onStartDateChange={setStartDate}
+            onEndDateChange={setEndDate}
+            onDeadlineChange={setDeadline}
+            onStatusChange={setStatus}
+            onFocusField={setActiveDateField}
+            onInteraction={() => {
+              clickStepRef.current = 0;
+              setError('');
+            }}
+          />
 
           <ColorEmojiPicker
             color={color}
