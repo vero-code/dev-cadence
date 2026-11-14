@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { THEMES, FONT_PRESETS, FONT_SIZES } from '../constants';
 import { AgedGearIcon, ChevronDownIcon } from './Icons';
+import { AiSettingsTab } from './AiSettingsTab';
 
 export const SettingsModal = ({
   isOpen,
@@ -12,6 +13,7 @@ export const SettingsModal = ({
   onClearAllHackathons,
   onResetAllData,
 }) => {
+  const [activeTab, setActiveTab] = useState('general');
   const [targetRestDays, setTargetRestDays] = useState(8);
   const [avgTurnaroundDays, setAvgTurnaroundDays] = useState(10);
   const [confirmClearHackathons, setConfirmClearHackathons] = useState(false);
@@ -115,156 +117,178 @@ export const SettingsModal = ({
           <button type="button" className="modal-close-btn" onClick={onClose}>&times;</button>
         </div>
 
+        {/* Settings Tabs */}
+        <div className="legal-tabs-bar">
+          <button
+            type="button"
+            className={`legal-tab-btn ${activeTab === 'general' ? 'active' : ''}`}
+            onClick={() => setActiveTab('general')}
+          >
+            General
+          </button>
+          <button
+            type="button"
+            className={`legal-tab-btn ${activeTab === 'ai' ? 'active' : ''}`}
+            onClick={() => setActiveTab('ai')}
+          >
+            AI
+          </button>
+        </div>
+
         <div className="modal-body-content">
-          {/* Theme & Typography */}
-          <div className="settings-columns-row">
+          {activeTab === 'general' ? (
+            <>
+              <div className="settings-columns-row">
+                {/* Theme */}
+                <div className="settings-column">
+                  <label className="form-label" htmlFor="settings-theme-select">Theme</label>
+                  <div className="select-wrapper">
+                    <select
+                      id="settings-theme-select"
+                      className="form-select"
+                      value={currentTheme}
+                      onChange={(e) => handleThemeClick(e.target.value)}
+                    >
+                      {THEMES.map((t) => (
+                        <option key={t.id} value={t.id}>
+                          {t.name}
+                        </option>
+                      ))}
+                  </select>
+                  <ChevronDownIcon className="select-chevron" size={14} />
+                  </div>
+                </div>
 
-            {/* Theme Selector */}
-            <div className="settings-column">
-              <label className="form-label" htmlFor="settings-theme-select">Theme</label>
-              <div className="select-wrapper">
-                <select
-                  id="settings-theme-select"
-                  className="form-select"
-                  value={currentTheme}
-                  onChange={(e) => handleThemeClick(e.target.value)}
-                >
-                  {THEMES.map((t) => (
-                    <option key={t.id} value={t.id}>
-                      {t.name}
-                    </option>
-                  ))}
-              </select>
-              <ChevronDownIcon className="select-chevron" size={14} />
+                {/* Typography */}
+                <div className="settings-column">
+                  <label className="form-label" htmlFor="settings-font-select">Typography</label>
+                  <div className="select-wrapper">
+                    <select
+                      id="settings-font-select"
+                      className="form-select"
+                      value={settings?.fontPreset || 'bahnschrift'}
+                      onChange={(e) => handleFontClick(e.target.value)}
+                    >
+                      {FONT_PRESETS.map((f) => (
+                        <option key={f.id} value={f.id}>
+                          {f.name}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDownIcon className="select-chevron" size={14} />
+                  </div>
+                </div>
               </div>
-            </div>
 
-            {/* Typography Selector */}
-            <div className="settings-column">
-              <label className="form-label" htmlFor="settings-font-select">Typography</label>
-              <div className="select-wrapper">
-                <select
-                  id="settings-font-select"
-                  className="form-select"
-                  value={settings?.fontPreset || 'bahnschrift'}
-                  onChange={(e) => handleFontClick(e.target.value)}
-                >
-                  {FONT_PRESETS.map((f) => (
-                    <option key={f.id} value={f.id}>
-                      {f.name}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDownIcon className="select-chevron" size={14} />
+              {/* Font Size */}
+              <div className="form-group font-size-group">
+                <div className="font-size-row">
+                  {FONT_SIZES.map((s) => {
+                    const isSelected = (settings?.fontSize || 'normal') === s.id;
+                    return (
+                      <button
+                        key={s.id}
+                        type="button"
+                        className={`font-size-btn ${isSelected ? 'active' : ''}`}
+                        onClick={() => handleFontSizeClick(s.id)}
+                      >
+                        {s.label}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          </div>
 
-          {/* Font Size Row */}
-          <div className="form-group font-size-group">
-            <div className="font-size-row">
-              {FONT_SIZES.map((s) => {
-                const isSelected = (settings?.fontSize || 'normal') === s.id;
-                return (
+              {/* Capacity Goals */}
+              <div className="form-row-2">
+                <div className="form-group">
+                  <label className="form-label">Rest Days / Month</label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="28"
+                    className="form-input"
+                    value={targetRestDays}
+                    onChange={(e) => handleRestDaysChange(e.target.value)}
+                    onBlur={handleRestDaysBlur}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Avg. Work Days</label>
+                  <input
+                    type="number"
+                    min="1"
+                    max="60"
+                    className="form-input"
+                    value={avgTurnaroundDays}
+                    onChange={(e) => handleAvgDaysChange(e.target.value)}
+                    onBlur={handleAvgDaysBlur}
+                  />
+                </div>
+              </div>
+
+              {/* Schedule Highlight */}
+              <div className="form-group settings-toggle-group">
+                <div className="settings-toggle-row">
+                  <div className="settings-toggle-info">
+                    <label className="form-label settings-toggle-label" htmlFor="toggle-highlight-hover">
+                      Highlight in Schedule on Hover
+                    </label>
+                    <span className="settings-toggle-desc">
+                      Highlight dates in the calendar when hovering over hackathons in Tracker
+                    </span>
+                  </div>
                   <button
-                    key={s.id}
+                    id="toggle-highlight-hover"
                     type="button"
-                    className={`font-size-btn ${isSelected ? 'active' : ''}`}
-                    onClick={() => handleFontSizeClick(s.id)}
+                    role="switch"
+                    aria-checked={settings?.highlightOnHover !== false}
+                    className={`settings-switch-btn ${settings?.highlightOnHover !== false ? 'active' : ''}`}
+                    onClick={() => {
+                      const currentVal = settings?.highlightOnHover !== false;
+                      if (onUpdateSettings) onUpdateSettings({ highlightOnHover: !currentVal });
+                    }}
                   >
-                    {s.label}
+                    <span className="settings-switch-thumb" />
                   </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Capacity Goals in one row */}
-          <div className="form-row-2">
-            <div className="form-group">
-              <label className="form-label">Rest Days / Month</label>
-              <input
-                type="number"
-                min="0"
-                max="28"
-                className="form-input"
-                value={targetRestDays}
-                onChange={(e) => handleRestDaysChange(e.target.value)}
-                onBlur={handleRestDaysBlur}
-              />
-            </div>
-
-            <div className="form-group">
-              <label className="form-label">Avg. Work Days</label>
-              <input
-                type="number"
-                min="1"
-                max="60"
-                className="form-input"
-                value={avgTurnaroundDays}
-                onChange={(e) => handleAvgDaysChange(e.target.value)}
-                onBlur={handleAvgDaysBlur}
-              />
-            </div>
-          </div>
-
-          {/* Schedule Highlight Toggle */}
-          <div className="form-group settings-toggle-group">
-            <div className="settings-toggle-row">
-              <div className="settings-toggle-info">
-                <label className="form-label settings-toggle-label" htmlFor="toggle-highlight-hover">
-                  Highlight in Schedule on Hover
-                </label>
-                <span className="settings-toggle-desc">
-                  Highlight dates in the calendar when hovering over hackathons in Tracker
-                </span>
+                </div>
               </div>
-              <button
-                id="toggle-highlight-hover"
-                type="button"
-                role="switch"
-                aria-checked={settings?.highlightOnHover !== false}
-                className={`settings-switch-btn ${settings?.highlightOnHover !== false ? 'active' : ''}`}
-                onClick={() => {
-                  const currentVal = settings?.highlightOnHover !== false;
-                  if (onUpdateSettings) onUpdateSettings({ highlightOnHover: !currentVal });
-                }}
-              >
-                <span className="settings-switch-thumb" />
-              </button>
-            </div>
-          </div>
 
-          {/* Danger Zone: Full Wipe / Reset Actions */}
-          <div className="settings-danger-zone">
-            <div className="danger-zone-title">
-              Data Management & Reset
-            </div>
-            <p className="danger-zone-desc">
-              Clear logged events or reset the extension to defaults.
-            </p>
-            <div className="danger-actions-row">
-              <button
-                type="button"
-                className={`danger-btn-outline ${confirmClearHackathons ? 'confirming' : ''}`}
-                onClick={handleClearHackathonsClick}
-              >
-                {confirmClearHackathons ? '⚠️ Confirm Clear Events' : '🗑️ Clear Hackathons'}
-              </button>
-              <button
-                type="button"
-                className={`danger-btn-outline ${confirmResetAll ? 'confirming' : ''}`}
-                onClick={handleResetAllClick}
-              >
-                {confirmResetAll ? '⚠️ Confirm Factory Reset' : '🔄 Reset All Data'}
-              </button>
-            </div>
-            {resetMessage && (
-              <div style={{ color: 'var(--rose)', fontSize: '0.74rem', marginTop: '0.5rem', fontWeight: 600 }}>
-                ✓ {resetMessage}
+              {/* Danger Zone */}
+              <div className="settings-danger-zone">
+                <div className="danger-zone-title">
+                  Data Management & Reset
+                </div>
+                <p className="danger-zone-desc">
+                  Clear logged events or reset the extension to defaults.
+                </p>
+                <div className="danger-actions-row">
+                  <button
+                    type="button"
+                    className={`danger-btn-outline ${confirmClearHackathons ? 'confirming' : ''}`}
+                    onClick={handleClearHackathonsClick}
+                  >
+                    {confirmClearHackathons ? '⚠️ Confirm Clear Events' : '🗑️ Clear Hackathons'}
+                  </button>
+                  <button
+                    type="button"
+                    className={`danger-btn-outline ${confirmResetAll ? 'confirming' : ''}`}
+                    onClick={handleResetAllClick}
+                  >
+                    {confirmResetAll ? '⚠️ Confirm Factory Reset' : '🔄 Reset All Data'}
+                  </button>
+                </div>
+                {resetMessage && (
+                  <div style={{ color: 'var(--rose)', fontSize: '0.74rem', marginTop: '0.5rem', fontWeight: 600 }}>
+                    ✓ {resetMessage}
+                  </div>
+                )}
               </div>
-            )}
-          </div>
+            </>
+          ) : (
+            <AiSettingsTab />
+          )}
 
           <div className="modal-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <span style={{ fontSize: '0.74rem', color: 'var(--text-dim)', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
