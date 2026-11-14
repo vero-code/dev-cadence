@@ -1,5 +1,3 @@
-// Calendar calculations, day-grid generation, and date collision detection
-
 /**
  * Returns the number of days in a given month (0-indexed: 0 = Jan, 11 = Dec)
  */
@@ -118,4 +116,33 @@ export const addDaysToDateString = (dateStr, daysToAdd) => {
   const nextM = String(date.getUTCMonth() + 1).padStart(2, '0');
   const nextD = String(date.getUTCDate()).padStart(2, '0');
   return `${nextY}-${nextM}-${nextD}`;
+};
+
+/**
+ * Returns today's ISO date string 'YYYY-MM-DD' based on local system time
+ */
+export const getTodayDateString = () => {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, '0');
+  const d = String(now.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+};
+
+/**
+ * Returns an array of date strings between startDate and endDate inclusive
+ */
+export const getDateRangeArray = (startIso, endIso) => {
+  if (!startIso || !endIso) return [];
+  const dates = [];
+  let curr = new Date(startIso + 'T00:00:00');
+  const end = new Date(endIso + 'T00:00:00');
+  while (curr <= end) {
+    const y = curr.getFullYear();
+    const m = String(curr.getMonth() + 1).padStart(2, '0');
+    const d = String(curr.getDate()).padStart(2, '0');
+    dates.push(`${y}-${m}-${d}`);
+    curr.setDate(curr.getDate() + 1);
+  }
+  return dates;
 };
