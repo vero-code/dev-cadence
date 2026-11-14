@@ -1,0 +1,57 @@
+/* AI Settings Tab */
+.ai-status-banner {
+  border-color: var(--status-color);
+}
+
+.ai-status-header {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.2rem;
+}
+
+.ai-status-dot {
+  color: var(--status-color);
+  font-size: var(--text-sm);
+}
+
+.ai-status-label {
+  margin: 0;
+  color: var(--status-color);
+}
+
+.ai-no-margin {
+  margin: 0;
+}
+
+.ai-setup-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.ai-url-row {
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.ai-url-input {
+  font-size: var(--text-sm);
+}
+
+.ai-step-desc {
+  margin-bottom: 0.6rem;
+}
+
+.ai-actions-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.ai-error-text {
+  color: var(--rose);
+  font-size: var(--text-sm);
+  margin-top: 0.35rem;
+}

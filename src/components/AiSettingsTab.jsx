@@ -56,16 +56,16 @@ export const AiSettingsTab = () => {
     <div className="ai-settings-tab">
       {/* Top Status Banner */}
       <div
-        className="form-group settings-toggle-group"
-        style={{ borderColor: statusInfo.color }}
+        className="form-group settings-toggle-group ai-status-banner"
+        style={{ '--status-color': statusInfo.color }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', marginBottom: '0.2rem' }}>
-          <span style={{ color: statusInfo.color, fontSize: '0.75rem' }}>●</span>
-          <span className="form-label" style={{ margin: 0, color: statusInfo.color }}>
+        <div className="ai-status-header">
+          <span className="ai-status-dot">●</span>
+          <span className="form-label ai-status-label">
             Model status: {statusInfo.label}
           </span>
         </div>
-        <p className="settings-toggle-desc" style={{ margin: 0 }}>
+        <p className="settings-toggle-desc ai-no-margin">
           {statusInfo.hint}
         </p>
       </div>
@@ -73,16 +73,15 @@ export const AiSettingsTab = () => {
       {/* Step 1: Chrome Setup */}
       <div className="form-group settings-toggle-group">
         <label className="form-label">Step 1. Enable "On-device AI" in Chrome</label>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
+        <div className="ai-setup-list">
           {CHROME_AI_SETUP_URLS.map((item) => (
             <div key={item.id}>
-              <div style={{ display: 'flex', gap: '0.35rem', alignItems: 'center' }}>
+              <div className="ai-url-row">
                 <input
                   type="text"
                   readOnly
-                  className="form-input"
+                  className="form-input ai-url-input"
                   value={item.url}
-                  style={{ fontSize: '0.75rem' }}
                 />
                 <button
                   type="button"
@@ -104,7 +103,7 @@ export const AiSettingsTab = () => {
                 </button>
               </div>
               {setupError?.id === item.id && (
-                <div style={{ color: 'var(--rose)', fontSize: '0.72rem', marginTop: '0.25rem' }}>
+                <div className="ai-error-text">
                   {setupError.message}
                 </div>
               )}
@@ -115,14 +114,12 @@ export const AiSettingsTab = () => {
 
       {/* Step 2: Download Model */}
       <div className="form-group settings-toggle-group">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
-          <label className="form-label" style={{ margin: 0 }}>Step 2. Download On-Device Model</label>
-        </div>
-        <p className="settings-toggle-desc" style={{ marginBottom: '0.6rem' }}>
+        <label className="form-label">Step 2. Download On-Device Model</label>
+        <p className="settings-toggle-desc ai-step-desc">
           Pre-download the local model before your first request to avoid delays.
         </p>
 
-        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+        <div className="ai-actions-row">
           <button
             type="button"
             className="btn-primary"
@@ -147,7 +144,7 @@ export const AiSettingsTab = () => {
         </div>
 
         {modelState.error && (
-          <div style={{ color: 'var(--rose)', fontSize: '0.74rem', marginTop: '0.5rem' }}>
+          <div className="ai-error-text">
             {modelState.error}
           </div>
         )}
