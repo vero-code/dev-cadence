@@ -1,95 +1,126 @@
-import React, { useState, useEffect } from 'react';
-import { CHROME_AI_FLAG_URL } from '../constants';
+import { useState, useEffect } from 'react';
+import { CHROME_AI_SETUP_URLS } from '../constants';
+import { ExternalLinkIcon, CopyIcon, CheckIcon } from './Icons';
 
 export const AiSettingsTab = () => {
   const [status, setStatus] = useState('checking');
   const [progress, setProgress] = useState(null);
-  const [errorMsg, setErrorMsg] = useState('');
-  const [copied, setCopied] = useState(false);
+  const [modelError, setModelError] = useState('');
+  const [setupError, setSetupError] = useState(null);
+  const [copiedId, setCopiedId] = useState(null);
 
   const checkModelStatus = async () => {
-    setErrorMsg('');
-    if (typeof window.LanguageModel === 'undefined') {
-      setStatus('flag-disabled');
+    setModelError('');
+    if (!('LanguageModel' in self)) {
+      setStatus('unavailable');
       return;
     }
     try {
-      const availability = await window.LanguageModel.availability();
+      const availability = await LanguageModel.availability({
+        expectedInputs: [{ type: 'text', languages: ['en'] }],
+        expectedOutputs: [{ type: 'text', languages: ['en'] }],
+      });
       setStatus(availability);
     } catch (err) {
-      setStatus('error');
-      setErrorMsg(err.message || 'Failed to check model status.');
+      setStatus('unavailable');
+      setModelError(err.message);
     }
   };
 
   useEffect(() => {
     checkModelStatus();
+    window.addEventListener('focus', checkModelStatus);
+    return () => window.removeEventListener('focus', checkModelStatus);
   }, []);
 
-  const handleCopyFlag = async () => {
+  const handleOpenUrl = (id, url) => {
+    setSetupError(null);
+    if (typeof chrome !== 'undefined' && chrome.tabs?.create) {
+      chrome.tabs.create({ url });
+      return;
+    }
+    setSetupError({
+      id,
+      message: 'Browser blocks chrome:// links in web preview. Use Copy instead.',
+    });
+  };
+
+  const handleCopyUrl = async (id, url) => {
+    setSetupError(null);
     try {
-      await navigator.clipboard.writeText(CHROME_AI_FLAG_URL);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      await navigator.clipboard.writeText(url);
+      setCopiedId(id);
+      setTimeout(() => setCopiedId(null), 2000);
     } catch (err) {
-      setErrorMsg('Failed to copy URL.');
+      setSetupError({ id, message: 'Failed to copy URL.' });
     }
   };
 
   const handleDownloadModel = async () => {
-    setErrorMsg('');
-    if (typeof window.LanguageModel === 'undefined') {
-      setStatus('flag-disabled');
-      setErrorMsg('Prompt API is not available. Enable the Chrome flag first.');
-      return;
-    }
+    setModelError('');
     try {
       setStatus('downloading');
-      setProgress(0);
-      const session = await window.LanguageModel.create({
+      const session = await LanguageModel.create({
         monitor(m) {
           m.addEventListener('downloadprogress', (e) => {
-            if (typeof e.loaded === 'number') {
-              setProgress(Math.round(e.loaded * 100));
-            }
+            console.log(`Downloaded ${e.loaded * 100}%`);
+            setProgress(Math.round(e.loaded * 100));
           });
         },
       });
-      if (session && typeof session.destroy === 'function') {
-        session.destroy();
-      }
-      setProgress(100);
+      session.destroy();
       await checkModelStatus();
     } catch (err) {
-      setStatus('error');
-      setErrorMsg(err.message || 'Model download failed.');
+      setModelError(err.message);
+      await checkModelStatus();
     }
   };
 
   return (
     <div className="ai-settings-tab">
-      {/* Step 1: Enable Chrome Flag */}
+      {/* Step 1: Chrome Setup */}
       <div className="form-group settings-toggle-group">
-        <label className="form-label">1. Enable Chrome Flag (Chrome 139+)</label>
-        <p className="settings-toggle-desc" style={{ marginBottom: '0.5rem' }}>
-          Open the URL below in a new tab, set it to Enabled, and restart Chrome.
-        </p>
-        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-          <input
-            type="text"
-             readOnly
-            className="form-input"
-            value={CHROME_AI_FLAG_URL}
-            style={{ fontSize: '0.75rem' }}
-          />
-          <button
-            type="button"
-            className="btn-secondary"
-            onClick={handleCopyFlag}
-            style={{ whiteSpace: 'nowrap' }}
-          >
-            {copied ? 'Copied' : 'Copy URL'}
-          </button>
+        <label className="form-label">1. Enable "On-device AI" in Chrome Settings</label>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
+          {CHROME_AI_SETUP_URLS.map((item) => (
+            <div key={item.id}>
+              {/* <div className="settings-toggle-desc" style={{ marginBottom: '0.2rem', fontWeight: 600 }}>
+                {item.label}
+              </div> */}
+              <div style={{ display: 'flex', gap: '0.35rem', alignItems: 'center' }}>
+                <input
+                  type="text"
+                  readOnly
+                  className="form-input"
+                  value={item.url}
+                  style={{ fontSize: '0.75rem' }}
+                />
+                <button
+                  type="button"
+                  className="btn-secondary btn-icon-square"
+                  onClick={() => handleOpenUrl(item.id, item.url)}
+                  title="Open in new tab"
+                  aria-label="Open in new tab"
+                >
+                  <ExternalLinkIcon size={14} />
+                </button>
+                <button
+                  type="button"
+                  className="btn-secondary btn-icon-square"
+                  onClick={() => handleCopyUrl(item.id, item.url)}
+                  title={copiedId === item.id ? 'Copied' : 'Copy URL'}
+                  aria-label="Copy URL"
+                >
+                  {copiedId === item.id ? <CheckIcon size={14} /> : <CopyIcon size={14} />}
+                </button>
+              </div>
+              {setupError?.id === item.id && (
+                <div style={{ color: 'var(--rose)', fontSize: '0.72rem', marginTop: '0.25rem' }}>
+                  {setupError.message}
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </div>
 
@@ -110,26 +141,19 @@ export const AiSettingsTab = () => {
             type="button"
             className="btn-primary"
             onClick={handleDownloadModel}
-            disabled={status === 'downloading' || status === 'available'}
+            disabled={status !== 'downloadable'}
           >
             {status === 'available'
-              ? 'Model Ready'
+              ? 'Available'
               : status === 'downloading'
               ? `Downloading ${progress !== null ? `${progress}%` : '...'}`
               : 'Download Model'}
           </button>
-          <button
-            type="button"
-            className="btn-secondary"
-            onClick={checkModelStatus}
-          >
-            Check Status
-          </button>
         </div>
 
-        {errorMsg && (
+        {modelError && (
           <div style={{ color: 'var(--rose)', fontSize: '0.74rem', marginTop: '0.5rem' }}>
-            {errorMsg}
+            {modelError}
           </div>
         )}
       </div>

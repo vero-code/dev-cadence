@@ -73,5 +73,10 @@ export const FONT_SIZES = [
   { id: 'spacious', label: 'Comfort (110%)' },
 ];
 
-export const CHROME_AI_FLAG_URL =
-  'chrome://flags/#prompt-api-for-gemini-nano-multimodal-input';
+export const CHROME_AI_SETUP_URLS = [
+  {
+    id: 'settings',
+    label: 'Enable "On-device AI" in Settings',
+    url: 'chrome://settings/ai',
+  },
+];

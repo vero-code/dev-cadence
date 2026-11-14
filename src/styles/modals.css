@@ -416,6 +416,14 @@
   background: rgba(146, 104, 60, 0.15);
 }
 
+.btn-icon-square {
+  padding: 0.55rem 0.65rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
 .btn-danger {
   background: linear-gradient(135deg, #e11d48 0%, #f43f5e 100%);
   color: #fff;

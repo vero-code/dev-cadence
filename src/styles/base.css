@@ -226,3 +226,10 @@ body:has([data-theme="devpost"]) {
   transform: translateY(-1px);
 }
 
+.btn-primary:disabled,
+.btn-primary:disabled:hover {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
