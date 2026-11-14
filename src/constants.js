@@ -80,3 +80,31 @@ export const CHROME_AI_SETUP_URLS = [
     url: 'chrome://settings/ai',
   },
 ];
+
+export const AI_STATUS_INFO = {
+  available: {
+    label: 'Available',
+    color: 'var(--emerald)',
+    hint: 'Gemini Nano is ready for local on-device inference.',
+  },
+  downloadable: {
+    label: 'Downloadable',
+    color: 'var(--amber-gear)',
+    hint: 'Ready to install. Complete Step 2 below.',
+  },
+  downloading: {
+    label: 'Downloading',
+    color: 'var(--cyan-primary)',
+    hint: 'Downloading local model to your browser...',
+  },
+  unavailable: {
+    label: 'Unavailable',
+    color: 'var(--rose)',
+    hint: 'Local model is turned off or unsupported. Complete Step 1 below.',
+  },
+  checking: {
+    label: 'Checking...',
+    color: 'var(--text-muted)',
+    hint: 'Checking local model availability...',
+  },
+};

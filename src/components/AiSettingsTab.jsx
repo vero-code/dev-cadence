@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { CHROME_AI_SETUP_URLS } from '../constants';
+import { CHROME_AI_SETUP_URLS, AI_STATUS_INFO } from '../constants';
 import { ExternalLinkIcon, CopyIcon, CheckIcon } from './Icons';
 
 export const AiSettingsTab = () => {
@@ -8,6 +8,8 @@ export const AiSettingsTab = () => {
   const [modelError, setModelError] = useState('');
   const [setupError, setSetupError] = useState(null);
   const [copiedId, setCopiedId] = useState(null);
+
+  const statusInfo = AI_STATUS_INFO[status] || AI_STATUS_INFO.unavailable;
 
   const checkModelStatus = async () => {
     setModelError('');
@@ -26,12 +28,6 @@ export const AiSettingsTab = () => {
       setModelError(err.message);
     }
   };
-
-  useEffect(() => {
-    checkModelStatus();
-    window.addEventListener('focus', checkModelStatus);
-    return () => window.removeEventListener('focus', checkModelStatus);
-  }, []);
 
   const handleOpenUrl = (id, url) => {
     setSetupError(null);
@@ -76,17 +72,36 @@ export const AiSettingsTab = () => {
     }
   };
 
+  useEffect(() => {
+    checkModelStatus();
+    window.addEventListener('focus', checkModelStatus);
+    return () => window.removeEventListener('focus', checkModelStatus);
+  }, []);
+
   return (
     <div className="ai-settings-tab">
-      {/* Step 1: Chrome Setup */}
+      {/* Top Status Banner */}
+      <div
+        className="form-group settings-toggle-group"
+        style={{ borderColor: statusInfo.color }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', marginBottom: '0.2rem' }}>
+          <span style={{ color: statusInfo.color, fontSize: '0.75rem' }}>●</span>
+          <span className="form-label" style={{ margin: 0, color: statusInfo.color }}>
+            Gemini Nano: {statusInfo.label}
+          </span>
+        </div>
+        <p className="settings-toggle-desc" style={{ margin: 0 }}>
+          {statusInfo.hint}
+        </p>
+      </div>
+      
       <div className="form-group settings-toggle-group">
-        <label className="form-label">1. Enable "On-device AI" in Chrome Settings</label>
+        {/* Step 1: Chrome Setup */}
+        <label className="form-label">Step 1. Enable "On-device AI" in Chrome</label>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
           {CHROME_AI_SETUP_URLS.map((item) => (
             <div key={item.id}>
-              {/* <div className="settings-toggle-desc" style={{ marginBottom: '0.2rem', fontWeight: 600 }}>
-                {item.label}
-              </div> */}
               <div style={{ display: 'flex', gap: '0.35rem', alignItems: 'center' }}>
                 <input
                   type="text"
@@ -127,10 +142,7 @@ export const AiSettingsTab = () => {
       {/* Step 2: Download On-Device Model */}
       <div className="form-group settings-toggle-group">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
-          <label className="form-label" style={{ margin: 0 }}>2. On-Device Model (Gemini Nano)</label>
-          <span className="settings-toggle-desc" style={{ fontWeight: 600 }}>
-            Status: {status}
-          </span>
+          <label className="form-label" style={{ margin: 0 }}>Step 2. Download On-Device Model</label>
         </div>
         <p className="settings-toggle-desc" style={{ marginBottom: '0.6rem' }}>
           Pre-download the local model before your first request to avoid delays.
