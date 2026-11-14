@@ -211,6 +211,37 @@
   box-shadow: 0 0 8px var(--cyan-glow);
 }
 
+.select-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.form-select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 2rem;
+  cursor: pointer;
+}
+
+.select-chevron {
+  position: absolute;
+  right: 0.75rem;
+  pointer-events: none;
+  color: var(--text-muted);
+  transition: color 0.15s ease;
+}
+
+.select-wrapper:focus-within .select-chevron {
+  color: var(--cyan-primary);
+}
+
+
+
+
+
+
 .form-input.error {
   border-color: var(--rose);
 }

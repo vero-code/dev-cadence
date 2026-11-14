@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { THEMES, FONT_PRESETS, FONT_SIZES } from '../constants';
-import { AgedGearIcon } from './Icons';
+import { AgedGearIcon, ChevronDownIcon } from './Icons';
 
 export const SettingsModal = ({
   isOpen,
@@ -122,35 +122,41 @@ export const SettingsModal = ({
             {/* Theme Selector */}
             <div className="settings-column">
               <label className="form-label" htmlFor="settings-theme-select">Theme</label>
-              <select
-                id="settings-theme-select"
-                className="form-select"
-                value={currentTheme}
-                onChange={(e) => handleThemeClick(e.target.value)}
-              >
-                {THEMES.map((t) => (
-                  <option key={t.id} value={t.id}>
-                    {t.name}
-                  </option>
-                ))}
+              <div className="select-wrapper">
+                <select
+                  id="settings-theme-select"
+                  className="form-select"
+                  value={currentTheme}
+                  onChange={(e) => handleThemeClick(e.target.value)}
+                >
+                  {THEMES.map((t) => (
+                    <option key={t.id} value={t.id}>
+                      {t.name}
+                    </option>
+                  ))}
               </select>
+              <ChevronDownIcon className="select-chevron" size={14} />
+              </div>
             </div>
 
             {/* Typography Selector */}
             <div className="settings-column">
               <label className="form-label" htmlFor="settings-font-select">Typography</label>
-              <select
-                id="settings-font-select"
-                className="form-select"
-                value={settings?.fontPreset || 'bahnschrift'}
-                onChange={(e) => handleFontClick(e.target.value)}
-              >
-                {FONT_PRESETS.map((f) => (
-                  <option key={f.id} value={f.id}>
-                    {f.name}
-                  </option>
-                ))}
-              </select>
+              <div className="select-wrapper">
+                <select
+                  id="settings-font-select"
+                  className="form-select"
+                  value={settings?.fontPreset || 'bahnschrift'}
+                  onChange={(e) => handleFontClick(e.target.value)}
+                >
+                  {FONT_PRESETS.map((f) => (
+                    <option key={f.id} value={f.id}>
+                      {f.name}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDownIcon className="select-chevron" size={14} />
+              </div>
             </div>
           </div>
 
