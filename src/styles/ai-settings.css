@@ -55,3 +55,35 @@
   font-size: var(--text-sm);
   margin-top: 0.35rem;
 }
+
+/* Modal Footer and Settings Messages */
+.modal-footer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-autosaved {
+  font-size: var(--text-sm);
+  color: var(--text-dim);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.modal-autosaved-dot {
+  color: var(--emerald);
+  font-size: var(--text-sm);
+}
+
+.modal-footer-hint {
+  font-size: var(--text-sm);
+  color: var(--text-dim);
+}
+
+.settings-reset-msg {
+  color: var(--rose);
+  font-size: var(--text-sm);
+  margin-top: 0.5rem;
+  font-weight: 600;
+}

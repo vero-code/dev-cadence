@@ -3,22 +3,11 @@ export const ModalFooter = ({
   leftContent = null,
 }) => {
   return (
-    <div
-      className="modal-footer"
-      style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-    >
+    <div className="modal-footer modal-footer-row">
       <div>
         {showAutoSaved ? (
-          <span
-            style={{
-              fontSize: '0.74rem',
-              color: 'var(--text-dim)',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.35rem',
-            }}
-          >
-            <span style={{ color: 'var(--emerald)', fontSize: '0.65rem' }}>●</span> Auto-saved
+          <span className="modal-autosaved">
+            <span className="modal-autosaved-dot">●</span> Auto-saved
           </span>
         ) : (
           leftContent

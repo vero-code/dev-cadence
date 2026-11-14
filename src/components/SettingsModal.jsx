@@ -282,7 +282,7 @@ export const SettingsModal = ({
                   </button>
                 </div>
                 {resetMessage && (
-                  <div style={{ color: 'var(--rose)', fontSize: '0.74rem', marginTop: '0.5rem', fontWeight: 600 }}>
+                  <div className="settings-reset-msg">
                     ✓ {resetMessage}
                   </div>
                 )}
@@ -295,7 +295,7 @@ export const SettingsModal = ({
           <ModalFooter
             showAutoSaved={activeTab === 'general'}
             leftContent={
-              <span style={{ fontSize: '0.72rem', color: 'var(--text-dim)' }}>
+              <span className="modal-footer-hint">
                 To disable or remove the model, turn off &ldquo;On-device AI&rdquo; in Chrome Settings.
               </span>
             }
