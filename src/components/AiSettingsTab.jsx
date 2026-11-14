@@ -1,33 +1,23 @@
 import { useState, useEffect } from 'react';
 import { CHROME_AI_SETUP_URLS, AI_STATUS_INFO } from '../constants';
 import { ExternalLinkIcon, CopyIcon, CheckIcon } from './Icons';
+import {
+  subscribeNanoModel,
+  checkNanoStatus,
+  downloadNanoModel,
+  cancelNanoDownload,
+} from '../utils/nanoModel';
 
 export const AiSettingsTab = () => {
-  const [status, setStatus] = useState('checking');
-  const [progress, setProgress] = useState(null);
-  const [modelError, setModelError] = useState('');
+  const [modelState, setModelState] = useState({
+    status: 'checking',
+    progress: null,
+    error: '',
+  });
   const [setupError, setSetupError] = useState(null);
   const [copiedId, setCopiedId] = useState(null);
 
-  const statusInfo = AI_STATUS_INFO[status] || AI_STATUS_INFO.unavailable;
-
-  const checkModelStatus = async () => {
-    setModelError('');
-    if (!('LanguageModel' in self)) {
-      setStatus('unavailable');
-      return;
-    }
-    try {
-      const availability = await LanguageModel.availability({
-        expectedInputs: [{ type: 'text', languages: ['en'] }],
-        expectedOutputs: [{ type: 'text', languages: ['en'] }],
-      });
-      setStatus(availability);
-    } catch (err) {
-      setStatus('unavailable');
-      setModelError(err.message);
-    }
-  };
+  const statusInfo = AI_STATUS_INFO[modelState.status] || AI_STATUS_INFO.unavailable;
 
   const handleOpenUrl = (id, url) => {
     setSetupError(null);
@@ -52,30 +42,14 @@ export const AiSettingsTab = () => {
     }
   };
 
-  const handleDownloadModel = async () => {
-    setModelError('');
-    try {
-      setStatus('downloading');
-      const session = await LanguageModel.create({
-        monitor(m) {
-          m.addEventListener('downloadprogress', (e) => {
-            console.log(`Downloaded ${e.loaded * 100}%`);
-            setProgress(Math.round(e.loaded * 100));
-          });
-        },
-      });
-      session.destroy();
-      await checkModelStatus();
-    } catch (err) {
-      setModelError(err.message);
-      await checkModelStatus();
-    }
-  };
-
   useEffect(() => {
-    checkModelStatus();
-    window.addEventListener('focus', checkModelStatus);
-    return () => window.removeEventListener('focus', checkModelStatus);
+    const unsubscribe = subscribeNanoModel(setModelState);
+    checkNanoStatus();
+    window.addEventListener('focus', checkNanoStatus);
+    return () => {
+      unsubscribe();
+      window.removeEventListener('focus', checkNanoStatus);
+    };
   }, []);
 
   return (
@@ -88,7 +62,7 @@ export const AiSettingsTab = () => {
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', marginBottom: '0.2rem' }}>
           <span style={{ color: statusInfo.color, fontSize: '0.75rem' }}>●</span>
           <span className="form-label" style={{ margin: 0, color: statusInfo.color }}>
-            Gemini Nano: {statusInfo.label}
+            Model status: {statusInfo.label}
           </span>
         </div>
         <p className="settings-toggle-desc" style={{ margin: 0 }}>
@@ -96,8 +70,8 @@ export const AiSettingsTab = () => {
         </p>
       </div>
       
+      {/* Step 1: Chrome Setup */}
       <div className="form-group settings-toggle-group">
-        {/* Step 1: Chrome Setup */}
         <label className="form-label">Step 1. Enable "On-device AI" in Chrome</label>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
           {CHROME_AI_SETUP_URLS.map((item) => (
@@ -139,7 +113,7 @@ export const AiSettingsTab = () => {
         </div>
       </div>
 
-      {/* Step 2: Download On-Device Model */}
+      {/* Step 2: Download Model */}
       <div className="form-group settings-toggle-group">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
           <label className="form-label" style={{ margin: 0 }}>Step 2. Download On-Device Model</label>
@@ -152,20 +126,29 @@ export const AiSettingsTab = () => {
           <button
             type="button"
             className="btn-primary"
-            onClick={handleDownloadModel}
-            disabled={status !== 'downloadable'}
+            onClick={downloadNanoModel}
+            disabled={modelState.status !== 'downloadable'}
           >
-            {status === 'available'
-              ? 'Available'
-              : status === 'downloading'
-              ? `Downloading ${progress !== null ? `${progress}%` : '...'}`
-              : 'Download Model'}
+            {modelState.status === 'available'
+              ? 'Downloaded'
+              : modelState.status === 'downloading'
+              ? `Downloading ${modelState.progress !== null ? `${modelState.progress}%` : '...'}`
+              : 'Download Gemini Nano'}
           </button>
+          {modelState.status === 'downloading' && (
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={cancelNanoDownload}
+            >
+              Cancel
+            </button>
+          )}
         </div>
 
-        {modelError && (
+        {modelState.error && (
           <div style={{ color: 'var(--rose)', fontSize: '0.74rem', marginTop: '0.5rem' }}>
-            {modelError}
+            {modelState.error}
           </div>
         )}
       </div>

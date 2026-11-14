@@ -292,8 +292,12 @@ export const SettingsModal = ({
           )}
 
           <ModalFooter
-            onClose={onClose}
             showAutoSaved={activeTab === 'general'}
+            leftContent={
+              <span style={{ fontSize: '0.72rem', color: 'var(--text-dim)' }}>
+                To disable or remove the model, turn off &ldquo;On-device AI&rdquo; in Chrome Settings.
+              </span>
+            }
           />
         </div>
       </div>

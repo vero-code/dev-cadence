@@ -1,8 +1,4 @@
-import React from 'react';
-
 export const ModalFooter = ({
-  onClose,
-  closeLabel = 'Close',
   showAutoSaved = false,
   leftContent = null,
 }) => {
@@ -28,14 +24,6 @@ export const ModalFooter = ({
           leftContent
         )}
       </div>
-      <button
-        type="button"
-        className="btn-primary"
-        onClick={onClose}
-        style={{ minWidth: '90px', justifyContent: 'center' }}
-      >
-        {closeLabel}
-      </button>
     </div>
   );
 };
