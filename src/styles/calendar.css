@@ -15,7 +15,7 @@
 
 .month-label {
   font-family: var(--font-heading);
-  font-size: 0.95rem;
+  font-size: var(--text-md);
   font-weight: 700;
   color: var(--text-main);
   letter-spacing: 0.08em;
@@ -42,7 +42,7 @@
   background: transparent;
   border: none;
   color: var(--amber-gear);
-  font-size: 1.15rem;
+  font-size: var(--text-lg);
   font-weight: bold;
   padding: 0.2rem 0.6rem;
   cursor: pointer;
@@ -56,7 +56,6 @@
   transform: scale(1.15);
 }
 
-
 /* Calendar Grid Styles */
 .calendar-card {
   position: relative;
@@ -68,18 +67,25 @@
   flex-direction: column;
   gap: 0.65rem;
   flex-shrink: 0;
-  box-shadow: 
+  box-shadow:
     inset 0 0 0 1px rgba(245, 158, 11, 0.12),
     inset 0 1px 0 rgba(255, 255, 255, 0.1),
     0 10px 30px rgba(0, 0, 0, 0.75),
     0 0 18px rgba(245, 158, 11, 0.08);
-  transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 [data-theme="steampunk"] .calendar-card {
-  background: linear-gradient(180deg, rgba(32, 19, 11, 0.94) 0%, rgba(20, 11, 6, 0.98) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(32, 19, 11, 0.94) 0%,
+    rgba(20, 11, 6, 0.98) 100%
+  );
   border: 1.5px solid rgba(217, 119, 6, 0.45);
-  box-shadow: 
+  box-shadow:
     inset 0 0 0 1px rgba(245, 158, 11, 0.15),
     inset 0 1px 0 rgba(254, 240, 138, 0.2),
     0 12px 36px rgba(0, 0, 0, 0.85),
@@ -87,17 +93,25 @@
 }
 
 [data-theme="parchment"] .calendar-card {
-  background: linear-gradient(180deg, rgba(254, 250, 242, 0.97) 0%, rgba(248, 240, 228, 0.98) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(254, 250, 242, 0.97) 0%,
+    rgba(248, 240, 228, 0.98) 100%
+  );
   border: 1.5px solid rgba(160, 110, 50, 0.4);
-  box-shadow: 
+  box-shadow:
     inset 0 0 30px rgba(160, 110, 50, 0.08),
     0 8px 24px rgba(70, 45, 20, 0.14);
 }
 
 [data-theme="devpost"] .calendar-card {
-  background: linear-gradient(180deg, rgba(16, 25, 48, 0.92) 0%, rgba(10, 17, 34, 0.96) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(16, 25, 48, 0.92) 0%,
+    rgba(10, 17, 34, 0.96) 100%
+  );
   border: 1.5px solid rgba(6, 182, 212, 0.35);
-  box-shadow: 
+  box-shadow:
     inset 0 0 0 1px rgba(6, 182, 212, 0.12),
     0 10px 30px rgba(0, 0, 0, 0.8),
     0 0 20px rgba(6, 182, 212, 0.15);
@@ -119,7 +133,7 @@
 }
 
 .calendar-month-nav .month-label {
-  font-size: 0.82rem;
+  font-size: var(--text-md);
   min-width: 8.5em;
   text-align: center;
   white-space: nowrap;
@@ -127,12 +141,12 @@
 
 .calendar-month-nav .nav-arrow-btn {
   padding: 0.1rem 0.4rem;
-  font-size: 1rem;
+  font-size: var(--text-lg);
 }
 
 .calendar-section-title {
   font-family: var(--font-heading);
-  font-size: 0.95rem;
+  font-size: var(--text-md);
   font-weight: 700;
   color: var(--text-main);
   letter-spacing: 0.06em;
@@ -169,7 +183,7 @@
 
 .calendar-empty-hint {
   align-self: flex-start;
-  font-size: 0.75rem;
+  font-size: var(--text-sm);
   color: var(--amber-gear);
   background: var(--amber-glow);
   border: 1px solid rgba(245, 158, 11, 0.35);
@@ -193,7 +207,7 @@
 }
 
 .calendar-selection-banner .banner-text {
-  font-size: 0.8rem;
+  font-size: var(--text-md);
   color: var(--text-main);
   display: flex;
   align-items: center;
@@ -213,7 +227,7 @@
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid var(--border-subtle);
   color: var(--text-muted);
-  font-size: 0.72rem;
+  font-size: var(--text-sm);
   padding: 0.25rem 0.6rem;
   border-radius: 6px;
   cursor: pointer;
@@ -236,7 +250,7 @@
 .calendar-weekday-cell {
   text-align: center;
   font-family: var(--font-heading);
-  font-size: 0.72rem;
+  font-size: var(--text-sm);
   font-weight: 700;
   color: var(--amber-gear);
   padding: 0.25rem 0;
@@ -261,18 +275,26 @@
   justify-content: space-between;
   cursor: pointer;
   position: relative;
-  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.25s ease;
+  transition:
+    transform 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background-color 0.25s ease;
   overflow: hidden;
 }
 
 .calendar-day-cell:hover:not(.padding-cell) {
   transform: translateY(-2px);
   border-color: var(--border-hover);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), 0 0 10px var(--amber-glow);
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.5),
+    0 0 10px var(--amber-glow);
 }
 
 [data-theme="parchment"] .calendar-day-cell:hover:not(.padding-cell) {
-  box-shadow: 0 4px 12px rgba(90, 60, 30, 0.18), 0 0 8px rgba(184, 134, 11, 0.2);
+  box-shadow:
+    0 4px 12px rgba(90, 60, 30, 0.18),
+    0 0 8px rgba(184, 134, 11, 0.2);
   border-color: #b8860b;
 }
 
@@ -290,7 +312,9 @@
 /* Glowing Amber Vacuum-Tube Filament (Range Start) */
 .calendar-day-cell.range-start-cell {
   border: 1.5px solid var(--amber-gear) !important;
-  box-shadow: 0 0 14px var(--amber-glow), inset 0 0 8px var(--amber-glow);
+  box-shadow:
+    0 0 14px var(--amber-glow),
+    inset 0 0 8px var(--amber-glow);
   background: rgba(245, 158, 11, 0.2) !important;
   animation: pulseStart 2s infinite ease-in-out;
 }
@@ -302,7 +326,9 @@
 
 [data-theme="steampunk"] .calendar-day-cell.range-start-cell {
   background: rgba(245, 158, 11, 0.28) !important;
-  box-shadow: 0 0 16px rgba(245, 158, 11, 0.65), inset 0 0 8px rgba(245, 158, 11, 0.3) !important;
+  box-shadow:
+    0 0 16px rgba(245, 158, 11, 0.65),
+    inset 0 0 8px rgba(245, 158, 11, 0.3) !important;
 }
 
 .calendar-day-cell.range-preview-cell {
@@ -322,7 +348,9 @@
 /* Radiant Electric Cyan Code Aura from Automaton's Hand { } */
 .calendar-day-cell.range-active-cell {
   border: 1.5px solid var(--cyan-primary) !important;
-  box-shadow: 0 0 14px var(--cyan-glow), inset 0 0 8px var(--cyan-glow) !important;
+  box-shadow:
+    0 0 14px var(--cyan-glow),
+    inset 0 0 8px var(--cyan-glow) !important;
   background: rgba(6, 182, 212, 0.25) !important;
 }
 
@@ -332,12 +360,14 @@
 
 [data-theme="steampunk"] .calendar-day-cell.range-active-cell {
   border-color: #00e5ff !important;
-  box-shadow: 0 0 16px rgba(0, 229, 255, 0.5), inset 0 0 10px rgba(0, 229, 255, 0.25) !important;
+  box-shadow:
+    0 0 16px rgba(0, 229, 255, 0.5),
+    inset 0 0 10px rgba(0, 229, 255, 0.25) !important;
   background: rgba(0, 229, 255, 0.22) !important;
 }
 
 .range-badge {
-  font-size: 0.54rem;
+  font-size: var(--text-sm);
   font-weight: 800;
   font-family: var(--font-heading);
   background: var(--amber-gear);
@@ -357,29 +387,40 @@
 }
 
 @keyframes pulseStart {
-  0%, 100% { box-shadow: 0 0 8px var(--amber-glow); }
-  50% { box-shadow: 0 0 18px rgba(245, 158, 11, 0.7); }
+  0%,
+  100% {
+    box-shadow: 0 0 8px var(--amber-glow);
+  }
+  50% {
+    box-shadow: 0 0 18px rgba(245, 158, 11, 0.7);
+  }
 }
 
 /* Today Highlight (Current Day only) */
 .calendar-day-cell.today-cell {
   border: 1.5px solid var(--cyan-primary) !important;
-  box-shadow: inset 0 0 0 1px rgba(0, 229, 255, 0.3), 0 0 8px var(--cyan-glow);
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 229, 255, 0.3),
+    0 0 8px var(--cyan-glow);
 }
 
 [data-theme="parchment"] .calendar-day-cell.today-cell {
   border-color: #0284c7 !important;
-  box-shadow: inset 0 0 0 1px rgba(2, 132, 199, 0.25), 0 0 6px rgba(2, 132, 199, 0.25);
+  box-shadow:
+    inset 0 0 0 1px rgba(2, 132, 199, 0.25),
+    0 0 6px rgba(2, 132, 199, 0.25);
 }
 
 [data-theme="steampunk"] .calendar-day-cell.today-cell {
   border-color: #00e5ff !important;
-  box-shadow: inset 0 0 0 1px rgba(0, 229, 255, 0.4), 0 0 10px rgba(0, 229, 255, 0.35);
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 229, 255, 0.4),
+    0 0 10px rgba(0, 229, 255, 0.35);
 }
 
 .today-badge {
   font-family: var(--font-heading);
-  font-size: 0.5rem;
+  font-size: var(--text-sm);
   font-weight: 800;
   letter-spacing: 0.04em;
   background: var(--cyan-primary);
@@ -423,7 +464,8 @@
 }
 
 @keyframes pulseDashedBorder {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -436,28 +478,32 @@
    ======================================================== */
 .calendar-day-cell.hackathon-hover-highlight {
   border-color: var(--hover-hack-color, var(--amber-gear)) !important;
-  box-shadow: 
+  box-shadow:
     0 0 16px var(--hover-hack-glow, rgba(245, 158, 11, 0.45)),
     inset 0 0 10px var(--hover-hack-glow, rgba(245, 158, 11, 0.25)) !important;
   transform: translateY(-2px) scale(1.03);
   z-index: 6;
-  transition: transform 0.15s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.15s ease, border-color 0.15s ease, opacity 0.2s ease;
+  transition:
+    transform 0.15s cubic-bezier(0.2, 0, 0, 1),
+    box-shadow 0.15s ease,
+    border-color 0.15s ease,
+    opacity 0.2s ease;
 }
 
 [data-theme="steampunk"] .calendar-day-cell.hackathon-hover-highlight {
-  box-shadow: 
+  box-shadow:
     0 0 20px var(--hover-hack-glow, rgba(245, 158, 11, 0.6)),
     inset 0 0 12px var(--hover-hack-glow, rgba(245, 158, 11, 0.35)) !important;
 }
 
 [data-theme="devpost"] .calendar-day-cell.hackathon-hover-highlight {
-  box-shadow: 
+  box-shadow:
     0 0 16px var(--hover-hack-glow, rgba(6, 182, 212, 0.5)),
     inset 0 0 10px var(--hover-hack-glow, rgba(6, 182, 212, 0.25)) !important;
 }
 
 [data-theme="parchment"] .calendar-day-cell.hackathon-hover-highlight {
-  box-shadow: 
+  box-shadow:
     0 0 14px var(--hover-hack-glow, rgba(180, 83, 9, 0.4)),
     inset 0 0 8px var(--hover-hack-glow, rgba(180, 83, 9, 0.2)) !important;
 }
@@ -470,14 +516,16 @@
 .calendar-day-cell.hackathon-dimmed-by-hover {
   opacity: 0.36;
   filter: grayscale(30%);
-  transition: opacity 0.2s ease, filter 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    filter 0.2s ease;
 }
 
 /* Hover Start & End Badges */
 .hover-start-badge,
 .hover-end-badge {
   color: #ffffff;
-  font-size: 0.52rem;
+  font-size: var(--text-sm);
   font-weight: 800;
   padding: 1px 4px;
   border-radius: 3px;
@@ -488,22 +536,34 @@
 }
 
 @keyframes badgePop {
-  0% { transform: scale(0.7); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 /* Highlighted Event Emoji inside Calendar Cell */
 .day-event-emoji.highlighted-event-emoji {
   transform: scale(1.4);
   filter: drop-shadow(0 0 6px var(--hover-hack-color, currentColor));
-  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.15s ease;
+  transition:
+    transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1),
+    filter 0.15s ease;
   display: inline-block;
   animation: emojiPulse 1.2s infinite alternate ease-in-out;
 }
 
 @keyframes emojiPulse {
-  0% { transform: scale(1.25); }
-  100% { transform: scale(1.45); }
+  0% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1.45);
+  }
 }
 
 /* Highlighted Deadline Flag on Hover */
@@ -513,15 +573,19 @@
 }
 
 @keyframes deadlineBounce {
-  0% { transform: translateY(0) scale(1.05); }
-  100% { transform: translateY(-4px) scale(1.3); }
+  0% {
+    transform: translateY(0) scale(1.05);
+  }
+  100% {
+    transform: translateY(-4px) scale(1.3);
+  }
 }
 
 /* Badges for Draft Start / End Dates */
 .draft-start-badge {
   background: var(--amber-gear, #f59e0b);
   color: #111827;
-  font-size: 0.52rem;
+  font-size: var(--text-sm);
   font-weight: 800;
   padding: 1px 4px;
   border-radius: 3px;
@@ -533,7 +597,7 @@
 .draft-end-badge {
   background: #10b981;
   color: #ffffff;
-  font-size: 0.52rem;
+  font-size: var(--text-sm);
   font-weight: 800;
   padding: 1px 4px;
   border-radius: 3px;
@@ -554,15 +618,19 @@
 
 /* Animated Deadline Flag for Draft */
 .draft-deadline-flag {
-  font-size: 0.82rem !important;
+  font-size: var(--text-md) !important;
   line-height: 1;
   animation: bounceDeadline 1.1s ease-in-out infinite alternate !important;
   filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.6));
 }
 
 @keyframes bounceDeadline {
-  0% { transform: translateY(0) scale(1); }
-  100% { transform: translateY(-3px) scale(1.22); }
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    transform: translateY(-3px) scale(1.22);
+  }
 }
 
 /* Pulsing Draft Emoji */
@@ -573,8 +641,13 @@
 }
 
 @keyframes pulseEmoji {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.22); }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.22);
+  }
 }
 
 .day-top-bar {
@@ -586,13 +659,13 @@
 
 .day-number {
   font-family: var(--font-heading);
-  font-size: 0.74rem;
+  font-size: var(--text-sm);
   font-weight: 700;
   color: var(--day-num-color);
 }
 
 .deadline-flag {
-  font-size: 0.68rem;
+  font-size: var(--text-sm);
   line-height: 1;
   animation: pulse 2s infinite;
 }
@@ -606,7 +679,7 @@
 }
 
 .day-event-emoji {
-  font-size: 0.8rem;
+  font-size: var(--text-md);
   line-height: 1;
 }
 
@@ -614,7 +687,7 @@
   position: absolute;
   bottom: 2px;
   right: 2px;
-  font-size: 0.6rem;
+  font-size: var(--text-sm);
   color: #fbbf24;
 }
 
@@ -635,25 +708,33 @@
   border: 1px solid var(--border-hover);
   border-radius: 9px;
   padding: 0.55rem 0.75rem;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.85), 0 0 14px var(--cyan-glow);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.85),
+    0 0 14px var(--cyan-glow);
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
   animation: fadeIn 0.15s ease;
   box-sizing: border-box;
-  transition: background-color 0.25s ease, border-color 0.25s ease;
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease;
 }
 
 [data-theme="parchment"] .calendar-day-tooltip {
-  box-shadow: 0 8px 24px rgba(70, 45, 20, 0.22), 0 0 14px var(--cyan-glow);
+  box-shadow:
+    0 8px 24px rgba(70, 45, 20, 0.22),
+    0 0 14px var(--cyan-glow);
 }
 
 [data-theme="steampunk"] .calendar-day-tooltip {
-  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.95), 0 0 16px rgba(245, 158, 11, 0.25);
+  box-shadow:
+    0 8px 26px rgba(0, 0, 0, 0.95),
+    0 0 16px rgba(245, 158, 11, 0.25);
 }
 
 .calendar-day-tooltip:not(.tooltip-above)::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -5px;
   left: var(--arrow-left, 50%);
@@ -666,7 +747,7 @@
 }
 
 .calendar-day-tooltip.tooltip-above::before {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -5px;
   left: var(--arrow-left, 50%);
@@ -696,13 +777,13 @@
 
 .tooltip-date {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: var(--text-sm);
   font-weight: 700;
   color: var(--text-main);
 }
 
 .tooltip-overlap-badge {
-  font-size: 0.68rem;
+  font-size: var(--text-sm);
   font-weight: 600;
   color: #fbbf24;
   background: rgba(245, 158, 11, 0.15);
@@ -741,7 +822,7 @@
   justify-content: center;
   cursor: pointer;
   padding: 0;
-  box-shadow: 
+  box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.4),
     0 2px 6px rgba(0, 0, 0, 0.4);
   transition: all 0.15s ease;
@@ -754,7 +835,7 @@
 
 .tooltip-add-btn:hover {
   transform: translateY(-1px) scale(1.08);
-  box-shadow: 
+  box-shadow:
     inset 0 1px 0 #ffffff,
     0 0 10px rgba(245, 158, 11, 0.6),
     0 3px 8px rgba(0, 0, 0, 0.6);
@@ -765,18 +846,24 @@
   background: linear-gradient(180deg, #eab308 0%, #ca8a04 60%, #a16207 100%);
   border-color: #b8860b;
   color: #27190d;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 2px 5px rgba(70, 45, 20, 0.2);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 2px 5px rgba(70, 45, 20, 0.2);
 }
 
 [data-theme="devpost"] .tooltip-add-btn {
   background: linear-gradient(180deg, #22d3ee 0%, #06b6d4 60%, #0891b2 100%);
   border-color: #67e8f9;
   color: #04101c;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 2px 6px rgba(6, 182, 212, 0.4);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 2px 6px rgba(6, 182, 212, 0.4);
 }
 
 [data-theme="devpost"] .tooltip-add-btn:hover {
-  box-shadow: inset 0 1px 0 #ffffff, 0 0 12px rgba(6, 182, 212, 0.7);
+  box-shadow:
+    inset 0 1px 0 #ffffff,
+    0 0 12px rgba(6, 182, 212, 0.7);
   border-color: #a5f3fc;
 }
 
@@ -786,7 +873,7 @@
   background: transparent;
   border: 1px solid transparent;
   color: var(--text-dim);
-  font-size: 0.85rem;
+  font-size: var(--text-md);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -818,7 +905,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.45rem;
-  font-size: 0.76rem;
+  font-size: var(--text-sm);
   padding: 1.5px 0;
   width: 100%;
   max-width: 100%;
@@ -855,7 +942,7 @@
   background: transparent;
   border: 1px solid transparent;
   color: var(--text-dim);
-  font-size: 0.75rem;
+  font-size: var(--text-sm);
   width: 22px;
   height: 22px;
   border-radius: 4px;
@@ -865,7 +952,9 @@
   cursor: pointer;
   padding: 0;
   line-height: 1;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
   flex-shrink: 0;
 }
 
@@ -885,7 +974,7 @@
   border: 1px solid transparent;
   color: var(--amber-gear);
   opacity: 0.75;
-  font-size: 0.75rem;
+  font-size: var(--text-sm);
   width: 22px;
   height: 22px;
   border-radius: 4px;
@@ -933,7 +1022,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.35rem;
-  font-size: 0.72rem;
+  font-size: var(--text-sm);
   color: var(--cyan-primary);
   padding-top: 0.25rem;
   border-top: 1px dashed var(--border-subtle);
@@ -949,4 +1038,3 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-

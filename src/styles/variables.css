@@ -230,7 +230,6 @@ html[data-font="sans"],
 
 /* Font Size Scaling */
 [data-font-size="compact"] {
-  font-size: 13.5px;
   --text-sm: 10px;
   --text-md: 12px;
   --text-lg: 14px;
@@ -238,14 +237,12 @@ html[data-font="sans"],
 
 :root,
 [data-font-size="normal"] {
-  font-size: 15px;
   --text-sm: 12px;
   --text-md: 14px;
   --text-lg: 16px;
 }
 
 [data-font-size="spacious"] {
-  font-size: 16.5px;
   --text-sm: 14px;
   --text-md: 16px;
   --text-lg: 18px;

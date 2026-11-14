@@ -26,11 +26,11 @@
 }
 
 .capacity-gear-icon {
-  font-size: 1rem;
+  font-size: var(--text-lg);
 }
 
 .capacity-title {
-  font-size: 0.92rem;
+  font-size: var(--text-md);
   font-weight: 700;
   color: var(--text-main);
 }
@@ -39,7 +39,7 @@
   background: var(--btn-secondary-bg);
   border: 1px solid var(--border-subtle);
   color: var(--amber-gear);
-  font-size: 0.75rem;
+  font-size: var(--text-sm);
   font-weight: 600;
   padding: 0.25rem 0.6rem;
   border-radius: 6px;
@@ -73,7 +73,7 @@
 }
 
 .metric-label {
-  font-size: 0.68rem;
+  font-size: var(--text-sm);
   color: var(--text-dim);
   font-weight: 600;
   text-transform: uppercase;
@@ -82,7 +82,7 @@
 
 .metric-value {
   font-family: var(--font-mono);
-  font-size: 0.95rem;
+  font-size: var(--text-md);
   font-weight: 700;
 }
 
@@ -144,7 +144,7 @@
   display: flex;
   align-items: flex-start;
   gap: 0.6rem;
-  font-size: 0.78rem;
+  font-size: var(--text-sm);
   color: #fef3c7;
   animation: fadeIn 0.2s ease;
 }
@@ -166,7 +166,7 @@
 }
 
 .warning-icon {
-  font-size: 1rem;
+  font-size: var(--text-lg);
   flex-shrink: 0;
   line-height: 1.2;
 }
@@ -187,7 +187,7 @@
   display: flex;
   align-items: flex-start;
   gap: 0.6rem;
-  font-size: 0.78rem;
+  font-size: var(--text-sm);
   color: #d1fae5;
   animation: fadeIn 0.2s ease;
 }
@@ -209,7 +209,7 @@
 }
 
 .healthy-icon {
-  font-size: 1rem;
+  font-size: var(--text-lg);
   color: #34d399;
   font-weight: 700;
   flex-shrink: 0;
@@ -300,7 +300,7 @@
 
 .app-footer .metric-label {
   font-family: var(--font-heading);
-  font-size: 0.65rem;
+  font-size: var(--text-sm);
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -313,7 +313,7 @@
 
 .app-footer .metric-value {
   font-family: var(--font-heading);
-  font-size: 0.92rem;
+  font-size: var(--text-md);
   font-weight: 700;
   letter-spacing: 0.02em;
 }
@@ -378,13 +378,13 @@
   justify-content: center;
   gap: 0.45rem;
   font-family: var(--font-heading);
-  font-size: 0.72rem;
+  font-size: var(--text-sm);
   letter-spacing: 0.06em;
   color: var(--text-dim);
 }
 
 .footer-credits .credits-dot {
-  font-size: 0.6rem;
+  font-size: var(--text-sm);
   opacity: 0.5;
 }
 
@@ -429,7 +429,7 @@
   border: none;
   padding: 0;
   font: inherit;
-  font-size: 0.72rem;
+  font-size: var(--text-sm);
   letter-spacing: 0.06em;
   font-family: var(--font-heading);
   cursor: pointer;

@@ -133,7 +133,7 @@ body:has([data-theme="devpost"]) {
 
 .section-heading {
   font-family: var(--font-heading);
-  font-size: 0.95rem;
+  font-size: var(--text-md);
   font-weight: 700;
   color: var(--text-main);
   letter-spacing: 0.06em;
@@ -155,7 +155,7 @@ body:has([data-theme="devpost"]) {
 /* Burnished Clockwork Brass Primary Button */
 .btn-primary {
   font-family: var(--font-heading);
-  font-size: 0.8rem;
+  font-size: var(--text-sm);
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -207,7 +207,7 @@ body:has([data-theme="devpost"]) {
 
 [data-theme="devpost"] .btn-primary {
   font-family: var(--font-heading);
-  font-size: 0.84rem;
+  font-size: var(--text-sm);
   font-weight: 700;
   text-transform: none;
   letter-spacing: normal;
