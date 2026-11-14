@@ -33,12 +33,10 @@ export const App = () => {
   const {
     currentYear,
     currentMonth,
-    setCurrentYear,
-    setCurrentMonth,
     handlePrevMonth,
     handleNextMonth,
     handleJumpToMonth,
-  } = useMonthNavigation(2026, 9, () => {
+  } = useMonthNavigation(() => {
     setSelectedDate(null);
     setDateRange({ start: null, end: null });
   });

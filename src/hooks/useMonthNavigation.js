@@ -3,12 +3,12 @@ import { useState, useCallback } from 'react';
 /**
  * Custom hook to manage active year/month calendar state and navigation.
  * Handles next/prev month transitions, year rollovers, jumping to dates, and resetting selection.
- *
- * @param {number} initialYear - default 2026
- * @param {number} initialMonth - default 9 (October, 0-indexed)
- * @param {Function} onMonthChange - optional callback when month changes (e.g. to clear date selection)
  */
-export const useMonthNavigation = (initialYear = 2026, initialMonth = 9, onMonthChange) => {
+export const useMonthNavigation = (
+  onMonthChange,
+  initialYear = new Date().getFullYear(),
+  initialMonth = new Date().getMonth()
+) => {
   const [currentYear, setCurrentYear] = useState(initialYear);
   const [currentMonth, setCurrentMonth] = useState(initialMonth);
 
