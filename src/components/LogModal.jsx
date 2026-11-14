@@ -1,69 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-import { COLOR_PALETTE, EMOJI_OPTIONS, STATUS_OPTIONS } from '../constants';
+import { STATUS_OPTIONS } from '../constants';
 import { addDaysToDateString } from '../utils/calendarUtils';
-
-const getInitialFormState = ({
-  editingHackathon,
-  prefillDates,
-  initialYear,
-  initialMonth,
-  avgTurnaroundDays,
-}) => {
-  const avgDays = Number(avgTurnaroundDays) || 10;
-
-  if (editingHackathon) {
-    return {
-      name: editingHackathon.name || '',
-      url: editingHackathon.url || '',
-      deadline: editingHackathon.deadline || '',
-      status: editingHackathon.status || STATUS_OPTIONS[0],
-      startDate: editingHackathon.startDate || '',
-      endDate: editingHackathon.endDate || '',
-      color: editingHackathon.color || '',
-      emoji: editingHackathon.emoji || '',
-    };
-  }
-
-  if (prefillDates) {
-    const start = prefillDates.startDate || '';
-    const end =
-      prefillDates.endDate && prefillDates.endDate !== prefillDates.startDate
-        ? prefillDates.endDate
-        : start
-        ? addDaysToDateString(start, avgDays - 1)
-        : '';
-    const deadline =
-      prefillDates.deadline && prefillDates.deadline !== prefillDates.startDate
-        ? prefillDates.deadline
-        : end;
-
-    return {
-      name: '',
-      url: '',
-      startDate: start,
-      endDate: end,
-      deadline,
-      status: STATUS_OPTIONS[0],
-      color: '',
-      emoji: '',
-    };
-  }
-
-  const monthPadded = String(initialMonth + 1).padStart(2, '0');
-  const defaultStart = `${initialYear}-${monthPadded}-05`;
-  const defaultEnd = addDaysToDateString(defaultStart, avgDays - 1);
-
-  return {
-    name: '',
-    url: '',
-    startDate: defaultStart,
-    endDate: defaultEnd,
-    deadline: defaultEnd,
-    status: STATUS_OPTIONS[0],
-    color: '',
-    emoji: '',
-  };
-};
+import { getInitialFormState, validateAndFormatUrl } from '../utils/logFormUtils';
+import { ColorEmojiPicker } from './ColorEmojiPicker';
 
 export const LogModal = ({
   isOpen,
@@ -248,30 +187,10 @@ export const LogModal = ({
       return;
     }
 
-    let formattedUrl = url.trim();
-    if (formattedUrl) {
-      if (!/^https?:\/\//i.test(formattedUrl)) {
-        formattedUrl = `https://${formattedUrl}`;
-      }
-      try {
-        const parsed = new URL(formattedUrl);
-        if (!['http:', 'https:'].includes(parsed.protocol)) {
-          setError('Please enter a valid website URL (http or https).');
-          return;
-        }
-        const hostname = parsed.hostname;
-        const isLocal = hostname === 'localhost';
-        const isIp = /^(\d{1,3}\.){3}\d{1,3}$/.test(hostname);
-        const domainRegex = /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*\.(?:[a-z]{2,}|xn--[a-z0-9]+)$/i;
-
-        if (!isLocal && (isIp || !domainRegex.test(hostname))) {
-          setError('Please enter a valid website URL (e.g. devpost.com or https://...)');
-          return;
-        }
-      } catch {
-        setError('Please enter a valid website URL (e.g. devpost.com or https://...)');
-        return;
-      }
+    const { url: formattedUrl, error: urlError } = validateAndFormatUrl(url);
+    if (urlError) {
+      setError(urlError);
+      return;
     }
 
     const payload = {
@@ -407,43 +326,12 @@ export const LogModal = ({
             </div>
           </div>
 
-          <div className="form-group">
-            <div className="label-with-hint">
-              <label className="form-label">Color</label>
-              <span className="field-hint">optional</span>
-            </div>
-            <div className="color-picker-row">
-              {COLOR_PALETTE.map((c) => (
-                <div
-                  key={c}
-                  className={`color-option ${color === c ? 'selected' : ''}`}
-                  style={{ backgroundColor: c }}
-                  onClick={() => setColor(color === c ? '' : c)}
-                  title={color === c ? 'Click to deselect' : 'Select color'}
-                />
-              ))}
-            </div>
-          </div>
-
-          <div className="form-group">
-            <div className="label-with-hint">
-              <label className="form-label">Emoji</label>
-              <span className="field-hint">optional</span>
-            </div>
-            <div className="emoji-picker-row">
-              {EMOJI_OPTIONS.map((emo) => (
-                <button
-                  key={emo}
-                  type="button"
-                  className={`emoji-option ${emoji === emo ? 'selected' : ''}`}
-                  onClick={() => setEmoji(emoji === emo ? '' : emo)}
-                  title={emoji === emo ? 'Click to deselect' : emo}
-                >
-                  {emo}
-                </button>
-              ))}
-            </div>
-          </div>
+          <ColorEmojiPicker
+            color={color}
+            onChangeColor={setColor}
+            emoji={emoji}
+            onChangeEmoji={setEmoji}
+          />
 
           {error && <div className="form-error">⚠️ {error}</div>}
 
