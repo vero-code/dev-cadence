@@ -1,0 +1,217 @@
+import { useState } from 'react';
+import { THEMES, FONT_PRESETS, FONT_SIZES } from '../constants';
+import { ChevronDownIcon } from './Icons';
+
+export const GeneralSettingsTab = ({
+  settings,
+  onUpdateSettings,
+  currentTheme,
+  onSelectTheme,
+  onClearAllHackathons,
+  onResetAllData,
+}) => {
+  const [targetRestDays, setTargetRestDays] = useState(settings?.targetRestDays ?? 8);
+  const [avgTurnaroundDays, setAvgTurnaroundDays] = useState(settings?.avgTurnaroundDays ?? 10);
+  const [confirmClearHackathons, setConfirmClearHackathons] = useState(false);
+  const [confirmResetAll, setConfirmResetAll] = useState(false);
+  const [resetMessage, setResetMessage] = useState(null);
+
+  const handleRestDaysChange = (val) => {
+    setTargetRestDays(val);
+    const parsed = parseInt(val, 10);
+    if (!isNaN(parsed) && parsed >= 0 && parsed <= 28) {
+      onUpdateSettings?.({ targetRestDays: parsed });
+    }
+  };
+
+  const handleRestDaysBlur = () => {
+    const parsed = Math.max(0, Math.min(28, parseInt(targetRestDays, 10) || 0));
+    setTargetRestDays(parsed);
+    onUpdateSettings?.({ targetRestDays: parsed });
+  };
+
+  const handleAvgDaysChange = (val) => {
+    setAvgTurnaroundDays(val);
+    const parsed = parseInt(val, 10);
+    if (!isNaN(parsed) && parsed >= 1 && parsed <= 60) {
+      onUpdateSettings?.({ avgTurnaroundDays: parsed });
+    }
+  };
+
+  const handleAvgDaysBlur = () => {
+    const parsed = Math.max(1, Math.min(60, parseInt(avgTurnaroundDays, 10) || 10));
+    setAvgTurnaroundDays(parsed);
+    onUpdateSettings?.({ avgTurnaroundDays: parsed });
+  };
+
+  const handleClearHackathonsClick = async () => {
+    if (!confirmClearHackathons) {
+      setConfirmClearHackathons(true);
+      setConfirmResetAll(false);
+      return;
+    }
+    if (onClearAllHackathons) {
+      await onClearAllHackathons();
+      setConfirmClearHackathons(false);
+      setResetMessage('All hackathons have been cleared.');
+      setTimeout(() => setResetMessage(null), 3000);
+    }
+  };
+
+  const handleResetAllClick = async () => {
+    if (!confirmResetAll) {
+      setConfirmResetAll(true);
+      setConfirmClearHackathons(false);
+      return;
+    }
+    if (onResetAllData) {
+      await onResetAllData();
+      setConfirmResetAll(false);
+      setResetMessage('All data and preferences have been reset to factory defaults.');
+      setTimeout(() => setResetMessage(null), 3000);
+    }
+  };
+
+  return (
+    <>
+      <div className="settings-columns-row">
+        {/* Theme */}
+        <div className="settings-column">
+          <label className="form-label" htmlFor="settings-theme-select">Theme</label>
+          <div className="select-wrapper">
+            <select
+              id="settings-theme-select"
+              className="form-select"
+              value={currentTheme}
+              onChange={(e) => onSelectTheme?.(e.target.value)}
+            >
+              {THEMES.map((t) => (
+                <option key={t.id} value={t.id}>{t.name}</option>
+              ))}
+            </select>
+            <ChevronDownIcon className="select-chevron" size={14} />
+          </div>
+        </div>
+
+        {/* Typography */}
+        <div className="settings-column">
+          <label className="form-label" htmlFor="settings-font-select">Typography</label>
+          <div className="select-wrapper">
+            <select
+              id="settings-font-select"
+              className="form-select"
+              value={settings?.fontPreset || 'bahnschrift'}
+              onChange={(e) => onUpdateSettings?.({ fontPreset: e.target.value })}
+            >
+              {FONT_PRESETS.map((f) => (
+                <option key={f.id} value={f.id}>{f.name}</option>
+              ))}
+            </select>
+            <ChevronDownIcon className="select-chevron" size={14} />
+          </div>
+        </div>
+
+        {/* Scale */}
+        <div className="form-group">
+          <label className="form-label" htmlFor="settings-scale-select">Scale</label>
+          <div className="select-wrapper">
+            <select
+              id="settings-scale-select"
+              className="form-select"
+              value={settings?.fontSize || 'normal'}
+              onChange={(e) => onUpdateSettings?.({ fontSize: e.target.value })}
+            >
+              {FONT_SIZES.map((s) => (
+                <option key={s.id} value={s.id}>{s.label}</option>
+              ))}
+            </select>
+            <ChevronDownIcon className="select-chevron" size={14} />
+          </div>
+        </div>
+      </div>
+
+      {/* Capacity Goals */}
+      <div className="form-row-2">
+        <div className="form-group">
+          <label className="form-label">Rest Days / Month</label>
+          <input
+            type="number"
+            min="0"
+            max="28"
+            className="form-input"
+            value={targetRestDays}
+            onChange={(e) => handleRestDaysChange(e.target.value)}
+            onBlur={handleRestDaysBlur}
+          />
+        </div>
+
+        <div className="form-group">
+          <label className="form-label">Avg. Work Days</label>
+          <input
+            type="number"
+            min="1"
+            max="60"
+            className="form-input"
+            value={avgTurnaroundDays}
+            onChange={(e) => handleAvgDaysChange(e.target.value)}
+            onBlur={handleAvgDaysBlur}
+          />
+        </div>
+      </div>
+
+      {/* Schedule Highlight */}
+      <div className="form-group settings-toggle-group">
+        <div className="settings-toggle-row">
+          <div className="settings-toggle-info">
+            <label className="form-label settings-toggle-label" htmlFor="toggle-highlight-hover">
+              Highlight in Schedule on Hover
+            </label>
+            <span className="settings-toggle-desc">
+              Highlight dates in the calendar when hovering over hackathons in Tracker
+            </span>
+          </div>
+          <button
+            id="toggle-highlight-hover"
+            type="button"
+            role="switch"
+            aria-checked={settings?.highlightOnHover !== false}
+            className={`settings-switch-btn ${settings?.highlightOnHover !== false ? 'active' : ''}`}
+            onClick={() => {
+              const currentVal = settings?.highlightOnHover !== false;
+              onUpdateSettings?.({ highlightOnHover: !currentVal });
+            }}
+          >
+            <span className="settings-switch-thumb" />
+          </button>
+        </div>
+      </div>
+
+      {/* Danger Zone */}
+      <div className="settings-danger-zone">
+        <div className="danger-zone-title">Data Management &amp; Reset</div>
+        <p className="danger-zone-desc">
+          Clear logged events or reset the extension to defaults.
+        </p>
+        <div className="danger-actions-row">
+          <button
+            type="button"
+            className={`danger-btn-outline ${confirmClearHackathons ? 'confirming' : ''}`}
+            onClick={handleClearHackathonsClick}
+          >
+            {confirmClearHackathons ? '⚠️ Confirm Clear Events' : '🗑️ Clear Hackathons'}
+          </button>
+          <button
+            type="button"
+            className={`danger-btn-outline ${confirmResetAll ? 'confirming' : ''}`}
+            onClick={handleResetAllClick}
+          >
+            {confirmResetAll ? '⚠️ Confirm Factory Reset' : '🔄 Reset All Data'}
+          </button>
+        </div>
+        {resetMessage && (
+          <div className="settings-reset-msg">✓ {resetMessage}</div>
+        )}
+      </div>
+    </>
+  );
+};
