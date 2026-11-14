@@ -179,24 +179,25 @@ export const SettingsModal = ({
                     <ChevronDownIcon className="select-chevron" size={14} />
                   </div>
                 </div>
-              </div>
 
-              {/* Font Size */}
-              <div className="form-group font-size-group">
-                <div className="font-size-row">
-                  {FONT_SIZES.map((s) => {
-                    const isSelected = (settings?.fontSize || 'normal') === s.id;
-                    return (
-                      <button
-                        key={s.id}
-                        type="button"
-                        className={`font-size-btn ${isSelected ? 'active' : ''}`}
-                        onClick={() => handleFontSizeClick(s.id)}
-                      >
-                        {s.label}
-                      </button>
-                    );
-                  })}
+                {/* Scale / Font Size */}
+                <div className="form-group">
+                  <label className="form-label" htmlFor="settings-scale-select">Scale</label>
+                  <div className="select-wrapper">
+                    <select
+                      id="settings-scale-select"
+                      className="form-select"
+                      value={settings?.fontSize || 'normal'}
+                      onChange={(e) => handleFontSizeClick(e.target.value)}
+                    >
+                      {FONT_SIZES.map((s) => (
+                        <option key={s.id} value={s.id}>
+                          {s.label}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDownIcon className="select-chevron" size={14} />
+                  </div>
                 </div>
               </div>
 

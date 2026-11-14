@@ -444,10 +444,12 @@
   filter: brightness(1.1);
   transform: translateY(-1px);
   box-shadow: 0 6px 18px rgba(244, 63, 94, 0.5);
-}/* Settings Modal Two-Column Layout: Theme & Typography */
+}
+
+/* Settings */
 .settings-columns-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.65rem;
   margin-bottom: 0.85rem;
   width: 100%;
