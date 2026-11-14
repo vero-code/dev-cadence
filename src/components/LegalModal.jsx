@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { GITHUB_REPO_URL } from '../constants';
+import { useState, useEffect } from 'react';
 
 export const LegalModal = ({
   isOpen,
@@ -7,12 +6,6 @@ export const LegalModal = ({
   onClose,
 }) => {
   const [activeTab, setActiveTab] = useState(initialTab);
-
-  useEffect(() => {
-    if (initialTab) {
-      setActiveTab(initialTab);
-    }
-  }, [initialTab, isOpen]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { THEMES, FONT_PRESETS, FONT_SIZES } from '../constants';
 import { AgedGearIcon, ChevronDownIcon } from './Icons';
 import { AiSettingsTab } from './AiSettingsTab';
@@ -15,21 +15,11 @@ export const SettingsModal = ({
   onResetAllData,
 }) => {
   const [activeTab, setActiveTab] = useState('general');
-  const [targetRestDays, setTargetRestDays] = useState(8);
-  const [avgTurnaroundDays, setAvgTurnaroundDays] = useState(10);
+  const [targetRestDays, setTargetRestDays] = useState(settings?.targetRestDays ?? 8);
+  const [avgTurnaroundDays, setAvgTurnaroundDays] = useState(settings?.avgTurnaroundDays ?? 10);
   const [confirmClearHackathons, setConfirmClearHackathons] = useState(false);
   const [confirmResetAll, setConfirmResetAll] = useState(false);
   const [resetMessage, setResetMessage] = useState(null);
-
-  useEffect(() => {
-    if (settings) {
-      setTargetRestDays(settings.targetRestDays ?? 8);
-      setAvgTurnaroundDays(settings.avgTurnaroundDays ?? 10);
-    }
-    setConfirmClearHackathons(false);
-    setConfirmResetAll(false);
-    setResetMessage(null);
-  }, [settings, isOpen]);
 
   if (!isOpen) return null;
 

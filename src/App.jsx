@@ -317,6 +317,7 @@ export const App = () => {
           {isLogModalOpen && (
             <div className="lower-popover-backdrop" onClick={handleCloseLogModal}>
               <LogModal
+                key={editingHackathon?.id || 'new'}
                 isOpen={isLogModalOpen}
                 onClose={handleCloseLogModal}
                 onSave={handleSaveHackathon}
@@ -356,16 +357,18 @@ export const App = () => {
           )}
         </div>
 
-        <SettingsModal
-          isOpen={isSettingsOpen}
-          onClose={handleCloseSettings}
-          settings={settings}
-          onUpdateSettings={handleUpdateSettings}
-          currentTheme={theme}
-          onSelectTheme={handleSelectTheme}
-          onClearAllHackathons={handleClearAllHackathons}
-          onResetAllData={handleResetAllData}
-        />
+        {isSettingsOpen && (
+          <SettingsModal
+            isOpen={isSettingsOpen}
+            onClose={handleCloseSettings}
+            settings={settings}
+            onUpdateSettings={handleUpdateSettings}
+            currentTheme={theme}
+            onSelectTheme={handleSelectTheme}
+            onClearAllHackathons={handleClearAllHackathons}
+            onResetAllData={handleResetAllData}
+          />
+        )}
 
         <ConfirmModal
           isOpen={Boolean(deleteCandidate)}
@@ -374,11 +377,13 @@ export const App = () => {
           onCancel={handleCancelDelete}
         />
 
-        <LegalModal
-          isOpen={Boolean(legalModalTab)}
-          initialTab={legalModalTab || 'privacy'}
-          onClose={() => setLegalModalTab(null)}
-        />
+        {legalModalTab && (
+          <LegalModal
+            isOpen={Boolean(legalModalTab)}
+            initialTab={legalModalTab || 'privacy'}
+            onClose={() => setLegalModalTab(null)}
+          />
+        )}
       </div>
 
       <Footer

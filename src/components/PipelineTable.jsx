@@ -82,7 +82,9 @@ export const PipelineTable = ({
     setViewMode(mode);
     try {
       localStorage.setItem('devcadence_view_mode', mode);
-    } catch {}
+    } catch (err) {
+      console.warn('Failed to save view mode:', err);
+    }
   };
 
   const displayedHackathons = useMemo(() => {

@@ -1,8 +1,4 @@
-// Cadence Analytics & Statistics Utility
-// Computes empirical duration statistics based strictly on elapsed past days (< today)
-
 import { MONTH_NAMES } from '../constants';
-import { getDaysInMonth } from './calendarUtils';
 
 /**
  * Returns today's ISO date string 'YYYY-MM-DD' based on local system time

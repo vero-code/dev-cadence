@@ -1,6 +1,69 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { COLOR_PALETTE, EMOJI_OPTIONS, STATUS_OPTIONS } from '../constants';
 import { addDaysToDateString } from '../utils/calendarUtils';
+
+const getInitialFormState = ({
+  editingHackathon,
+  prefillDates,
+  initialYear,
+  initialMonth,
+  avgTurnaroundDays,
+}) => {
+  const avgDays = Number(avgTurnaroundDays) || 10;
+
+  if (editingHackathon) {
+    return {
+      name: editingHackathon.name || '',
+      url: editingHackathon.url || '',
+      deadline: editingHackathon.deadline || '',
+      status: editingHackathon.status || STATUS_OPTIONS[0],
+      startDate: editingHackathon.startDate || '',
+      endDate: editingHackathon.endDate || '',
+      color: editingHackathon.color || '',
+      emoji: editingHackathon.emoji || '',
+    };
+  }
+
+  if (prefillDates) {
+    const start = prefillDates.startDate || '';
+    const end =
+      prefillDates.endDate && prefillDates.endDate !== prefillDates.startDate
+        ? prefillDates.endDate
+        : start
+        ? addDaysToDateString(start, avgDays - 1)
+        : '';
+    const deadline =
+      prefillDates.deadline && prefillDates.deadline !== prefillDates.startDate
+        ? prefillDates.deadline
+        : end;
+
+    return {
+      name: '',
+      url: '',
+      startDate: start,
+      endDate: end,
+      deadline,
+      status: STATUS_OPTIONS[0],
+      color: '',
+      emoji: '',
+    };
+  }
+
+  const monthPadded = String(initialMonth + 1).padStart(2, '0');
+  const defaultStart = `${initialYear}-${monthPadded}-05`;
+  const defaultEnd = addDaysToDateString(defaultStart, avgDays - 1);
+
+  return {
+    name: '',
+    url: '',
+    startDate: defaultStart,
+    endDate: defaultEnd,
+    deadline: defaultEnd,
+    status: STATUS_OPTIONS[0],
+    color: '',
+    emoji: '',
+  };
+};
 
 export const LogModal = ({
   isOpen,
@@ -19,70 +82,32 @@ export const LogModal = ({
   const lastProcessedClickRef = useRef(null);
   const prevBroadcastRef = useRef(null);
   const currentValuesRef = useRef({});
-  const [name, setName] = useState('');
-  const [url, setUrl] = useState('');
-  const [deadline, setDeadline] = useState('');
-  const [status, setStatus] = useState(STATUS_OPTIONS[0] || 'Interested');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [color, setColor] = useState('');
-  const [emoji, setEmoji] = useState('');
+
+  const [initial] = useState(() =>
+    getInitialFormState({
+      editingHackathon,
+      prefillDates,
+      initialYear,
+      initialMonth,
+      avgTurnaroundDays,
+    })
+  );
+
+  const [name, setName] = useState(initial.name);
+  const [url, setUrl] = useState(initial.url);
+  const [deadline, setDeadline] = useState(initial.deadline);
+  const [status, setStatus] = useState(initial.status);
+  const [startDate, setStartDate] = useState(initial.startDate);
+  const [endDate, setEndDate] = useState(initial.endDate);
+  const [color, setColor] = useState(initial.color);
+  const [emoji, setEmoji] = useState(initial.emoji);
   const [error, setError] = useState('');
   const [activeDateField, setActiveDateField] = useState(null);
 
   // Keep a fresh reference to current form values to avoid stale closures and redundant effect triggers
-  currentValuesRef.current = { startDate, endDate, deadline, activeDateField };
-
   useEffect(() => {
-    const avgDays = Number(avgTurnaroundDays) || 10;
-    clickStepRef.current = 0;
-    lastProcessedClickRef.current = null;
-    prevBroadcastRef.current = null;
-    if (editingHackathon) {
-      setName(editingHackathon.name || '');
-      setUrl(editingHackathon.url || '');
-      setDeadline(editingHackathon.deadline || '');
-      setStatus(editingHackathon.status || STATUS_OPTIONS[0]);
-      setStartDate(editingHackathon.startDate || '');
-      setEndDate(editingHackathon.endDate || '');
-      setColor(editingHackathon.color || '');
-      setEmoji(editingHackathon.emoji || '');
-    } else if (prefillDates) {
-      setName('');
-      setUrl('');
-      const start = prefillDates.startDate || '';
-      // If only single date was selected, automatically extend by avgTurnaroundDays
-      const end = prefillDates.endDate && prefillDates.endDate !== prefillDates.startDate
-        ? prefillDates.endDate
-        : (start ? addDaysToDateString(start, avgDays - 1) : '');
-      const dead = prefillDates.deadline && prefillDates.deadline !== prefillDates.startDate
-        ? prefillDates.deadline
-        : end;
-
-      setStartDate(start);
-      setEndDate(end);
-      setDeadline(dead);
-      setStatus(STATUS_OPTIONS[0]);
-      setColor('');
-      setEmoji('');
-    } else {
-      // Default to current year & month, spanning avgTurnaroundDays
-      const monthPadded = String(initialMonth + 1).padStart(2, '0');
-      const defaultStart = `${initialYear}-${monthPadded}-05`;
-      const defaultEnd = addDaysToDateString(defaultStart, avgDays - 1);
-      const defaultDeadline = defaultEnd;
-
-      setName('');
-      setUrl('');
-      setDeadline(defaultDeadline);
-      setStatus(STATUS_OPTIONS[0]);
-      setStartDate(defaultStart);
-      setEndDate(defaultEnd);
-      setColor('');
-      setEmoji('');
-    }
-    setError('');
-  }, [editingHackathon, isOpen, initialYear, initialMonth, prefillDates, avgTurnaroundDays]);
+    currentValuesRef.current = { startDate, endDate, deadline, activeDateField };
+  });
 
   // Handle direct date clicks from calendar while this form is open
   useEffect(() => {
@@ -381,8 +406,6 @@ export const LogModal = ({
               </select>
             </div>
           </div>
-
-          
 
           <div className="form-group">
             <div className="label-with-hint">

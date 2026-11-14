@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { generateCalendarDays, getDayCellBackground, addDaysToDateString } from '../utils/calendarUtils';
 import { WEEKDAYS } from '../constants';
 import { MonthNavigator } from './MonthNavigator';
@@ -112,10 +112,13 @@ export const CalendarGrid = ({
   }, [activeTooltip, dateRange, onCancelDateRange]);
 
   // Reset tooltip and preview when month changes or on window resize
-  useEffect(() => {
+  const [prevPeriod, setPrevPeriod] = useState(`${year}-${month}`);
+  const currentPeriod = `${year}-${month}`;
+  if (prevPeriod !== currentPeriod) {
+    setPrevPeriod(currentPeriod);
     setActiveTooltip(null);
     setHoveredRangeDate(null);
-  }, [year, month]);
+  }
 
   useEffect(() => {
     const handleResize = () => {
@@ -135,7 +138,7 @@ export const CalendarGrid = ({
     }
   };
 
-  const handleCellClick = (e, day, idx) => {
+  const handleCellClick = (e, day) => {
     e.stopPropagation();
 
     // If create/edit modal is actively open (calendar has dashed range highlight)

@@ -37,7 +37,7 @@ export const AiSettingsTab = () => {
       await navigator.clipboard.writeText(url);
       setCopiedId(id);
       setTimeout(() => setCopiedId(null), 2000);
-    } catch (err) {
+    } catch {
       setSetupError({ id, message: 'Failed to copy URL.' });
     }
   };
