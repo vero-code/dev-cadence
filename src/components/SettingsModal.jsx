@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { THEMES, FONT_PRESETS, FONT_SIZES } from '../constants';
 import { AgedGearIcon, ChevronDownIcon } from './Icons';
 import { AiSettingsTab } from './AiSettingsTab';
+import { ModalFooter } from './ModalFooter';
 
 export const SettingsModal = ({
   isOpen,
@@ -290,14 +291,10 @@ export const SettingsModal = ({
             <AiSettingsTab />
           )}
 
-          <div className="modal-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '0.74rem', color: 'var(--text-dim)', display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
-              <span style={{ color: 'var(--emerald)', fontSize: '0.65rem' }}>●</span> Auto-saved
-            </span>
-            <button type="button" className="btn-primary" onClick={onClose} style={{ minWidth: '90px', justifyContent: 'center' }}>
-              Close
-            </button>
-          </div>
+          <ModalFooter
+            onClose={onClose}
+            showAutoSaved={activeTab === 'general'}
+          />
         </div>
       </div>
     </div>
