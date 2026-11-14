@@ -116,49 +116,41 @@ export const SettingsModal = ({
         </div>
 
         <div className="modal-body-content">
-          {/* Two-Column Layout: Theme (left) & Typography (right) */}
+          {/* Theme & Typography */}
           <div className="settings-columns-row">
+
             {/* Theme Selector */}
             <div className="settings-column">
-              <label className="form-label">Theme</label>
-              <div className="theme-options-grid">
-                {THEMES.map((t) => {
-                  const isSelected = currentTheme === t.id;
-                  return (
-                    <button
-                      key={t.id}
-                      type="button"
-                      className={`theme-option-btn ${isSelected ? 'active' : ''}`}
-                      onClick={() => handleThemeClick(t.id)}
-                    >
-                      <span className="theme-option-title">{t.name}</span>
-                      {isSelected && <span className="theme-option-check">✓</span>}
-                    </button>
-                  );
-                })}
-              </div>
+              <label className="form-label" htmlFor="settings-theme-select">Theme</label>
+              <select
+                id="settings-theme-select"
+                className="form-select"
+                value={currentTheme}
+                onChange={(e) => handleThemeClick(e.target.value)}
+              >
+                {THEMES.map((t) => (
+                  <option key={t.id} value={t.id}>
+                    {t.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             {/* Typography Selector */}
             <div className="settings-column">
-              <label className="form-label">Typography</label>
-              <div className="font-options-column">
-                {FONT_PRESETS.map((f) => {
-                  const isSelected = (settings?.fontPreset || 'bahnschrift') === f.id;
-                  return (
-                    <button
-                      key={f.id}
-                      type="button"
-                      className={`font-option-btn ${isSelected ? 'active' : ''}`}
-                      onClick={() => handleFontClick(f.id)}
-                      data-font-preview={f.id}
-                    >
-                      <span className="font-option-title">{f.name}</span>
-                      {isSelected && <span className="font-option-check">✓</span>}
-                    </button>
-                  );
-                })}
-              </div>
+              <label className="form-label" htmlFor="settings-font-select">Typography</label>
+              <select
+                id="settings-font-select"
+                className="form-select"
+                value={settings?.fontPreset || 'bahnschrift'}
+                onChange={(e) => handleFontClick(e.target.value)}
+              >
+                {FONT_PRESETS.map((f) => (
+                  <option key={f.id} value={f.id}>
+                    {f.name}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
