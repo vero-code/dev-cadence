@@ -119,75 +119,74 @@ export const App = () => {
       data-font-size={settings?.fontSize || 'normal'}
     >
       <Header
-          onOpenSettings={handleOpenSettings}
-          onOpenStats={() => setIsStatsOpen((prev) => !prev)}
-          isStatsOpen={isStatsOpen}
+        onOpenSettings={handleOpenSettings}
+        onOpenStats={() => setIsStatsOpen((prev) => !prev)}
+        isStatsOpen={isStatsOpen}
         />
       <div className="panel-content">
-        <CalendarGrid
-          year={currentYear}
-          month={currentMonth}
-          hackathons={calendarHackathons}
-          selectedDate={selectedDate}
-          dateRange={dateRange}
-          modalActiveRange={isLogModalOpen ? modalDates || prefillDates || (editingHackathon ? { ...editingHackathon, startDate: editingHackathon.startDate, endDate: editingHackathon.endDate } : null) : null}
-          avgTurnaroundDays={settings?.avgTurnaroundDays || 10}
-          onDateRangeClick={handleDateRangeClick}
-          onCancelDateRange={handleCancelDateRange}
-          onCancelModalRange={handleCloseLogModal}
-          onOpenAdd={handleOpenAdd}
-          isSelectingOnCalendar={isSelectingOnCalendar}
-          onPrevMonth={handlePrevMonth}
-          onNextMonth={handleNextMonth}
-          onEdit={handleOpenEdit}
-          onJumpToMonth={handleJumpToMonth}
-          hoveredHackathonId={settings?.highlightOnHover !== false ? hoveredHackathonId : null}
-        />
-
-        <div className="lower-content-section">
-          {isLogModalOpen && (
-            <div className="lower-popover-backdrop" onClick={handleCloseLogModal}>
-              <LogModal
-                key={editingHackathon?.id || 'new'}
-                isOpen={isLogModalOpen}
-                onClose={handleCloseLogModal}
-                onSave={handleSaveHackathon}
-                editingHackathon={editingHackathon}
-                initialYear={currentYear}
-                initialMonth={currentMonth}
-                prefillDates={prefillDates}
-                avgTurnaroundDays={settings?.avgTurnaroundDays || 10}
-                onPickOnCalendar={handlePickOnCalendar}
-                onDatesChange={handleDatesChange}
-                calendarPickedDate={calendarPickedDate}
-              />
-            </div>
-          )}
-
-          {isStatsOpen ? (
-            <StatsModal
-              isOpen={isStatsOpen}
-              onClose={() => setIsStatsOpen(false)}
-              hackathons={hackathons}
-              settings={settings}
-              onUpdateSettings={updateSettings}
-            />
-          ) : (
-            <PipelineTable
-              hackathons={visibleHackathons}
-              onEdit={handleOpenEdit}
-              onDelete={handleRequestDelete}
-              onAddNew={handleOpenAdd}
+        {isStatsOpen ? (
+          <StatsModal
+            isOpen={isStatsOpen}
+            onClose={() => setIsStatsOpen(false)}
+            hackathons={hackathons}
+            settings={settings}
+            onUpdateSettings={updateSettings}
+          />
+        ) : (
+          <>
+            <CalendarGrid
               year={currentYear}
               month={currentMonth}
+              hackathons={calendarHackathons}
+              selectedDate={selectedDate}
+              dateRange={dateRange}
+              modalActiveRange={isLogModalOpen ? modalDates || prefillDates || (editingHackathon ? { ...editingHackathon, startDate: editingHackathon.startDate, endDate: editingHackathon.endDate } : null) : null}
+              avgTurnaroundDays={settings?.avgTurnaroundDays || 10}
+              onDateRangeClick={handleDateRangeClick}
+              onCancelDateRange={handleCancelDateRange}
+              onCancelModalRange={handleCloseLogModal}
+              onOpenAdd={handleOpenAdd}
+              isSelectingOnCalendar={isSelectingOnCalendar}
               onPrevMonth={handlePrevMonth}
               onNextMonth={handleNextMonth}
-              hoveredHackathonId={hoveredHackathonId}
-              onHoverHackathon={setHoveredHackathonId}
+              onEdit={handleOpenEdit}
+              onJumpToMonth={handleJumpToMonth}
+              hoveredHackathonId={settings?.highlightOnHover !== false ? hoveredHackathonId : null}
             />
-          )}
-        </div>
-
+            <div className="lower-content-section">
+              {isLogModalOpen && (
+                <div className="lower-popover-backdrop" onClick={handleCloseLogModal}>
+                  <LogModal
+                    key={editingHackathon?.id || 'new'}
+                    isOpen={isLogModalOpen}
+                    onClose={handleCloseLogModal}
+                    onSave={handleSaveHackathon}
+                    editingHackathon={editingHackathon}
+                    initialYear={currentYear}
+                    initialMonth={currentMonth}
+                    prefillDates={prefillDates}
+                    avgTurnaroundDays={settings?.avgTurnaroundDays || 10}
+                    onPickOnCalendar={handlePickOnCalendar}
+                    onDatesChange={handleDatesChange}
+                    calendarPickedDate={calendarPickedDate}
+                  />
+                </div>
+              )}
+              <PipelineTable
+                hackathons={visibleHackathons}
+                onEdit={handleOpenEdit}
+                onDelete={handleRequestDelete}
+                onAddNew={handleOpenAdd}
+                year={currentYear}
+                month={currentMonth}
+                onPrevMonth={handlePrevMonth}
+                onNextMonth={handleNextMonth}
+                hoveredHackathonId={hoveredHackathonId}
+                onHoverHackathon={setHoveredHackathonId}
+              />
+            </div>
+          </>
+        )}
         {isSettingsOpen && (
           <SettingsModal
             isOpen={isSettingsOpen}
