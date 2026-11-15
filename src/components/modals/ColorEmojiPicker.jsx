@@ -12,16 +12,22 @@ export const ColorEmojiPicker = ({
         <div className="label-with-hint">
           <label className="form-label">Color</label>
         </div>
-        <div className="color-picker-row">
-          {COLOR_PALETTE.map((c) => (
-            <div
-              key={c}
-              className={`color-option ${color === c ? "selected" : ""}`}
-              style={{ backgroundColor: c }}
-              onClick={() => onChangeColor(color === c ? "" : c)}
-              title={color === c ? "Click to deselect" : "Select color"}
-            />
-          ))}
+        <div className="color-picker-row" role="group" aria-label="Color">
+          {COLOR_PALETTE.map(({ hex, label }) => {
+            const isSelected = color === hex;
+            return (
+              <button
+                key={hex}
+                type="button"
+                className={`color-option ${isSelected ? "selected" : ""}`}
+                style={{ backgroundColor: hex }}
+                onClick={() => onChangeColor(isSelected ? "" : hex)}
+                aria-label={`Color: ${label}`}
+                aria-pressed={isSelected}
+                title={isSelected ? `${label} (click to deselect)` : label}
+              />
+            );
+          })}
         </div>
       </div>
 
@@ -29,18 +35,23 @@ export const ColorEmojiPicker = ({
         <div className="label-with-hint">
           <label className="form-label">Emoji</label>
         </div>
-        <div className="emoji-picker-row">
-          {EMOJI_OPTIONS.map((emo) => (
-            <button
-              key={emo}
-              type="button"
-              className={`emoji-option ${emoji === emo ? "selected" : ""}`}
-              onClick={() => onChangeEmoji(emoji === emo ? "" : emo)}
-              title={emoji === emo ? "Click to deselect" : emo}
-            >
-              {emo}
-            </button>
-          ))}
+        <div className="emoji-picker-row" role="group" aria-label="Emoji">
+          {EMOJI_OPTIONS.map(({ value, label }) => {
+            const isSelected = emoji === value;
+            return (
+              <button
+                key={value}
+                type="button"
+                className={`emoji-option ${isSelected ? "selected" : ""}`}
+                onClick={() => onChangeEmoji(isSelected ? "" : value)}
+                aria-label={`Emoji: ${label}`}
+                aria-pressed={isSelected}
+                title={isSelected ? `${label} (click to deselect)` : label}
+              >
+                {value}
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>

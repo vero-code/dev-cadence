@@ -1,12 +1,18 @@
 export const COLOR_PALETTE = [
-  '#4285F4',
-  '#DB4437',
-  '#F4B400',
-  '#0F9D58',
-  '#AB47BC',
+  { hex: '#4285F4', label: 'Blue' },
+  { hex: '#DB4437', label: 'Red' },
+  { hex: '#F4B400', label: 'Yellow' },
+  { hex: '#0F9D58', label: 'Green' },
+  { hex: '#AB47BC', label: 'Purple' },
 ];
 
-export const EMOJI_OPTIONS = ['🔷', '🔴', '⭐', '🟩', '🫟'];
+export const EMOJI_OPTIONS = [
+  { value: '🔷', label: 'Blue diamond' },
+  { value: '🔴', label: 'Red circle' },
+  { value: '⭐', label: 'Star' },
+  { value: '🟩', label: 'Green square' },
+  { value: '🫟', label: 'Paint splatter' },
+];
 
 export const STATUS_OPTIONS = [
   'Interest',
