@@ -1,0 +1,208 @@
+/* KPI Cards Grid */
+.stats-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 0.55rem;
+}
+
+.stats-kpi-card {
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  padding: 0.75rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.stats-kpi-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: transparent;
+}
+
+.stats-kpi-card.shortest-card::before {
+  background: linear-gradient(90deg, #10b981, rgba(16, 185, 129, 0.1));
+}
+
+.stats-kpi-card.longest-card::before {
+  background: linear-gradient(90deg, #a78bfa, rgba(167, 139, 250, 0.1));
+}
+
+.stats-kpi-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-bottom: 0.4rem;
+}
+
+.stats-kpi-badge {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.12rem 0.38rem;
+  border-radius: 4px;
+}
+
+.stats-kpi-value-badge {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.28rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.stats-kpi-value-badge .stats-kpi-number {
+  font-family: var(--font-mono);
+  font-size: var(--text-lg);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.stats-kpi-value-badge .stats-kpi-unit {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+.shortest-card .stats-kpi-badge {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.shortest-card .stats-kpi-value-badge .stats-kpi-number {
+  color: #10b981;
+}
+
+.longest-card .stats-kpi-badge {
+  background: rgba(167, 139, 250, 0.15);
+  color: #c084fc;
+  border: 1px solid rgba(167, 139, 250, 0.3);
+}
+
+.longest-card .stats-kpi-value-badge .stats-kpi-number {
+  color: #a78bfa;
+}
+
+[data-theme="devpost"] .shortest-card .stats-kpi-value-badge .stats-kpi-number {
+  color: #2dd4bf;
+}
+
+[data-theme="devpost"] .longest-card .stats-kpi-value-badge .stats-kpi-number {
+  color: #c084fc;
+}
+
+[data-theme="parchment"] .shortest-card .stats-kpi-badge {
+  background: #d1fae5;
+  color: #065f46;
+  border-color: #a7f3d0;
+}
+
+[data-theme="parchment"]
+  .shortest-card
+  .stats-kpi-value-badge
+  .stats-kpi-number {
+  color: #065f46;
+}
+
+[data-theme="parchment"] .longest-card .stats-kpi-badge {
+  background: #f3e8ff;
+  color: #6b21a8;
+  border-color: #e9d5ff;
+}
+
+[data-theme="parchment"]
+  .longest-card
+  .stats-kpi-value-badge
+  .stats-kpi-number {
+  color: #6b21a8;
+}
+
+.stats-kpi-card.shortest-card {
+  background: linear-gradient(
+    180deg,
+    rgba(16, 185, 129, 0.08) 0%,
+    rgba(16, 185, 129, 0.02) 100%
+  );
+  border-color: rgba(16, 185, 129, 0.28);
+}
+
+.stats-kpi-card.longest-card {
+  background: linear-gradient(
+    180deg,
+    rgba(167, 139, 250, 0.08) 0%,
+    rgba(167, 139, 250, 0.02) 100%
+  );
+  border-color: rgba(167, 139, 250, 0.28);
+}
+
+.stats-kpi-card.shortest-card .stats-kpi-number {
+  color: #10b981;
+}
+
+.stats-kpi-card.longest-card .stats-kpi-number {
+  color: #a78bfa;
+}
+
+[data-theme="devpost"] .stats-kpi-card.shortest-card {
+  background: linear-gradient(
+    180deg,
+    rgba(45, 212, 191, 0.09) 0%,
+    rgba(45, 212, 191, 0.02) 100%
+  );
+  border-color: rgba(45, 212, 191, 0.35);
+}
+
+[data-theme="devpost"] .stats-kpi-card.shortest-card .stats-kpi-number {
+  color: #2dd4bf;
+}
+
+[data-theme="devpost"] .stats-kpi-card.longest-card {
+  background: linear-gradient(
+    180deg,
+    rgba(192, 132, 252, 0.09) 0%,
+    rgba(192, 132, 252, 0.02) 100%
+  );
+  border-color: rgba(192, 132, 252, 0.35);
+}
+
+[data-theme="devpost"] .stats-kpi-card.longest-card .stats-kpi-number {
+  color: #c084fc;
+}
+
+[data-theme="parchment"] .stats-kpi-card {
+  background: rgba(146, 104, 60, 0.06);
+  border-color: rgba(160, 110, 50, 0.25);
+}
+
+[data-theme="parchment"] .stats-kpi-card.shortest-card {
+  background: #f0fdf4;
+  border-color: #86efac;
+}
+
+[data-theme="parchment"] .stats-kpi-card.shortest-card .stats-kpi-number {
+  color: #065f46;
+}
+
+[data-theme="parchment"] .stats-kpi-card.longest-card {
+  background: #faf5ff;
+  border-color: #d8b4fe;
+}
+
+[data-theme="parchment"] .stats-kpi-card.longest-card .stats-kpi-number {
+  color: #6b21a8;
+}

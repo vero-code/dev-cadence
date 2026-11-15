@@ -6,9 +6,15 @@
 @import './styles/variables.css';
 @import './styles/base.css';
 @import './styles/header.css';
+@import './styles/header-actions.css';
 @import './styles/calendar.css';
 @import './styles/tracker.css';
 @import './styles/modals.css';
+@import './styles/capacity.css';
 @import './styles/footer.css';
 @import './styles/analytics.css';
 @import './styles/ai-settings.css';
+@import './styles/analytics-kpi.css';
+@import './styles/analytics-metrics.css';
+@import './styles/analytics-table.css';
+@import './styles/analytics-footer.css';

@@ -1,0 +1,112 @@
+/* Empty State */
+.stats-empty-state {
+  padding: 1.5rem 1rem;
+  text-align: center;
+  background: var(--bg-input);
+  border: 1px dashed var(--border-subtle);
+  border-radius: 8px;
+}
+
+.stats-empty-icon {
+  font-size: var(--text-lg);
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.stats-empty-title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-md);
+  color: var(--text-main);
+}
+
+.stats-empty-desc {
+  font-size: var(--text-sm);
+  color: var(--text-dim);
+  max-width: 320px;
+  margin: 0.25rem auto 0 auto;
+  line-height: 1.35;
+}
+
+/* Panel Footer */
+.stats-panel-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.45rem;
+  padding-top: 0.45rem;
+  border-top: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.stats-footer-hint-group {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.stats-footer-hint {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.stats-footer-hint strong {
+  color: var(--text-main);
+}
+
+[data-theme="parchment"] .stats-footer-hint strong {
+  color: #1a0e05;
+}
+
+.stats-footer-sync-btn {
+  background: rgba(245, 158, 11, 0.16);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: var(--amber-gear);
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.stats-footer-sync-btn:hover {
+  background: var(--amber-gear);
+  color: #000000;
+  transform: translateY(-1px);
+}
+
+[data-theme="devpost"] .stats-footer-sync-btn {
+  background: rgba(6, 182, 212, 0.18);
+  border-color: rgba(6, 182, 212, 0.45);
+  color: #38bdf8;
+}
+
+[data-theme="devpost"] .stats-footer-sync-btn:hover {
+  background: #38bdf8;
+  color: #000000;
+}
+
+[data-theme="parchment"] .stats-footer-sync-btn {
+  background: #e0f2fe;
+  border-color: #0284c7;
+  color: #0369a1;
+}
+
+[data-theme="parchment"] .stats-footer-sync-btn:hover {
+  background: #0284c7;
+  color: #ffffff;
+}
+
+.stats-return-btn {
+  font-size: var(--text-sm);
+  padding: 0.2rem 0.65rem;
+  height: 25px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
