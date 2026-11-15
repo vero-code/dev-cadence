@@ -1,0 +1,148 @@
+.tooltip-events-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-height: 140px;
+  overflow-y: auto;
+  overflow-x: hidden !important;
+  scrollbar-width: thin;
+}
+
+.tooltip-event-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.45rem;
+  font-size: var(--text-sm);
+  padding: 1.5px 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.tooltip-event-info {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.tooltip-color-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.tooltip-event-name {
+  color: var(--text-main);
+  font-weight: 600;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tooltip-event-edit-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-dim);
+  font-size: var(--text-sm);
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.tooltip-event-edit-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: var(--border-subtle);
+  color: var(--text-main);
+}
+
+[data-theme="parchment"] .tooltip-event-edit-btn:hover {
+  background: rgba(184, 134, 11, 0.18);
+  border-color: rgba(184, 134, 11, 0.4);
+}
+
+.tooltip-event-link-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--amber-gear);
+  opacity: 0.75;
+  font-size: var(--text-sm);
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 0;
+  line-height: 1;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.tooltip-event-link-btn:hover {
+  background: rgba(245, 158, 11, 0.18);
+  border-color: rgba(245, 158, 11, 0.35);
+  color: #fbbf24;
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+[data-theme="devpost"] .tooltip-event-link-btn {
+  color: var(--cyan-primary);
+}
+
+[data-theme="devpost"] .tooltip-event-link-btn:hover {
+  color: #38bdf8;
+  background: rgba(6, 182, 212, 0.18);
+  border-color: rgba(6, 182, 212, 0.35);
+}
+
+[data-theme="parchment"] .tooltip-event-link-btn {
+  color: #854d0e;
+}
+
+[data-theme="parchment"] .tooltip-event-link-btn:hover {
+  color: #451a03;
+  background: rgba(184, 134, 11, 0.18);
+  border-color: rgba(184, 134, 11, 0.4);
+}
+
+.tooltip-deadline-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem;
+  font-size: var(--text-sm);
+  color: var(--cyan-primary);
+  padding-top: 0.25rem;
+  border-top: 1px dashed var(--border-subtle);
+}
+
+.tooltip-deadline-info {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
