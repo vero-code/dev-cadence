@@ -165,6 +165,12 @@ export const validateAndBuildLogPayload = ({
     errors.endDate = 'End date cannot be earlier than start date.';
   }
 
+  if (deadline && startDate && new Date(deadline) < new Date(startDate)) {
+    errors.deadline = 'Deadline cannot be earlier than start date.';
+  } else if (deadline && endDate && new Date(deadline) < new Date(endDate)) {
+    errors.deadline = 'Deadline cannot be earlier than end date.';
+  }
+
   const { url: formattedUrl, error: urlError } = validateAndFormatUrl(url);
   if (urlError) {
     errors.url = urlError;

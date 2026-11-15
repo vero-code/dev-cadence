@@ -18,7 +18,7 @@ export const LogDateFields = ({
     onInteraction();
   };
 
-  const dateError = errors?.startDate || errors?.endDate;
+  const dateError = errors?.startDate || errors?.endDate || errors?.deadline;
 
   return (
     <>
@@ -50,7 +50,7 @@ export const LogDateFields = ({
             <label className="form-label">Deadline</label>
             <input
               type="date"
-              className="form-input"
+              className={`form-input ${errors?.deadline ? "error" : ""}`}
               value={deadline}
               onFocus={() => onFocusField("deadline")}
               onChange={handleDateChange(onDeadlineChange)}

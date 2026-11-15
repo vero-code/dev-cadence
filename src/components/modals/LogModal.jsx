@@ -210,7 +210,7 @@ export const LogModal = ({
           onFocusField={setActiveDateField}
           onInteraction={() => {
             clickStepRef.current = 0;
-            setErrors((prev) => ({ ...prev, startDate: "", endDate: "" }));
+            setErrors((prev) => ({ ...prev, startDate: "", endDate: "", deadline: "" }));
           }}
         />
 
