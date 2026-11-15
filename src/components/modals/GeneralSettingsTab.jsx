@@ -193,7 +193,7 @@ export const GeneralSettingsTab = ({
               Highlight in Schedule on Hover
             </label>
             <span className="settings-toggle-desc">
-              Highlight dates in the calendar when hovering over hackathons in
+              Highlight dates in the calendar when hovering over sprints in
               Tracker
             </span>
           </div>
@@ -227,7 +227,7 @@ export const GeneralSettingsTab = ({
           >
             {confirmClearHackathons
               ? "⚠️ Confirm Clear Events"
-              : "🗑️ Clear Hackathons"}
+              : "🗑️ Clear Sprints"}
           </button>
           <button
             type="button"

@@ -77,10 +77,6 @@
   background: linear-gradient(90deg, #0284c7, #38bdf8);
 }
 
-[data-theme="steampunk"] .committed-seg {
-  background: linear-gradient(90deg, #d97706, #f59e0b);
-}
-
 .available-seg {
   background: linear-gradient(90deg, #059669, #10b981);
 }

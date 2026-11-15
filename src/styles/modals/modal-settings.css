@@ -1,7 +1,7 @@
 /* Settings */
 .settings-columns-row {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: 1.2fr 1.2fr 0.65fr;
   gap: 0.65rem;
   margin-bottom: 0.85rem;
   width: 100%;
