@@ -37,7 +37,6 @@
   border-style: dashed !important;
 }
 
-/* Dim non-relevant cells during hover to make the active hackathon stand out */
 .calendar-day-cell.hackathon-dimmed-by-hover {
   opacity: 0.36;
   filter: grayscale(30%);
@@ -46,7 +45,7 @@
     filter 0.2s ease;
 }
 
-/* Hover Start & End Badges */
+/* Hover Start and End Badges */
 .hover-start-badge,
 .hover-end-badge {
   color: #ffffff;
@@ -209,17 +208,41 @@
 }
 
 .day-badges-wrap:has(.range-badge):has(.day-event-emoji),
-.day-badges-wrap:has(.today-badge):has(.day-event-emoji) {
+.day-badges-wrap:has(.today-badge):has(.day-event-emoji),
+.day-badges-wrap:has(.today-badge):has(.range-badge) {
   flex-direction: column;
   gap: 5px;
 }
 
 .day-badges-wrap:has(.range-badge):has(.day-event-emoji) .range-badge,
-.day-badges-wrap:has(.today-badge):has(.day-event-emoji) .today-badge {
+.day-badges-wrap:has(.today-badge):has(.day-event-emoji) .today-badge,
+.day-badges-wrap:has(.today-badge):has(.range-badge) .today-badge,
+.day-badges-wrap:has(.today-badge):has(.range-badge) .range-badge {
   font-size: 0.58rem;
 }
 
 .day-badges-wrap:has(.range-badge):has(.day-event-emoji) .day-event-emoji,
 .day-badges-wrap:has(.today-badge):has(.day-event-emoji) .day-event-emoji {
   font-size: 0.75rem;
+}
+
+.day-badges-wrap:has(.today-badge):has(.range-badge):has(.day-event-emoji) {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 7px 1px;
+}
+
+.day-badges-wrap:has(.today-badge):has(.range-badge):has(.day-event-emoji) .today-badge,
+.day-badges-wrap:has(.today-badge):has(.range-badge):has(.day-event-emoji) .range-badge {
+  font-size: 0.46rem;
+  letter-spacing: 0;
+  line-height: 1.2;
+  padding: 1px 2px;
+  font-weight: 400;
+}
+
+.day-badges-wrap:has(.today-badge):has(.range-badge):has(.day-event-emoji) .day-event-emoji {
+  flex-basis: 100%;
+  text-align: center;
+  font-size: 0.7rem;
 }
