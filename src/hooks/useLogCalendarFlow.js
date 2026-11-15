@@ -47,15 +47,15 @@ export const useLogCalendarFlow = (avgTurnaroundDays) => {
     const avgDays = Number(avgTurnaroundDays) || 10;
     if (typeof targetDate === 'string' && targetDate) {
       const end = addDaysToDateString(targetDate, avgDays - 1);
-      setPrefillDates({ startDate: targetDate, endDate: end, deadline: end });
+      setPrefillDates({ startDate: targetDate, endDate: end });
     } else if (dateRange.start) {
       const end = dateRange.end || addDaysToDateString(dateRange.start, avgDays - 1);
-      setPrefillDates({ startDate: dateRange.start, endDate: end, deadline: end });
+      setPrefillDates({ startDate: dateRange.start, endDate: end });
     } else {
       const monthPadded = String(currentMonth + 1).padStart(2, '0');
       const start = `${currentYear}-${monthPadded}-05`;
       const end = addDaysToDateString(start, avgDays - 1);
-      setPrefillDates({ startDate: start, endDate: end, deadline: end });
+      setPrefillDates({ startDate: start, endDate: end });
     }
     setEditingHackathon(null);
     setIsSelectingOnCalendar(false);
@@ -76,7 +76,7 @@ export const useLogCalendarFlow = (avgTurnaroundDays) => {
       const [start, end] = [dateRange.start, dateString].sort();
       setDateRange({ start, end });
       setSelectedDate(null);
-      setPrefillDates({ startDate: start, endDate: end, deadline: end });
+      setPrefillDates({ startDate: start, endDate: end });
       setEditingHackathon(null);
       setIsSelectingOnCalendar(false);
       setIsLogModalOpen(true);

@@ -21,7 +21,7 @@ export const LogDateFields = ({
       const avgDays = Number(avgTurnaroundDays) || 10;
       const newEnd = addDaysToDateString(val, avgDays - 1);
       onEndDateChange(newEnd);
-      if (!deadline || deadline === endDate || deadline < newEnd) {
+      if (deadline && (deadline === endDate || deadline < newEnd)) {
         onDeadlineChange(newEnd);
       }
     }
@@ -33,7 +33,7 @@ export const LogDateFields = ({
     if (val && startDate && val < startDate) {
       onStartDateChange(val);
     }
-    if (val && (!deadline || deadline < val)) {
+    if (val && deadline && deadline < val) {
       onDeadlineChange(val);
     }
   };

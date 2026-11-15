@@ -31,10 +31,7 @@ export const getInitialFormState = ({
         : start
         ? addDaysToDateString(start, avgDays - 1)
         : '';
-    const deadline =
-      prefillDates.deadline && prefillDates.deadline !== prefillDates.startDate
-        ? prefillDates.deadline
-        : end;
+    const deadline = prefillDates.deadline || '';
 
     return {
       name: '',
@@ -57,7 +54,7 @@ export const getInitialFormState = ({
     url: '',
     startDate: defaultStart,
     endDate: defaultEnd,
-    deadline: defaultEnd,
+    deadline: '',
     status: STATUS_OPTIONS[0],
     color: '',
     emoji: '',
@@ -99,7 +96,11 @@ export const computeDatesFromCalendarClick = (clickedDate, currentValues, avgTur
   if (curField === 'startDate') {
     if (curEnd && clickedDate > curEnd) {
       const newEnd = addDaysToDateString(clickedDate, avgDays - 1);
-      return { startDate: clickedDate, endDate: newEnd, deadline: newEnd };
+      return {
+        startDate: clickedDate,
+        endDate: newEnd,
+        ...(curDead ? { deadline: newEnd } : {}),
+      };
     }
     return { startDate: clickedDate };
   }
@@ -117,12 +118,12 @@ export const computeDatesFromCalendarClick = (clickedDate, currentValues, avgTur
 
   if (!curStart) {
     const newEnd = addDaysToDateString(clickedDate, avgDays - 1);
-    return { startDate: clickedDate, endDate: newEnd, deadline: newEnd };
+    return { startDate: clickedDate, endDate: newEnd };
   }
 
   if (clickedDate >= curStart) {
     const patch = { endDate: clickedDate };
-    if (!curDead || curDead === curEnd || curDead < clickedDate) {
+    if (curDead && (curDead === curEnd || curDead < clickedDate)) {
       patch.deadline = clickedDate;
     }
     return patch;
@@ -132,7 +133,9 @@ export const computeDatesFromCalendarClick = (clickedDate, currentValues, avgTur
   if (!curEnd || curEnd < clickedDate) {
     const newEnd = addDaysToDateString(clickedDate, avgDays - 1);
     patch.endDate = newEnd;
-    patch.deadline = newEnd;
+    if (curDead) {
+      patch.deadline = newEnd;
+    }
   }
   return patch;
 };

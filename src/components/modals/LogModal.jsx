@@ -155,10 +155,6 @@ export const LogModal = ({
       setError("Please provide a hackathon name.");
       return;
     }
-    if (!deadline) {
-      setError("Please provide a submission deadline.");
-      return;
-    }
     if (!startDate || !endDate) {
       setError("Please provide both work start and end dates.");
       return;
