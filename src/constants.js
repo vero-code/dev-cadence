@@ -108,3 +108,13 @@ export const AI_STATUS_INFO = {
     hint: 'Checking local model availability...',
   },
 };
+
+export const MONTH_ABBR = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+export const STATUS_FILTER_PILLS = [
+  { key: 'interest', filter: 'Interest', label: 'Int' },
+  { key: 'join', filter: 'Join', label: 'Join' },
+  { key: 'early', filter: 'Early', label: 'Earl' },
+  { key: 'draft', filter: 'Draft', label: 'Draft' },
+  { key: 'done', filter: 'Done', label: 'Done' },
+];
