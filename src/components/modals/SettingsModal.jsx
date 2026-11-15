@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { AgedGearIcon } from './Icons';
-import { GeneralSettingsTab } from './GeneralSettingsTab';
-import { AiSettingsTab } from './AiSettingsTab';
-import { ModalFooter } from './ModalFooter';
+import { useState } from "react";
+import { AgedGearIcon } from "../Icons";
+import { GeneralSettingsTab } from "./GeneralSettingsTab";
+import { AiSettingsTab } from "./AiSettingsTab";
+import { ModalFooter } from "./ModalFooter";
 
 export const SettingsModal = ({
   isOpen,
@@ -14,7 +14,7 @@ export const SettingsModal = ({
   onClearAllHackathons,
   onResetAllData,
 }) => {
-  const [activeTab, setActiveTab] = useState('general');
+  const [activeTab, setActiveTab] = useState("general");
 
   if (!isOpen) return null;
 
@@ -26,29 +26,31 @@ export const SettingsModal = ({
             <AgedGearIcon className="modal-title-gear" size={16} />
             <span>Settings</span>
           </h2>
-          <button type="button" className="modal-close-btn" onClick={onClose}>&times;</button>
+          <button type="button" className="modal-close-btn" onClick={onClose}>
+            &times;
+          </button>
         </div>
 
         {/* Settings Tabs */}
         <div className="legal-tabs-bar">
           <button
             type="button"
-            className={`legal-tab-btn ${activeTab === 'general' ? 'active' : ''}`}
-            onClick={() => setActiveTab('general')}
+            className={`legal-tab-btn ${activeTab === "general" ? "active" : ""}`}
+            onClick={() => setActiveTab("general")}
           >
             General
           </button>
           <button
             type="button"
-            className={`legal-tab-btn ${activeTab === 'ai' ? 'active' : ''}`}
-            onClick={() => setActiveTab('ai')}
+            className={`legal-tab-btn ${activeTab === "ai" ? "active" : ""}`}
+            onClick={() => setActiveTab("ai")}
           >
             AI
           </button>
         </div>
 
         <div className="modal-body-content">
-          {activeTab === 'general' ? (
+          {activeTab === "general" ? (
             <GeneralSettingsTab
               settings={settings}
               onUpdateSettings={onUpdateSettings}
@@ -62,10 +64,11 @@ export const SettingsModal = ({
           )}
 
           <ModalFooter
-            showAutoSaved={activeTab === 'general'}
+            showAutoSaved={activeTab === "general"}
             leftContent={
               <span className="modal-footer-hint">
-                To disable or remove the model, turn off &ldquo;On-device AI&rdquo; in Chrome Settings.
+                To disable or remove the model, turn off &ldquo;On-device
+                AI&rdquo; in Chrome Settings.
               </span>
             }
           />

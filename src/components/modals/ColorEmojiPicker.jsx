@@ -1,6 +1,11 @@
-import { COLOR_PALETTE, EMOJI_OPTIONS } from '../constants';
+import { COLOR_PALETTE, EMOJI_OPTIONS } from "../../constants";
 
-export const ColorEmojiPicker = ({ color, onChangeColor, emoji, onChangeEmoji }) => (
+export const ColorEmojiPicker = ({
+  color,
+  onChangeColor,
+  emoji,
+  onChangeEmoji,
+}) => (
   <>
     <div className="form-group">
       <div className="label-with-hint">
@@ -11,10 +16,10 @@ export const ColorEmojiPicker = ({ color, onChangeColor, emoji, onChangeEmoji })
         {COLOR_PALETTE.map((c) => (
           <div
             key={c}
-            className={`color-option ${color === c ? 'selected' : ''}`}
+            className={`color-option ${color === c ? "selected" : ""}`}
             style={{ backgroundColor: c }}
-            onClick={() => onChangeColor(color === c ? '' : c)}
-            title={color === c ? 'Click to deselect' : 'Select color'}
+            onClick={() => onChangeColor(color === c ? "" : c)}
+            title={color === c ? "Click to deselect" : "Select color"}
           />
         ))}
       </div>
@@ -30,9 +35,9 @@ export const ColorEmojiPicker = ({ color, onChangeColor, emoji, onChangeEmoji })
           <button
             key={emo}
             type="button"
-            className={`emoji-option ${emoji === emo ? 'selected' : ''}`}
-            onClick={() => onChangeEmoji(emoji === emo ? '' : emo)}
-            title={emoji === emo ? 'Click to deselect' : emo}
+            className={`emoji-option ${emoji === emo ? "selected" : ""}`}
+            onClick={() => onChangeEmoji(emoji === emo ? "" : emo)}
+            title={emoji === emo ? "Click to deselect" : emo}
           >
             {emo}
           </button>

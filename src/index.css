@@ -7,28 +7,33 @@
 @import './styles/base.css';
 @import './styles/header.css';
 @import './styles/header-actions.css';
-@import './styles/calendar.css';
-@import './styles/calendar-cells.css';
-@import './styles/calendar-states.css';
-@import './styles/calendar-tooltip.css';
-@import './styles/calendar-tooltip-list.css';
-@import './styles/tracker.css';
-@import './styles/tracker-pills-themes.css';
-@import './styles/tracker-controls.css';
-@import './styles/tracker-table.css';
-@import './styles/tracker-cards.css';
-@import './styles/tracker-menu.css';
-@import './styles/tracker-badges.css';
-@import './styles/modals.css';
-@import './styles/modal-forms.css';
-@import './styles/modal-settings.css';
-@import './styles/modal-settings-controls.css';
-@import './styles/modal-legal.css';
+
+@import './styles/calendar/calendar.css';
+@import './styles/calendar/calendar-cells.css';
+@import './styles/calendar/calendar-states.css';
+@import './styles/calendar/calendar-tooltip.css';
+@import './styles/calendar/calendar-tooltip-list.css';
+
+@import './styles/tracker/tracker.css';
+@import './styles/tracker/tracker-pills-themes.css';
+@import './styles/tracker/tracker-controls.css';
+@import './styles/tracker/tracker-table.css';
+@import './styles/tracker/tracker-cards.css';
+@import './styles/tracker/tracker-menu.css';
+@import './styles/tracker/tracker-badges.css';
+
+@import './styles/modals/modals.css';
+@import './styles/modals/modal-forms.css';
+@import './styles/modals/modal-settings.css';
+@import './styles/modals/modal-settings-controls.css';
+@import './styles/modals/modal-legal.css';
+
 @import './styles/capacity.css';
 @import './styles/footer.css';
-@import './styles/analytics.css';
-@import './styles/analytics-kpi.css';
-@import './styles/analytics-metrics.css';
-@import './styles/analytics-table.css';
-@import './styles/analytics-footer.css';
-@import './styles/ai-settings.css';
+
+@import './styles/analytics/analytics.css';
+@import './styles/analytics/analytics-kpi.css';
+@import './styles/analytics/analytics-metrics.css';
+@import './styles/analytics/analytics-table.css';
+@import './styles/analytics/analytics-footer.css';
+@import './styles/modals/ai-settings.css';

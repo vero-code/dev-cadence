@@ -1,5 +1,5 @@
-import { STATUS_OPTIONS } from '../constants';
-import { addDaysToDateString } from '../utils/calendarUtils';
+import { STATUS_OPTIONS } from "../../constants";
+import { addDaysToDateString } from "../../utils/calendarUtils";
 
 export const LogDateFields = ({
   startDate,
@@ -47,7 +47,7 @@ export const LogDateFields = ({
             type="date"
             className="form-input"
             value={startDate}
-            onFocus={() => onFocusField('startDate')}
+            onFocus={() => onFocusField("startDate")}
             onChange={(e) => handleStartChange(e.target.value)}
           />
         </div>
@@ -59,7 +59,7 @@ export const LogDateFields = ({
             className="form-input"
             value={endDate}
             min={startDate || undefined}
-            onFocus={() => onFocusField('endDate')}
+            onFocus={() => onFocusField("endDate")}
             onChange={(e) => handleEndChange(e.target.value)}
           />
         </div>
@@ -73,7 +73,7 @@ export const LogDateFields = ({
             className="form-input"
             value={deadline}
             min={endDate || startDate || undefined}
-            onFocus={() => onFocusField('deadline')}
+            onFocus={() => onFocusField("deadline")}
             onChange={(e) => {
               onDeadlineChange(e.target.value);
               onInteraction();
@@ -89,7 +89,9 @@ export const LogDateFields = ({
             onChange={(e) => onStatusChange(e.target.value)}
           >
             {STATUS_OPTIONS.map((opt) => (
-              <option key={opt} value={opt}>{opt}</option>
+              <option key={opt} value={opt}>
+                {opt}
+              </option>
             ))}
           </select>
         </div>

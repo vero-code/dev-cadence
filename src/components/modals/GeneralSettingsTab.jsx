@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { THEMES, FONT_PRESETS, FONT_SIZES } from '../constants';
-import { ChevronDownIcon } from './Icons';
+import { useState } from "react";
+import { THEMES, FONT_PRESETS, FONT_SIZES } from "../../constants";
+import { ChevronDownIcon } from "../Icons";
 
 export const GeneralSettingsTab = ({
   settings,
@@ -10,8 +10,12 @@ export const GeneralSettingsTab = ({
   onClearAllHackathons,
   onResetAllData,
 }) => {
-  const [targetRestDays, setTargetRestDays] = useState(settings?.targetRestDays ?? 8);
-  const [avgTurnaroundDays, setAvgTurnaroundDays] = useState(settings?.avgTurnaroundDays ?? 10);
+  const [targetRestDays, setTargetRestDays] = useState(
+    settings?.targetRestDays ?? 8,
+  );
+  const [avgTurnaroundDays, setAvgTurnaroundDays] = useState(
+    settings?.avgTurnaroundDays ?? 10,
+  );
   const [confirmClearHackathons, setConfirmClearHackathons] = useState(false);
   const [confirmResetAll, setConfirmResetAll] = useState(false);
   const [resetMessage, setResetMessage] = useState(null);
@@ -39,7 +43,10 @@ export const GeneralSettingsTab = ({
   };
 
   const handleAvgDaysBlur = () => {
-    const parsed = Math.max(1, Math.min(60, parseInt(avgTurnaroundDays, 10) || 10));
+    const parsed = Math.max(
+      1,
+      Math.min(60, parseInt(avgTurnaroundDays, 10) || 10),
+    );
     setAvgTurnaroundDays(parsed);
     onUpdateSettings?.({ avgTurnaroundDays: parsed });
   };
@@ -53,7 +60,7 @@ export const GeneralSettingsTab = ({
     if (onClearAllHackathons) {
       await onClearAllHackathons();
       setConfirmClearHackathons(false);
-      setResetMessage('All hackathons have been cleared.');
+      setResetMessage("All hackathons have been cleared.");
       setTimeout(() => setResetMessage(null), 3000);
     }
   };
@@ -67,7 +74,9 @@ export const GeneralSettingsTab = ({
     if (onResetAllData) {
       await onResetAllData();
       setConfirmResetAll(false);
-      setResetMessage('All data and preferences have been reset to factory defaults.');
+      setResetMessage(
+        "All data and preferences have been reset to factory defaults.",
+      );
       setTimeout(() => setResetMessage(null), 3000);
     }
   };
@@ -77,7 +86,9 @@ export const GeneralSettingsTab = ({
       <div className="settings-columns-row">
         {/* Theme */}
         <div className="settings-column">
-          <label className="form-label" htmlFor="settings-theme-select">Theme</label>
+          <label className="form-label" htmlFor="settings-theme-select">
+            Theme
+          </label>
           <div className="select-wrapper">
             <select
               id="settings-theme-select"
@@ -86,7 +97,9 @@ export const GeneralSettingsTab = ({
               onChange={(e) => onSelectTheme?.(e.target.value)}
             >
               {THEMES.map((t) => (
-                <option key={t.id} value={t.id}>{t.name}</option>
+                <option key={t.id} value={t.id}>
+                  {t.name}
+                </option>
               ))}
             </select>
             <ChevronDownIcon className="select-chevron" size={14} />
@@ -95,16 +108,22 @@ export const GeneralSettingsTab = ({
 
         {/* Typography */}
         <div className="settings-column">
-          <label className="form-label" htmlFor="settings-font-select">Typography</label>
+          <label className="form-label" htmlFor="settings-font-select">
+            Typography
+          </label>
           <div className="select-wrapper">
             <select
               id="settings-font-select"
               className="form-select"
-              value={settings?.fontPreset || 'bahnschrift'}
-              onChange={(e) => onUpdateSettings?.({ fontPreset: e.target.value })}
+              value={settings?.fontPreset || "bahnschrift"}
+              onChange={(e) =>
+                onUpdateSettings?.({ fontPreset: e.target.value })
+              }
             >
               {FONT_PRESETS.map((f) => (
-                <option key={f.id} value={f.id}>{f.name}</option>
+                <option key={f.id} value={f.id}>
+                  {f.name}
+                </option>
               ))}
             </select>
             <ChevronDownIcon className="select-chevron" size={14} />
@@ -113,16 +132,20 @@ export const GeneralSettingsTab = ({
 
         {/* Scale */}
         <div className="form-group">
-          <label className="form-label" htmlFor="settings-scale-select">Scale</label>
+          <label className="form-label" htmlFor="settings-scale-select">
+            Scale
+          </label>
           <div className="select-wrapper">
             <select
               id="settings-scale-select"
               className="form-select"
-              value={settings?.fontSize || 'normal'}
+              value={settings?.fontSize || "normal"}
               onChange={(e) => onUpdateSettings?.({ fontSize: e.target.value })}
             >
               {FONT_SIZES.map((s) => (
-                <option key={s.id} value={s.id}>{s.label}</option>
+                <option key={s.id} value={s.id}>
+                  {s.label}
+                </option>
               ))}
             </select>
             <ChevronDownIcon className="select-chevron" size={14} />
@@ -163,11 +186,15 @@ export const GeneralSettingsTab = ({
       <div className="form-group settings-toggle-group">
         <div className="settings-toggle-row">
           <div className="settings-toggle-info">
-            <label className="form-label settings-toggle-label" htmlFor="toggle-highlight-hover">
+            <label
+              className="form-label settings-toggle-label"
+              htmlFor="toggle-highlight-hover"
+            >
               Highlight in Schedule on Hover
             </label>
             <span className="settings-toggle-desc">
-              Highlight dates in the calendar when hovering over hackathons in Tracker
+              Highlight dates in the calendar when hovering over hackathons in
+              Tracker
             </span>
           </div>
           <button
@@ -175,7 +202,7 @@ export const GeneralSettingsTab = ({
             type="button"
             role="switch"
             aria-checked={settings?.highlightOnHover !== false}
-            className={`settings-switch-btn ${settings?.highlightOnHover !== false ? 'active' : ''}`}
+            className={`settings-switch-btn ${settings?.highlightOnHover !== false ? "active" : ""}`}
             onClick={() => {
               const currentVal = settings?.highlightOnHover !== false;
               onUpdateSettings?.({ highlightOnHover: !currentVal });
@@ -195,17 +222,19 @@ export const GeneralSettingsTab = ({
         <div className="danger-actions-row">
           <button
             type="button"
-            className={`danger-btn-outline ${confirmClearHackathons ? 'confirming' : ''}`}
+            className={`danger-btn-outline ${confirmClearHackathons ? "confirming" : ""}`}
             onClick={handleClearHackathonsClick}
           >
-            {confirmClearHackathons ? '⚠️ Confirm Clear Events' : '🗑️ Clear Hackathons'}
+            {confirmClearHackathons
+              ? "⚠️ Confirm Clear Events"
+              : "🗑️ Clear Hackathons"}
           </button>
           <button
             type="button"
-            className={`danger-btn-outline ${confirmResetAll ? 'confirming' : ''}`}
+            className={`danger-btn-outline ${confirmResetAll ? "confirming" : ""}`}
             onClick={handleResetAllClick}
           >
-            {confirmResetAll ? '⚠️ Confirm Factory Reset' : '🔄 Reset All Data'}
+            {confirmResetAll ? "⚠️ Confirm Factory Reset" : "🔄 Reset All Data"}
           </button>
         </div>
         {resetMessage && (
