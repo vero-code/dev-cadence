@@ -201,5 +201,3 @@ export const PipelineTable = ({
     </div>
   );
 };
-
-export const PipelineList = PipelineTable;

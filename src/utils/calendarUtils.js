@@ -9,7 +9,7 @@ export const getDaysInMonth = (year, month) => {
  * Returns the day of the week for the 1st of the month (0 = Sun, 1 = Mon, ..., 6 = Sat)
  * Normalized to Monday-first: 0 = Mon, 1 = Tue, ..., 6 = Sun
  */
-export const getFirstDayOfWeek = (year, month) => {
+const getFirstDayOfWeek = (year, month) => {
   const day = new Date(year, month, 1).getDay();
   // Convert Sunday (0) to 6, Monday (1) to 0, etc.
   return (day + 6) % 7;

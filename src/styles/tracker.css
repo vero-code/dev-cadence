@@ -146,8 +146,7 @@
   box-shadow: 0 0 6px rgba(168, 85, 247, 0.6);
 }
 
-.dot-join,
-.dot-reg {
+.dot-join {
   background: #3b82f6;
   box-shadow: 0 0 6px rgba(59, 130, 246, 0.6);
 }
@@ -157,14 +156,12 @@
   box-shadow: 0 0 6px rgba(244, 63, 94, 0.6);
 }
 
-.dot-draft,
-.dot-waiting {
+.dot-draft {
   background: #f59e0b;
   box-shadow: 0 0 6px rgba(245, 158, 11, 0.6);
 }
 
-.dot-done,
-.dot-submitted {
+.dot-done {
   background: #10b981;
   box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
 }

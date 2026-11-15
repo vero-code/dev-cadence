@@ -4,8 +4,7 @@
   color: #d8b4fe;
 }
 
-.tracker-status-pill.pill-join.active,
-.tracker-status-pill.pill-reg.active {
+.tracker-status-pill.pill-join.active {
   background: rgba(59, 130, 246, 0.22);
   color: #93c5fd;
 }
@@ -20,8 +19,7 @@
   color: #fde047;
 }
 
-.tracker-status-pill.pill-done.active,
-.tracker-status-pill.pill-submitted.active {
+.tracker-status-pill.pill-done.active {
   background: rgba(16, 185, 129, 0.22);
   color: #6ee7b7;
 }
@@ -56,8 +54,7 @@
   box-shadow: none;
 }
 
-[data-theme="parchment"] .dot-join,
-[data-theme="parchment"] .dot-reg {
+[data-theme="parchment"] .dot-join {
   background: #1d4ed8;
   box-shadow: none;
 }
@@ -72,8 +69,7 @@
   box-shadow: none;
 }
 
-[data-theme="parchment"] .dot-done,
-[data-theme="parchment"] .dot-submitted {
+[data-theme="parchment"] .dot-done {
   background: #16a34a;
   box-shadow: none;
 }
@@ -95,23 +91,15 @@
   background: #f3e8ff;
   color: #7e22ce;
 }
-[data-theme="parchment"]
-  .tracker-status-pill.pill-interest.active
-  .status-pill-count {
+[data-theme="parchment"] .tracker-status-pill.pill-interest.active .status-pill-count {
   color: #7e22ce;
 }
 
-[data-theme="parchment"] .tracker-status-pill.pill-join.active,
-[data-theme="parchment"] .tracker-status-pill.pill-reg.active {
+[data-theme="parchment"] .tracker-status-pill.pill-join.active {
   background: #dbeafe;
   color: #1d4ed8;
 }
-[data-theme="parchment"]
-  .tracker-status-pill.pill-join.active
-  .status-pill-count,
-[data-theme="parchment"]
-  .tracker-status-pill.pill-reg.active
-  .status-pill-count {
+[data-theme="parchment"] .tracker-status-pill.pill-join.active .status-pill-count {
   color: #1d4ed8;
 }
 
@@ -119,9 +107,7 @@
   background: #ffe4e6;
   color: #be123c;
 }
-[data-theme="parchment"]
-  .tracker-status-pill.pill-early.active
-  .status-pill-count {
+[data-theme="parchment"] .tracker-status-pill.pill-early.active .status-pill-count {
   color: #be123c;
 }
 
@@ -129,23 +115,15 @@
   background: #fef3c7;
   color: #b45309;
 }
-[data-theme="parchment"]
-  .tracker-status-pill.pill-draft.active
-  .status-pill-count {
+[data-theme="parchment"] .tracker-status-pill.pill-draft.active .status-pill-count {
   color: #b45309;
 }
 
-[data-theme="parchment"] .tracker-status-pill.pill-done.active,
-[data-theme="parchment"] .tracker-status-pill.pill-submitted.active {
+[data-theme="parchment"] .tracker-status-pill.pill-done.active {
   background: #dcfce7;
   color: #15803d;
 }
-[data-theme="parchment"]
-  .tracker-status-pill.pill-done.active
-  .status-pill-count,
-[data-theme="parchment"]
-  .tracker-status-pill.pill-submitted.active
-  .status-pill-count {
+[data-theme="parchment"] .tracker-status-pill.pill-done.active .status-pill-count {
   color: #15803d;
 }
 

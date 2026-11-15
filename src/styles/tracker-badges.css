@@ -11,7 +11,6 @@
   box-shadow: none;
 }
 
-/* Default / Devpost Themes */
 .chip-interest {
   background: rgba(168, 85, 247, 0.16);
   color: #c084fc;
@@ -19,8 +18,7 @@
   box-shadow: none;
 }
 
-.chip-join,
-.chip-registered {
+.chip-join {
   background: rgba(59, 130, 246, 0.16);
   color: #60a5fa;
   border: 1px solid rgba(59, 130, 246, 0.45);
@@ -34,8 +32,7 @@
   box-shadow: none;
 }
 
-.chip-draft,
-.chip-waiting {
+.chip-draft {
   background: rgba(245, 158, 11, 0.16);
   color: #fbbf24;
   border: 1px solid rgba(245, 158, 11, 0.45);
@@ -46,13 +43,6 @@
   background: rgba(16, 185, 129, 0.16);
   color: #34d399;
   border: 1px solid rgba(16, 185, 129, 0.45);
-  box-shadow: none;
-}
-
-.chip-considering {
-  background: rgba(168, 85, 247, 0.14);
-  color: #c084fc;
-  border: 1px solid rgba(168, 85, 247, 0.35);
   box-shadow: none;
 }
 
@@ -74,8 +64,7 @@
   box-shadow: none !important;
 }
 
-[data-theme="parchment"] .chip-join,
-[data-theme="parchment"] .chip-registered {
+[data-theme="parchment"] .chip-join {
   background: rgba(29, 78, 216, 0.12);
   color: #1d4ed8;
   border-color: rgba(29, 78, 216, 0.4);
@@ -89,8 +78,7 @@
   box-shadow: none !important;
 }
 
-[data-theme="parchment"] .chip-draft,
-[data-theme="parchment"] .chip-waiting {
+[data-theme="parchment"] .chip-draft {
   background: rgba(180, 83, 9, 0.14);
   color: #92400e;
   border-color: rgba(180, 83, 9, 0.4);
@@ -101,13 +89,6 @@
   background: rgba(22, 163, 74, 0.1);
   color: #15803d;
   border-color: rgba(22, 163, 74, 0.4);
-  box-shadow: none !important;
-}
-
-[data-theme="parchment"] .chip-considering {
-  background: rgba(126, 34, 206, 0.12);
-  color: #7e22ce;
-  border-color: rgba(126, 34, 206, 0.35);
   box-shadow: none !important;
 }
 
@@ -125,8 +106,7 @@
   box-shadow: none;
 }
 
-[data-theme="steampunk"] .chip-join,
-[data-theme="steampunk"] .chip-registered {
+[data-theme="steampunk"] .chip-join {
   background: rgba(59, 130, 246, 0.18);
   color: #93c5fd;
   border-color: rgba(59, 130, 246, 0.45);
@@ -140,8 +120,7 @@
   box-shadow: none;
 }
 
-[data-theme="steampunk"] .chip-draft,
-[data-theme="steampunk"] .chip-waiting {
+[data-theme="steampunk"] .chip-draft {
   background: rgba(245, 158, 11, 0.18);
   color: #fde047;
   border-color: rgba(245, 158, 11, 0.45);
@@ -152,13 +131,6 @@
   background: rgba(16, 185, 129, 0.18);
   color: #6ee7b7;
   border-color: rgba(16, 185, 129, 0.45);
-  box-shadow: none;
-}
-
-[data-theme="steampunk"] .chip-considering {
-  background: rgba(168, 85, 247, 0.18);
-  color: #d8b4fe;
-  border-color: rgba(168, 85, 247, 0.35);
   box-shadow: none;
 }
 
