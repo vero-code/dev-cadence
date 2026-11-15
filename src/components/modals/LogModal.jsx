@@ -209,7 +209,7 @@ export const LogModal = ({
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label className="form-label">Hackathon Name</label>
+          <label className="form-label">Name</label>
           <input
             type="text"
             className={`form-input ${!name.trim() && error ? "error" : ""}`}
@@ -225,7 +225,7 @@ export const LogModal = ({
 
         <div className="form-group">
           <div className="label-with-hint">
-            <label className="form-label">Hackathon URL</label>
+            <label className="form-label">URL</label>
             <span className="field-hint">optional</span>
           </div>
           <input

@@ -1,14 +1,12 @@
 export const COLOR_PALETTE = [
   '#4285F4',
   '#DB4437',
-  '#0F9D58',
   '#F4B400',
+  '#0F9D58',
   '#AB47BC',
-  '#FFFFFF',
-  '#131921',
 ];
 
-export const EMOJI_OPTIONS = ['🔷', '🔴', '🟩', '⭐', '🫟', '❕', '▪️'];
+export const EMOJI_OPTIONS = ['🔷', '🔴', '⭐', '🟩', '🫟'];
 
 export const STATUS_OPTIONS = [
   'Interest',

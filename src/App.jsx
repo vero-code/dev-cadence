@@ -154,7 +154,7 @@ export const App = () => {
               hoveredHackathonId={settings?.highlightOnHover !== false ? hoveredHackathonId : null}
             />
             <div className="lower-content-section">
-              {isLogModalOpen && (
+              {isLogModalOpen ? (
                 <div className="lower-popover-backdrop" onClick={handleCloseLogModal}>
                   <LogModal
                     key={editingHackathon?.id || 'new'}
@@ -171,19 +171,20 @@ export const App = () => {
                     calendarPickedDate={calendarPickedDate}
                   />
                 </div>
+              ) : (
+                <PipelineTable
+                  hackathons={visibleHackathons}
+                  onEdit={handleOpenEdit}
+                  onDelete={handleRequestDelete}
+                  onAddNew={handleOpenAdd}
+                  year={currentYear}
+                  month={currentMonth}
+                  onPrevMonth={handlePrevMonth}
+                  onNextMonth={handleNextMonth}
+                  hoveredHackathonId={hoveredHackathonId}
+                  onHoverHackathon={setHoveredHackathonId}
+                />
               )}
-              <PipelineTable
-                hackathons={visibleHackathons}
-                onEdit={handleOpenEdit}
-                onDelete={handleRequestDelete}
-                onAddNew={handleOpenAdd}
-                year={currentYear}
-                month={currentMonth}
-                onPrevMonth={handlePrevMonth}
-                onNextMonth={handleNextMonth}
-                hoveredHackathonId={hoveredHackathonId}
-                onHoverHackathon={setHoveredHackathonId}
-              />
             </div>
           </>
         )}
