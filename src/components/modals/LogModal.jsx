@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import {
   getInitialFormState,
-  validateAndFormatUrl,
   computeDatesFromCalendarClick,
+  validateAndBuildLogPayload,
+  isSameDraftPayload,
 } from "../../utils/logFormUtils";
 import { ColorEmojiPicker } from "./ColorEmojiPicker";
 import { LogDateFields } from "./LogDateFields";
@@ -72,24 +73,8 @@ export const LogModal = ({
     if (patch.deadline !== undefined) setDeadline(patch.deadline);
   }, [calendarPickedDate, isOpen, avgTurnaroundDays]);
 
-  // Broadcast full draft state for real-time visual calendar preview (guarded against duplicate notifications)
   useEffect(() => {
     if (!isOpen || !onDatesChange) return;
-    const prev = prevBroadcastRef.current;
-    if (
-      prev &&
-      prev.startDate === startDate &&
-      prev.endDate === endDate &&
-      prev.deadline === deadline &&
-      prev.color === color &&
-      prev.emoji === emoji &&
-      prev.name === name &&
-      prev.url === url &&
-      prev.status === status &&
-      prev.id === editingHackathon?.id
-    ) {
-      return;
-    }
     const currentPayload = {
       startDate,
       endDate,
@@ -101,6 +86,9 @@ export const LogModal = ({
       status,
       id: editingHackathon?.id,
     };
+    if (isSameDraftPayload(prevBroadcastRef.current, currentPayload)) {
+      return;
+    }
     prevBroadcastRef.current = currentPayload;
     onDatesChange(currentPayload);
   }, [
@@ -151,41 +139,22 @@ export const LogModal = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const nextErrors = {};
-
-    if (!name.trim()) {
-      nextErrors.name = "Please provide a sprint title.";
-    }
-    if (!startDate) {
-      nextErrors.startDate = "Please provide a start date.";
-    }
-    if (!endDate) {
-      nextErrors.endDate = "Please provide an end date.";
-    } else if (startDate && new Date(endDate) < new Date(startDate)) {
-      nextErrors.endDate = "End date cannot be earlier than start date.";
-    }
-
-    const { url: formattedUrl, error: urlError } = validateAndFormatUrl(url);
-    if (urlError) {
-      nextErrors.url = urlError;
-    }
-
-    if (Object.keys(nextErrors).length > 0) {
-      setErrors(nextErrors);
-      return;
-    }
-
-    const payload = {
-      id: editingHackathon ? editingHackathon.id : Date.now().toString(),
-      name: name.trim(),
-      url: formattedUrl,
+    const { errors: nextErrors, payload } = validateAndBuildLogPayload({
+      editingHackathon,
+      name,
+      url,
       deadline,
       status,
       startDate,
       endDate,
       color,
       emoji,
-    };
+    });
+
+    if (nextErrors) {
+      setErrors(nextErrors);
+      return;
+    }
 
     onSave(payload);
     onClose();

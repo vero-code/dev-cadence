@@ -61,7 +61,7 @@ export const getInitialFormState = ({
   };
 };
 
-export const validateAndFormatUrl = (rawUrl) => {
+const validateAndFormatUrl = (rawUrl) => {
   let formatted = rawUrl.trim();
   if (!formatted) return { url: '', error: null };
 
@@ -139,3 +139,66 @@ export const computeDatesFromCalendarClick = (clickedDate, currentValues, avgTur
   }
   return patch;
 };
+
+export const validateAndBuildLogPayload = ({
+  editingHackathon,
+  name,
+  url,
+  deadline,
+  status,
+  startDate,
+  endDate,
+  color,
+  emoji,
+}) => {
+  const errors = {};
+
+  if (!name.trim()) {
+    errors.name = 'Please provide a sprint title.';
+  }
+  if (!startDate) {
+    errors.startDate = 'Please provide a start date.';
+  }
+  if (!endDate) {
+    errors.endDate = 'Please provide an end date.';
+  } else if (startDate && new Date(endDate) < new Date(startDate)) {
+    errors.endDate = 'End date cannot be earlier than start date.';
+  }
+
+  const { url: formattedUrl, error: urlError } = validateAndFormatUrl(url);
+  if (urlError) {
+    errors.url = urlError;
+  }
+
+  if (Object.keys(errors).length > 0) {
+    return { errors, payload: null };
+  }
+
+  return {
+    errors: null,
+    payload: {
+      id: editingHackathon ? editingHackathon.id : Date.now().toString(),
+      name: name.trim(),
+      url: formattedUrl,
+      deadline,
+      status,
+      startDate,
+      endDate,
+      color,
+      emoji,
+    },
+  };
+};
+
+export const isSameDraftPayload = (prev, next) => (
+  Boolean(prev) &&
+  prev.startDate === next.startDate &&
+  prev.endDate === next.endDate &&
+  prev.deadline === next.deadline &&
+  prev.color === next.color &&
+  prev.emoji === next.emoji &&
+  prev.name === next.name &&
+  prev.url === next.url &&
+  prev.status === next.status &&
+  prev.id === next.id
+);
