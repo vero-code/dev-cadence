@@ -7,6 +7,7 @@ import {
 } from "../../utils/logFormUtils";
 import { ColorEmojiPicker } from "./ColorEmojiPicker";
 import { LogDateFields } from "./LogDateFields";
+import { EditPenIcon, LogSprintIcon } from "../FormIcons";
 
 export const LogModal = ({
   isOpen,
@@ -168,7 +169,7 @@ export const LogModal = ({
     >
       <div className="modal-header">
         <h2 className="modal-title">
-          <span>{editingHackathon ? "✏️" : "🚀"}</span>
+          {editingHackathon ? <EditPenIcon size={16} /> : <LogSprintIcon size={16} />}
           {editingHackathon ? "Edit Sprint" : "Log Sprint"}
         </h2>
         <button
