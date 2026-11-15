@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { THEMES, FONT_PRESETS, FONT_SIZES } from "../../constants";
 import { ChevronDownIcon } from "../Icons";
+import { WarningIcon, TrashIcon, ResetIcon } from "../FormIcons";
 
 export const GeneralSettingsTab = ({
   settings,
@@ -225,16 +226,34 @@ export const GeneralSettingsTab = ({
             className={`danger-btn-outline ${confirmClearHackathons ? "confirming" : ""}`}
             onClick={handleClearHackathonsClick}
           >
-            {confirmClearHackathons
-              ? "⚠️ Confirm Clear Events"
-              : "🗑️ Clear Sprints"}
+            {confirmClearHackathons ? (
+            <>
+              <WarningIcon />
+              Confirm Clear Sprints
+            </>
+          ) : (
+            <>
+              <TrashIcon />
+              Clear Sprints
+            </>
+          )}
           </button>
           <button
             type="button"
             className={`danger-btn-outline ${confirmResetAll ? "confirming" : ""}`}
             onClick={handleResetAllClick}
           >
-            {confirmResetAll ? "⚠️ Confirm Factory Reset" : "🔄 Reset All Data"}
+            {confirmResetAll ? (
+              <>
+                <WarningIcon />
+                Confirm Factory Reset
+              </>
+            ) : (
+              <>
+                <ResetIcon />
+                Reset All Data
+              </>
+            )}
           </button>
         </div>
         {resetMessage && (

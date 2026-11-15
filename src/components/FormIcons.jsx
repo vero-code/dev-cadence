@@ -40,3 +40,70 @@ export const LogSprintIcon = ({ className = '', size = 16 }) => (
     <line x1="5.25" y1="8" x2="10.75" y2="8" />
   </svg>
 );
+
+/**
+ * Vector warning triangle icon
+ */
+export const WarningIcon = ({ className = '', size = 16 }) => (
+  <svg
+    className={className}
+    width={size}
+    height={size}
+    viewBox="0 0 16 16"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M8 2.25 1.75 13.25h12.5L8 2.25z" />
+    <line x1="8" y1="6.5" x2="8" y2="9.75" />
+    <line x1="8" y1="11.5" x2="8.01" y2="11.5" />
+  </svg>
+);
+
+/**
+ * Vector trash bin icon
+ */
+export const TrashIcon = ({ className = '', size = 16 }) => (
+  <svg
+    className={className}
+    width={size}
+    height={size}
+    viewBox="0 0 16 16"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M2.5 4.25h11" />
+    <path d="M6 2.5h4" />
+    <path d="M4 4.25l.75 9.25h6.5l.75-9.25" />
+    <line x1="6.75" y1="6.75" x2="6.75" y2="11" />
+    <line x1="9.25" y1="6.75" x2="9.25" y2="11" />
+  </svg>
+);
+
+/**
+ * Vector reset arrow icon
+ */
+export const ResetIcon = ({ className = '', size = 16 }) => (
+  <svg
+    className={className}
+    width={size}
+    height={size}
+    viewBox="0 0 16 16"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M2.75 8a5.25 5.25 0 1 0 1.4-3.57L2.5 6" />
+    <path d="M2.5 2.75V6h3.25" />
+  </svg>
+);
