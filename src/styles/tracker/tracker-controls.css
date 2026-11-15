@@ -141,11 +141,9 @@
 /* Compact Pipeline List */
 .pipeline-list {
   flex: 1;
-  min-height: 0;
   display: flex;
   flex-direction: column;
   gap: 0.55rem;
-  overflow-y: auto;
   overflow-x: hidden;
   padding: 6px 3px 2rem 3px;
 }

@@ -1,15 +1,10 @@
-/* ========================================================
-   MODALS, FORMS, SETTINGS & LEGAL POPUPS
-   ======================================================== */
-/* Lower Content Section (Action bar + Pipeline List) */
 .lower-content-section {
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 0.65rem;
   flex: 1;
-  min-height: 0;
-  overflow: hidden;
+  flex-shrink: 0;
 }
 
 /* Dimmed backdrop covering only the lower section below the calendar */

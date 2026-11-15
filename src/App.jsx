@@ -118,13 +118,12 @@ export const App = () => {
       data-font={settings?.fontPreset || 'bahnschrift'}
       data-font-size={settings?.fontSize || 'normal'}
     >
-      <div className="panel-content">
-        <Header
+      <Header
           onOpenSettings={handleOpenSettings}
           onOpenStats={() => setIsStatsOpen((prev) => !prev)}
           isStatsOpen={isStatsOpen}
         />
-
+      <div className="panel-content">
         <CalendarGrid
           year={currentYear}
           month={currentMonth}

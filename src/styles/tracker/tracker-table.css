@@ -1,8 +1,6 @@
 /* Classic Pipeline Table View */
 .pipeline-table-wrapper {
   flex: 1;
-  min-height: 0;
-  overflow-y: auto;
   overflow-x: hidden;
   padding-bottom: 1.5rem;
   scrollbar-width: thin;

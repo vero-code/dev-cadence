@@ -113,15 +113,17 @@ body:has([data-theme="devpost"]) {
 }
 
 .panel-content {
-  padding: 1rem 1.15rem 0.5rem;
+  padding: 0.85rem 1.15rem 0.75rem;
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
   flex: 1;
   min-height: 0;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(217, 119, 6, 0.45) transparent;
 }
-
 
 /* Shared Section Headings & Buttons */
 .section-heading {
