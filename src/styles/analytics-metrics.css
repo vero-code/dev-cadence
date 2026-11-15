@@ -10,13 +10,6 @@
   color: #7c624c;
 }
 
-.stats-kpi-value-row {
-  display: flex;
-  align-items: baseline;
-  gap: 0.35rem;
-  margin: 0.2rem 0 0.25rem 0;
-}
-
 .stats-kpi-number {
   font-family: var(--font-mono);
   font-size: var(--text-lg);
@@ -51,74 +44,6 @@
 
 [data-theme="parchment"] .stats-kpi-event-name {
   color: #4a3320;
-}
-
-.stats-apply-btn {
-  margin-top: 0.5rem;
-  background: rgba(245, 158, 11, 0.18);
-  border: 1px solid rgba(245, 158, 11, 0.45);
-  color: var(--amber-gear);
-  border-radius: 5px;
-  font-family: var(--font-heading);
-  font-size: var(--text-sm);
-  font-weight: 700;
-  padding: 0.25rem 0.45rem;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  white-space: nowrap;
-  text-align: center;
-}
-
-.stats-apply-btn:hover {
-  background: var(--amber-gear);
-  color: #000000;
-  transform: translateY(-1px);
-}
-
-[data-theme="devpost"] .stats-apply-btn {
-  background: rgba(6, 182, 212, 0.18);
-  border-color: rgba(6, 182, 212, 0.45);
-  color: #38bdf8;
-}
-
-[data-theme="devpost"] .stats-apply-btn:hover {
-  background: #38bdf8;
-  color: #000000;
-}
-
-[data-theme="parchment"] .stats-apply-btn {
-  background: #e0f2fe;
-  border-color: #0284c7;
-  color: #0369a1;
-}
-
-[data-theme="parchment"] .stats-apply-btn:hover {
-  background: #0284c7;
-  color: #ffffff;
-}
-
-/* Current month progress bar */
-.stats-month-load-bar {
-  margin-top: 0.4rem;
-  height: 5px;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.08);
-  overflow: hidden;
-}
-
-[data-theme="parchment"] .stats-month-load-bar {
-  background: rgba(0, 0, 0, 0.08);
-}
-
-.stats-month-load-fill {
-  height: 100%;
-  border-radius: 9999px;
-  background: linear-gradient(90deg, #38bdf8, #818cf8);
-  transition: width 0.3s ease;
-}
-
-[data-theme="parchment"] .stats-month-load-fill {
-  background: #0284c7;
 }
 
 /* Section Header */

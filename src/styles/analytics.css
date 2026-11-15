@@ -167,46 +167,6 @@
   background: rgba(184, 134, 11, 0.4);
 }
 
-/* Info Banner */
-.stats-info-banner {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.5rem;
-  background: rgba(245, 158, 11, 0.1);
-  border: 1px solid rgba(245, 158, 11, 0.25);
-  border-radius: 8px;
-  padding: 0.55rem 0.75rem;
-  font-size: var(--text-sm);
-  line-height: 1.4;
-  color: var(--text-dim);
-}
-
-.stats-info-icon {
-  font-size: var(--text-md);
-  line-height: 1.2;
-  flex-shrink: 0;
-}
-
-.stats-info-text strong {
-  color: var(--text-main);
-  font-weight: 700;
-}
-
-[data-theme="devpost"] .stats-info-banner {
-  background: rgba(6, 182, 212, 0.1);
-  border-color: rgba(6, 182, 212, 0.28);
-}
-
-[data-theme="parchment"] .stats-info-banner {
-  background: rgba(180, 83, 9, 0.08);
-  border-color: rgba(180, 83, 9, 0.24);
-  color: #451a03;
-}
-
-[data-theme="parchment"] .stats-info-text strong {
-  color: #1a0e05;
-}
-
 /* Sync Confirmation Toast Banner */
 .stats-sync-banner {
   background: rgba(16, 185, 129, 0.18);

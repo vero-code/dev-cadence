@@ -68,22 +68,6 @@
   color: #27190d;
 }
 
-.current-month-badge {
-  font-size: var(--text-sm);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  background: rgba(16, 185, 129, 0.18);
-  color: #34d399;
-  padding: 0.1rem 0.35rem;
-  border-radius: 4px;
-}
-
-[data-theme="parchment"] .current-month-badge {
-  background: #d1fae5;
-  color: #065f46;
-}
-
 .stats-pill-num {
   font-family: var(--font-mono);
   font-weight: 700;
@@ -132,38 +116,4 @@
 [data-theme="parchment"] .stats-avg-badge {
   color: #0369a1;
   background: #e0f2fe;
-}
-
-/* Row Load Progress Bar */
-.stats-row-bar-wrap {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  min-width: 75px;
-}
-
-.stats-row-bar-fill {
-  height: 5px;
-  border-radius: 9999px;
-  background: var(--amber-gear);
-  min-width: 3px;
-}
-
-[data-theme="devpost"] .stats-row-bar-fill {
-  background: #38bdf8;
-}
-
-[data-theme="parchment"] .stats-row-bar-fill {
-  background: #0284c7;
-}
-
-.stats-row-bar-text {
-  font-family: var(--font-mono);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: var(--text-muted);
-}
-
-[data-theme="parchment"] .stats-row-bar-text {
-  color: #5c4533;
 }
