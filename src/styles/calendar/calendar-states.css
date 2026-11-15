@@ -207,3 +207,16 @@
   font-size: var(--text-md);
   line-height: 1;
 }
+
+.day-badges-wrap:has(.range-badge):has(.day-event-emoji) {
+  flex-direction: column;
+  gap: 5px;
+}
+
+.day-badges-wrap:has(.range-badge):has(.day-event-emoji) .range-badge {
+  font-size: 0.58rem;
+}
+
+.day-badges-wrap:has(.range-badge):has(.day-event-emoji) .day-event-emoji {
+  font-size: 0.75rem;
+}

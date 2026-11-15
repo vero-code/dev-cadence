@@ -21,7 +21,6 @@ export const LogModal = ({
   onDatesChange,
   calendarPickedDate,
 }) => {
-  const formCardRef = useRef(null);
   const clickStepRef = useRef(0);
   const lastProcessedClickRef = useRef(null);
   const prevBroadcastRef = useRef(null);
@@ -107,19 +106,6 @@ export const LogModal = ({
   ]);
 
   useEffect(() => {
-    const handleOutsideClick = (e) => {
-      if (formCardRef.current && !formCardRef.current.contains(e.target)) {
-        if (
-          e.target.closest(".btn-primary") ||
-          e.target.closest(".calendar-day-cell") ||
-          e.target.closest(".action-btn")
-        ) {
-          return;
-        }
-        onClose();
-      }
-    };
-
     const handleKeyDown = (e) => {
       if (e.key === "Escape" && isOpen) {
         onClose();
@@ -127,13 +113,9 @@ export const LogModal = ({
     };
 
     if (isOpen) {
-      window.addEventListener("mousedown", handleOutsideClick);
       window.addEventListener("keydown", handleKeyDown);
     }
-    return () => {
-      window.removeEventListener("mousedown", handleOutsideClick);
-      window.removeEventListener("keydown", handleKeyDown);
-    };
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
@@ -164,7 +146,6 @@ export const LogModal = ({
   return (
     <div
       className="table-card popup-form-card"
-      ref={formCardRef}
       onClick={(e) => e.stopPropagation()}
     >
       <div className="modal-header">
