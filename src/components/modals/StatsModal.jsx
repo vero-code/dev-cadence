@@ -89,7 +89,7 @@ export const StatsModal = ({
                   <span className="stats-kpi-unit">days</span>
                 )}
               </div>
-              <span className="stats-kpi-label">Shortest Event</span>
+              <span className="stats-kpi-label">Shortest Sprint</span>
             </div>
             <div
               className="stats-kpi-footer-row"
@@ -114,7 +114,7 @@ export const StatsModal = ({
                   <span className="stats-kpi-unit">days</span>
                 )}
               </div>
-              <span className="stats-kpi-label">Longest Event</span>
+              <span className="stats-kpi-label">Longest Sprint</span>
             </div>
             <div
               className="stats-kpi-footer-row"
@@ -157,8 +157,8 @@ export const StatsModal = ({
                   <th className="stats-th-month">Month</th>
                   <th className="stats-th-done">Done</th>
                   <th className="stats-th-total">Total</th>
-                  <th className="stats-th-days">Devposter's Days</th>
-                  <th className="stats-th-avg">Avg / Event</th>
+                  <th className="stats-th-days">Work</th>
+                  <th className="stats-th-avg">Average</th>
                 </tr>
               </thead>
               <tbody>
@@ -180,7 +180,6 @@ export const StatsModal = ({
                     </td>
                     <td className="stats-td-days">
                       <strong>{m.uniqueWorkDays}</strong>
-                      {/* <span className="stats-sub-dim">/{m.elapsedDaysInMonth}d</span> */}
                     </td>
                     <td className="stats-td-avg">
                       <span className="stats-avg-badge">
@@ -224,7 +223,7 @@ export const StatsModal = ({
           onClick={onClose}
           title="Return to Tracker table"
         >
-          Return to Tracker
+          Return
         </button>
       </div>
     </div>
