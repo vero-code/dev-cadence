@@ -1,42 +1,3 @@
-.date-header-group {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 0.35rem;
-}
-
-.form-label-sub {
-  font-size: var(--text-sm);
-  color: var(--text-dim);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin-bottom: 0.25rem;
-  display: block;
-}
-
-.btn-pick-calendar {
-  background: rgba(6, 182, 212, 0.12);
-  border: 1px solid rgba(6, 182, 212, 0.35);
-  color: var(--cyan-light);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  padding: 0.25rem 0.65rem;
-  border-radius: 6px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  transition: all 0.2s ease;
-}
-
-.btn-pick-calendar:hover {
-  background: rgba(6, 182, 212, 0.25);
-  border-color: var(--cyan-primary);
-  box-shadow: 0 0 10px var(--cyan-glow);
-  transform: translateY(-1px);
-}
-
 .form-row-2 {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -111,27 +72,6 @@
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-}
-
-.emoji-option.none-option {
-  font-family: var(--font-mono);
-  font-weight: 700;
-  color: var(--text-muted);
-  font-size: var(--text-md);
-}
-
-.emoji-option.none-option.selected {
-  color: var(--cyan-light);
-  border-color: var(--cyan-primary);
-  background: rgba(6, 182, 212, 0.2);
-}
-
-.day-color-dot {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  margin: 1px;
 }
 
 .form-error {

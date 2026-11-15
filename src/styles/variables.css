@@ -196,10 +196,7 @@
 
 }
 
-
 /* Typography Presets & Font Sizing Tokens */
-
-[data-theme="parchment"] .footer-legal-link:hover,
 [data-theme="parchment"] .footer-legal-btn:hover {
   color: #5c3e1e;
   text-decoration: underline;

@@ -14,8 +14,7 @@
   min-width: 0;
 }
 
-.theme-options-grid,
-.font-options-column {
+.theme-options-grid {
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
@@ -23,8 +22,7 @@
   min-width: 0;
 }
 
-.theme-option-btn,
-.font-option-btn {
+.theme-option-btn {
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -44,28 +42,24 @@
   width: 100%;
 }
 
-.theme-option-btn:hover,
-.font-option-btn:hover {
+.theme-option-btn:hover {
   border-color: var(--amber-gear);
   transform: translateY(-1px);
 }
 
-.theme-option-btn.active,
-.font-option-btn.active {
+.theme-option-btn.active {
   border-color: #f59e0b;
   background: rgba(245, 158, 11, 0.12);
   box-shadow: 0 0 10px rgba(245, 158, 11, 0.2);
 }
 
-[data-theme="devpost"] .theme-option-btn.active,
-[data-theme="devpost"] .font-option-btn.active {
+[data-theme="devpost"] .theme-option-btn.active {
   border-color: #06b6d4;
   background: rgba(6, 182, 212, 0.14);
   box-shadow: 0 0 12px rgba(6, 182, 212, 0.25);
 }
 
-[data-theme="parchment"] .theme-option-btn.active,
-[data-theme="parchment"] .font-option-btn.active {
+[data-theme="parchment"] .theme-option-btn.active {
   border-color: #b8860b;
   background: rgba(184, 134, 11, 0.12);
   box-shadow: 0 0 10px rgba(184, 134, 11, 0.15);
@@ -78,8 +72,7 @@
   align-items: center;
 }
 
-.theme-option-title,
-.font-option-title {
+.theme-option-title {
   font-family: var(--font-heading);
   font-size: var(--text-sm);
   font-weight: 700;
@@ -101,8 +94,7 @@
   }
 }
 
-.theme-option-check,
-.font-option-check {
+.theme-option-check {
   font-size: var(--text-md);
   font-weight: 800;
   color: var(--emerald);
@@ -110,13 +102,8 @@
   margin-left: auto;
 }
 
-[data-theme="parchment"] .theme-option-check,
-[data-theme="parchment"] .font-option-check {
+[data-theme="parchment"] .theme-option-check {
   color: #15803d;
-}
-
-.font-size-group {
-  margin-bottom: 1rem;
 }
 
 /* Confirmation Modal */

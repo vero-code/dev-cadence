@@ -98,11 +98,6 @@
   text-shadow: 0 0 8px rgba(16, 185, 129, 0.35);
 }
 
-.warning-val { 
-  color: var(--amber-gear); 
-  text-shadow: 0 0 8px var(--amber-glow);
-}
-
 .rest-val { 
   color: #818cf8; 
   text-shadow: 0 0 8px rgba(129, 140, 248, 0.45);
@@ -192,7 +187,6 @@
   text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
 }
 
-.footer-legal-link,
 .footer-legal-btn {
   color: var(--text-dim);
   background: transparent;
@@ -207,24 +201,20 @@
   transition: color 0.18s ease, text-decoration 0.18s ease;
 }
 
-.footer-legal-link:hover,
 .footer-legal-btn:hover {
   color: var(--text-main);
   text-decoration: underline;
 }
 
-[data-theme="devpost"] .footer-legal-link,
 [data-theme="devpost"] .footer-legal-btn {
   color: #64748b;
 }
 
-[data-theme="devpost"] .footer-legal-link:hover,
 [data-theme="devpost"] .footer-legal-btn:hover {
   color: #94a3b8;
   text-decoration: underline;
 }
 
-[data-theme="parchment"] .footer-legal-link,
 [data-theme="parchment"] .footer-legal-btn {
   color: #8c6d48;
 }
