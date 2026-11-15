@@ -6,8 +6,25 @@
   box-sizing: border-box;
 }
 
+.form-row-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+.form-row-3 .form-input[type="date"] {
+  padding: 0.45rem 0.4rem;
+  font-size: var(--text-sm);
+}
+
 @media (max-width: 380px) {
   .form-row-2 {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .form-row-3 {
     grid-template-columns: 1fr;
     gap: 0.5rem;
   }

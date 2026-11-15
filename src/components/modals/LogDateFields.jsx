@@ -23,7 +23,7 @@ export const LogDateFields = ({
   return (
     <>
       <div className="form-group">
-        <div className="form-row-2">
+        <div className="form-row-3">
           <div>
             <label className="form-label">Start Date</label>
             <input
@@ -45,36 +45,34 @@ export const LogDateFields = ({
               onChange={handleDateChange(onEndDateChange)}
             />
           </div>
+
+          <div>
+            <label className="form-label">Deadline</label>
+            <input
+              type="date"
+              className="form-input"
+              value={deadline}
+              onFocus={() => onFocusField("deadline")}
+              onChange={handleDateChange(onDeadlineChange)}
+            />
+          </div>
         </div>
         {dateError && <div className="form-error">{dateError}</div>}
       </div>
 
-      <div className="form-row-2">
-        <div className="form-group">
-          <label className="form-label">Deadline</label>
-          <input
-            type="date"
-            className="form-input"
-            value={deadline}
-            onFocus={() => onFocusField("deadline")}
-            onChange={handleDateChange(onDeadlineChange)}
-          />
-        </div>
-
-        <div className="form-group">
-          <label className="form-label">Status</label>
-          <select
-            className="form-select"
-            value={status}
-            onChange={(e) => onStatusChange(e.target.value)}
-          >
-            {STATUS_OPTIONS.map((opt) => (
-              <option key={opt} value={opt}>
-                {opt}
-              </option>
-            ))}
-          </select>
-        </div>
+      <div className="form-group">
+        <label className="form-label">Status</label>
+        <select
+          className="form-select"
+          value={status}
+          onChange={(e) => onStatusChange(e.target.value)}
+        >
+          {STATUS_OPTIONS.map((opt) => (
+            <option key={opt} value={opt}>
+              {opt}
+            </option>
+          ))}
+        </select>
       </div>
     </>
   );
