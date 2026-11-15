@@ -1,4 +1,4 @@
-import { ExternalLinkIcon } from './Icons';
+import { SprintLinkButton } from './SprintLinkButton';
 import { PipelineActionMenu } from './PipelineActionMenu';
 import { formatDisplayDate, formatWorkRange, getStatusChipClass } from '../utils/pipelineUtils';
 
@@ -36,18 +36,7 @@ export const PipelineCardsView = ({
                 <span className="pipeline-item-name" title={h.name}>
                   {h.name}
                 </span>
-                {h.url && (
-                  <a
-                    href={h.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hackathon-link-icon-btn"
-                    title={`Open hackathon link: ${h.url}`}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <ExternalLinkIcon size={12} />
-                  </a>
-                )}
+                <SprintLinkButton url={h.url} />
               </div>
 
               <PipelineActionMenu

@@ -21,8 +21,8 @@ export const PipelineTableView = ({
       </colgroup>
       <thead>
         <tr>
-          <th className="table-th-name">Hackathon</th>
-          <th className="table-th-dates">Dates &amp; Deadline</th>
+          <th className="table-th-name">Sprint</th>
+          <th className="table-th-dates">Dates</th>
           <th className="table-th-status">Status</th>
           <th className="table-th-actions" style={{ textAlign: 'right' }}></th>
         </tr>
@@ -52,7 +52,7 @@ export const PipelineTableView = ({
                       title={`Open hackathon link: ${h.url}`}
                       onClick={(e) => e.stopPropagation()}
                     >
-                      <ExternalLinkIcon size={11} />
+                      <ExternalLinkIcon size={14} />
                     </a>
                   )}
                 </div>

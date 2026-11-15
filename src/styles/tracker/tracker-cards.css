@@ -111,6 +111,11 @@
   flex-shrink: 0;
 }
 
+.hackathon-link-icon-btn svg {
+  width: var(--text-sm);
+  height: var(--text-sm);
+}
+
 .hackathon-link-icon-btn:hover {
   opacity: 1;
   color: #fbbf24;

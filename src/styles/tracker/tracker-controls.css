@@ -28,6 +28,8 @@
 
 .view-toggle-btn svg {
   display: block;
+  width: var(--text-sm);
+  height: var(--text-sm);
 }
 
 .view-toggle-btn:hover {
