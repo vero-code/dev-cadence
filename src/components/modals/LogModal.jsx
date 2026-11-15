@@ -43,7 +43,7 @@ export const LogModal = ({
   const [endDate, setEndDate] = useState(initial.endDate);
   const [color, setColor] = useState(initial.color);
   const [emoji, setEmoji] = useState(initial.emoji);
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState({});
   const [activeDateField, setActiveDateField] = useState(null);
 
   // Keep a fresh reference to current form values to avoid stale closures and redundant effect triggers
@@ -151,22 +151,27 @@ export const LogModal = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const nextErrors = {};
+
     if (!name.trim()) {
-      setError("Please provide a sprint title.");
-      return;
+      nextErrors.name = "Please provide a sprint title.";
     }
-    if (!startDate || !endDate) {
-      setError("Please provide both work start and end dates.");
-      return;
+    if (!startDate) {
+      nextErrors.startDate = "Please provide a start date.";
     }
-    if (new Date(endDate) < new Date(startDate)) {
-      setError("End date cannot be earlier than start date.");
-      return;
+    if (!endDate) {
+      nextErrors.endDate = "Please provide an end date.";
+    } else if (startDate && new Date(endDate) < new Date(startDate)) {
+      nextErrors.endDate = "End date cannot be earlier than start date.";
     }
 
     const { url: formattedUrl, error: urlError } = validateAndFormatUrl(url);
     if (urlError) {
-      setError(urlError);
+      nextErrors.url = urlError;
+    }
+
+    if (Object.keys(nextErrors).length > 0) {
+      setErrors(nextErrors);
       return;
     }
 
@@ -212,15 +217,16 @@ export const LogModal = ({
           <label className="form-label">Title</label>
           <input
             type="text"
-            className={`form-input ${!name.trim() && error ? "error" : ""}`}
+            className={`form-input ${errors.name ? "error" : ""}`}
             placeholder="e.g. Firebase AI Logic Sprint"
             value={name}
             onChange={(e) => {
               setName(e.target.value);
-              setError("");
+              setErrors((prev) => ({ ...prev, name: "" }));
             }}
             autoFocus
           />
+          {errors.name && <div className="form-error">{errors.name}</div>}
         </div>
 
         <div className="form-group">
@@ -229,14 +235,15 @@ export const LogModal = ({
           </div>
           <input
             type="text"
-            className={`form-input ${error && (error.toLowerCase().includes("url") || error.toLowerCase().includes("website")) ? "error" : ""}`}
+            className={`form-input ${errors.url ? "error" : ""}`}
             placeholder="e.g. https://console.firebase.google.com/project/..."
             value={url}
             onChange={(e) => {
               setUrl(e.target.value);
-              setError("");
+              setErrors((prev) => ({ ...prev, url: "" }));
             }}
           />
+          {errors.url && <div className="form-error">⚠️ {errors.url}</div>}
         </div>
 
         <LogDateFields
@@ -244,6 +251,7 @@ export const LogModal = ({
           endDate={endDate}
           deadline={deadline}
           status={status}
+          errors={errors}
           onStartDateChange={setStartDate}
           onEndDateChange={setEndDate}
           onDeadlineChange={setDeadline}
@@ -251,7 +259,7 @@ export const LogModal = ({
           onFocusField={setActiveDateField}
           onInteraction={() => {
             clickStepRef.current = 0;
-            setError("");
+            setErrors((prev) => ({ ...prev, startDate: "", endDate: "" }));
           }}
         />
 
@@ -261,8 +269,6 @@ export const LogModal = ({
           emoji={emoji}
           onChangeEmoji={setEmoji}
         />
-
-        {error && <div className="form-error">⚠️ {error}</div>}
 
         <div className="modal-footer">
           <button type="button" className="btn-secondary" onClick={onClose}>
