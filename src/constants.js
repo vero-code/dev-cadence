@@ -15,11 +15,11 @@ export const EMOJI_OPTIONS = [
 ];
 
 export const STATUS_OPTIONS = [
-  'Interest',
-  'Join',
-  'Early',
-  'Draft',
-  'Done',
+  { value: 'Interest', description: 'Considering or bookmarking for later' },
+  { value: 'Join', description: 'Committed and scheduled' },
+  { value: 'Early', description: 'Early stage, just getting started' },
+  { value: 'Draft', description: 'Active work, finalizing details' },
+  { value: 'Done', description: 'Completed or submitted' },
 ];
 
 export const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];

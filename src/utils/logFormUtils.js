@@ -15,7 +15,7 @@ export const getInitialFormState = ({
       name: editingHackathon.name || '',
       url: editingHackathon.url || '',
       deadline: editingHackathon.deadline || '',
-      status: editingHackathon.status || STATUS_OPTIONS[0],
+      status: editingHackathon.status || STATUS_OPTIONS[0].value,
       startDate: editingHackathon.startDate || '',
       endDate: editingHackathon.endDate || '',
       color: editingHackathon.color || '',
@@ -39,7 +39,7 @@ export const getInitialFormState = ({
       startDate: start,
       endDate: end,
       deadline,
-      status: STATUS_OPTIONS[0],
+      status: STATUS_OPTIONS[0].value,
       color: '',
       emoji: '',
     };
@@ -55,7 +55,7 @@ export const getInitialFormState = ({
     startDate: defaultStart,
     endDate: defaultEnd,
     deadline: '',
-    status: STATUS_OPTIONS[0],
+    status: STATUS_OPTIONS[0].value,
     color: '',
     emoji: '',
   };
