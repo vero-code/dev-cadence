@@ -155,7 +155,6 @@ export const App = () => {
             />
             <div className="lower-content-section">
               {isLogModalOpen ? (
-                <div className="lower-popover-backdrop" onClick={handleCloseLogModal}>
                   <LogModal
                     key={editingHackathon?.id || 'new'}
                     isOpen={isLogModalOpen}
@@ -170,7 +169,6 @@ export const App = () => {
                     onDatesChange={handleDatesChange}
                     calendarPickedDate={calendarPickedDate}
                   />
-                </div>
               ) : (
                 <PipelineTable
                   hackathons={visibleHackathons}

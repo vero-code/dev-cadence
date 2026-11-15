@@ -7,53 +7,11 @@
   flex-shrink: 0;
 }
 
-/* Dimmed backdrop covering only the lower section below the calendar */
-.lower-popover-backdrop {
-  background: var(--backdrop-bg);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  z-index: 95;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-radius: var(--radius);
-  animation: fadeIn 0.18s ease;
-  box-sizing: border-box;
-}
-
 .popup-form-card {
   width: 100%;
   max-width: 100%;
-  background: var(--popup-bg);
-  border: 1.5px solid var(--border-hover);
-  border-radius: var(--radius);
-  padding: 1.15rem 1.25rem;
-  box-shadow: 
-    inset 0 0 0 1px rgba(245, 158, 11, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    0 16px 44px rgba(0, 0, 0, 0.9), 
-    0 0 24px rgba(245, 158, 11, 0.2);
-  display: flex;
-  flex-direction: column;
-  animation: formPopIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   box-sizing: border-box;
-  transition: background-color 0.25s ease, border-color 0.25s ease;
-}
-
-[data-theme="parchment"] .popup-form-card {
-  background: linear-gradient(180deg, #fefcf7 0%, #f6ecdc 100%);
-  border: 1.5px solid rgba(184, 134, 11, 0.65);
-  box-shadow: 0 16px 40px rgba(70, 45, 20, 0.22), 0 0 18px rgba(184, 134, 11, 0.18);
-}
-
-[data-theme="steampunk"] .popup-form-card {
-  background: linear-gradient(180deg, rgba(32, 19, 11, 0.96) 0%, rgba(20, 11, 6, 0.98) 100%);
-  border: 1.5px solid #d97706;
-  box-shadow: 
-    inset 0 0 0 1px rgba(245, 158, 11, 0.16),
-    inset 0 1px 0 rgba(254, 240, 138, 0.2),
-    0 18px 48px rgba(0, 0, 0, 0.95), 
-    0 0 28px rgba(245, 158, 11, 0.3);
+  animation: formPopIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes formPopIn {

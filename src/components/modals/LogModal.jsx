@@ -162,7 +162,7 @@ export const LogModal = ({
 
   return (
     <div
-      className="popup-form-card"
+      className="table-card popup-form-card"
       ref={formCardRef}
       onClick={(e) => e.stopPropagation()}
     >
