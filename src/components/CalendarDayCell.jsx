@@ -113,7 +113,9 @@ export const CalendarDayCell = ({
       <div className="day-badges-wrap">
         {isRangeStart && <span className="range-badge">START</span>}
         {isModalStartDay && !isRangeStart && (
-          <span className="range-badge draft-start-badge" title="Draft Start Date">START</span>
+          <span className="range-badge draft-start-badge" title="Draft Start Date">
+            {modalActiveRange?.startDate === modalActiveRange?.endDate ? '1 DAY' : 'START'}
+          </span>
         )}
         {isModalEndDay && !isRangeStart && (
           <span className="range-badge draft-end-badge" title="Draft End Date">END</span>
@@ -124,7 +126,7 @@ export const CalendarDayCell = ({
             style={{ backgroundColor: hoveredHackathon?.color || 'var(--amber-gear)' }}
             title={`${hoveredHackathon?.name || 'Hackathon'} Start`}
           >
-            START
+            {hoveredHackathon?.startDate === hoveredHackathon?.endDate ? '1 DAY' : 'START'}
           </span>
         )}
         {isHoveredEndDay && hoveredHackathon?.endDate !== hoveredHackathon?.startDate && !isRangeStart && !isModalEndDay && (

@@ -21,6 +21,7 @@ export const formatDisplayDate = (isoDate) => {
 
 export const formatWorkRange = (startIso, endIso) => {
   if (!startIso || !endIso) return '';
+  if (startIso === endIso) return formatDisplayDate(startIso);
   const startParts = startIso.split('-');
   const endParts = endIso.split('-');
   if (startParts.length === 3 && endParts.length === 3) {
