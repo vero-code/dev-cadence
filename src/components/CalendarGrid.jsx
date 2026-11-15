@@ -1,8 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
-import { generateCalendarDays, getDayCellBackground, addDaysToDateString } from '../utils/calendarUtils';
+import { generateCalendarDays } from '../utils/calendarUtils';
 import { WEEKDAYS } from '../constants';
 import { MonthNavigator } from './MonthNavigator';
-import { ScheduleBadgeIcon, ExternalLinkIcon } from './Icons';
+import { ScheduleBadgeIcon } from './Icons';
+import { computeTooltipPosition } from '../utils/calendarRangeUtils';
+import { CalendarDayTooltip } from './CalendarDayTooltip';
+import { CalendarDayCell } from './CalendarDayCell';
 
 export const CalendarGrid = ({
   year,
@@ -31,46 +34,6 @@ export const CalendarGrid = ({
     : null;
 
   const totalScheduledDays = days.filter((d) => !d.isPadding && d.events.length > 0).length;
-
-  const isDayInActiveRange = (dateString) => {
-    if (!dateRange?.start || !dateRange?.end || !dateString) return false;
-    return dateString >= dateRange.start && dateString <= dateRange.end;
-  };
-
-  // Calculate range preview between dateRange.start and hovered day, defaulting to avgTurnaroundDays span
-  const isDayInRangePreview = (dateString) => {
-    if (!dateRange?.start || dateRange?.end || !dateString) return false;
-    const defaultEnd = addDaysToDateString(dateRange.start, (avgTurnaroundDays || 10) - 1);
-    const targetEnd = hoveredRangeDate || defaultEnd;
-    const [start, end] = [dateRange.start, targetEnd].sort();
-    return dateString >= start && dateString <= end;
-  };
-
-  const isValidDate = (d) => typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d);
-
-  // Check if day falls within the active create/edit form date range
-  const isDayInModalRange = (dateString) => {
-    if (!modalActiveRange?.startDate || !dateString || !isValidDate(modalActiveRange.startDate)) return false;
-    const end = (modalActiveRange.endDate && isValidDate(modalActiveRange.endDate)) ? modalActiveRange.endDate : modalActiveRange.startDate;
-    const [startD, endD] = [modalActiveRange.startDate, end].sort();
-    return dateString >= startD && dateString <= endD;
-  };
-
-  const isModalStart = (dateString) => {
-    return Boolean(modalActiveRange?.startDate && modalActiveRange.startDate === dateString);
-  };
-
-  const isModalEnd = (dateString) => {
-    return Boolean(
-      modalActiveRange?.endDate &&
-      modalActiveRange.endDate === dateString &&
-      modalActiveRange.endDate !== modalActiveRange.startDate
-    );
-  };
-
-  const isModalDeadline = (dateString) => {
-    return Boolean(modalActiveRange?.deadline && modalActiveRange.deadline === dateString);
-  };
 
   // Close tooltip or cancel date booking when clicking on another area or pressing escape key
   useEffect(() => {
@@ -188,44 +151,10 @@ export const CalendarGrid = ({
         const cardEl = calendarCardRef.current;
         if (!cellEl || !cardEl) return;
 
-        const cellRect = cellEl.getBoundingClientRect();
-        const cardRect = cardEl.getBoundingClientRect();
-
-        const cellTop = cellRect.top - cardRect.top;
-        const cellLeft = cellRect.left - cardRect.left;
-        const cellWidth = cellRect.width;
-        const cellHeight = cellRect.height;
-        const cardWidth = cardRect.width;
-        const cardHeight = cardRect.height;
-
-        const cellCenterX = cellLeft + cellWidth / 2;
-
-        // Tooltip compact width
-        const tooltipWidth = Math.min(250, cardWidth - 20);
-
-        // Clamped horizontal position inside card
-        let left = cellCenterX - tooltipWidth / 2;
-        if (left < 10) left = 10;
-        if (left + tooltipWidth > cardWidth - 10) {
-          left = cardWidth - tooltipWidth - 10;
-        }
-
-        const arrowLeft = Math.max(12, Math.min(tooltipWidth - 12, cellCenterX - left));
-
-        // If cell is in lower half of card, position tooltip immediately above it; otherwise immediately below it
-        const showAbove = cellTop > cardHeight * 0.52;
-
+        const position = computeTooltipPosition(cellEl, cardEl);
         setActiveTooltip({
           ...day,
-          style: {
-            left: `${left}px`,
-            width: `${tooltipWidth}px`,
-            ...(showAbove
-              ? { bottom: `${cardHeight - cellTop + 6}px` }
-              : { top: `${cellTop + cellHeight + 6}px` }),
-            '--arrow-left': `${arrowLeft}px`,
-          },
-          showAbove,
+          ...position,
         });
       }
     } else {
@@ -270,273 +199,34 @@ export const CalendarGrid = ({
           </div>
         ))}
 
-        {days.map((day, idx) => {
-          if (day.isPadding) {
-            return <div key={`pad-${idx}`} className="calendar-day-cell padding-cell" />;
-          }
-
-          const hasEvents = day.events.length > 0;
-          const hasDeadlines = day.deadlines.length > 0;
-          const isSelected = selectedDate === day.dateString;
-          const isRangeStart = dateRange?.start === day.dateString;
-          const inRangePreview = isDayInRangePreview(day.dateString);
-          const inActiveRange = isDayInActiveRange(day.dateString);
-          const inModalRange = isDayInModalRange(day.dateString);
-          const isModalStartDay = isModalStart(day.dateString);
-          const isModalEndDay = isModalEnd(day.dateString);
-          const isModalDeadlineDay = isModalDeadline(day.dateString);
-
-          // Tracker hover highlighting
-          const isHoveredEvent = Boolean(hoveredHackathonId && day.events.some((e) => e.id === hoveredHackathonId));
-          const isHoveredDeadline = Boolean(hoveredHackathonId && day.deadlines.some((d) => d.id === hoveredHackathonId));
-          const isHoveredHackathon = isHoveredEvent || isHoveredDeadline;
-          const isDimmedByHover = Boolean(hoveredHackathonId && !isHoveredHackathon);
-          const isHoveredStartDay = Boolean(hoveredHackathon && day.dateString === hoveredHackathon.startDate);
-          const isHoveredEndDay = Boolean(hoveredHackathon && day.dateString === hoveredHackathon.endDate);
-
-          let bgStyle = getDayCellBackground(day.events);
-          if (inModalRange) {
-            if (modalActiveRange?.color) {
-              if (day.events.length === 0) {
-                bgStyle = `${modalActiveRange.color}33`;
-              } else {
-                bgStyle = `linear-gradient(rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0.32)), ${bgStyle}`;
+        {days.map((day, idx) => (
+          <CalendarDayCell
+            key={day.isPadding ? `pad-${idx}` : day.dateString}
+            day={day}
+            selectedDate={selectedDate}
+            dateRange={dateRange}
+            hoveredRangeDate={hoveredRangeDate}
+            avgTurnaroundDays={avgTurnaroundDays}
+            modalActiveRange={modalActiveRange}
+            hoveredHackathonId={hoveredHackathonId}
+            hoveredHackathon={hoveredHackathon}
+            isTooltipActive={activeTooltip?.dateString === day.dateString}
+            onClick={handleCellClick}
+            onHoverDate={(dateString) => {
+              if (dateRange?.start && !dateRange?.end) {
+                setHoveredRangeDate(dateString);
               }
-            }
-          } else if (isHoveredHackathon && hoveredHackathon?.color) {
-            if (day.events.length === 0 && isHoveredDeadline) {
-              bgStyle = `${hoveredHackathon.color}25`;
-            } else {
-              bgStyle = `linear-gradient(rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.05)), ${bgStyle}`;
-            }
-          }
-
-          const cellInlineStyle = {
-            background: bgStyle,
-            ...(isHoveredHackathon && hoveredHackathon?.color ? {
-              '--hover-hack-color': hoveredHackathon.color,
-              '--hover-hack-glow': `${hoveredHackathon.color}66`,
-            } : {}),
-          };
-
-          const isTooltipActive = activeTooltip?.dateString === day.dateString;
-
-          const cellTitle = isRangeStart
-            ? 'Selected Start Date'
-            : hasEvents || hasDeadlines
-            ? `Click to view events for ${day.dateString}`
-            : `Click to select ${day.dateString}`;
-
-          return (
-            <div
-              key={day.dateString}
-              className={`calendar-day-cell ${day.isToday ? 'today-cell' : ''} ${hasEvents ? 'active-day' : ''} ${isSelected || isTooltipActive ? 'selected-day' : ''} ${isRangeStart ? 'range-start-cell' : ''} ${inRangePreview ? 'range-preview-cell' : ''} ${inActiveRange ? 'range-active-cell' : ''} ${inModalRange ? 'modal-dashed-cell' : ''} ${isHoveredHackathon ? 'hackathon-hover-highlight' : ''} ${isHoveredDeadline && !isHoveredEvent ? 'hackathon-hover-deadline' : ''} ${isDimmedByHover ? 'hackathon-dimmed-by-hover' : ''}`}
-              style={cellInlineStyle}
-              onClick={(e) => handleCellClick(e, day, idx)}
-              onMouseEnter={() => {
-                if (dateRange?.start && !dateRange?.end) {
-                  setHoveredRangeDate(day.dateString);
-                }
-              }}
-              title={cellTitle}
-            >
-              <div className="day-top-bar">
-                <span className="day-number">{day.dayNumber}</span>
-                {day.isToday && <span className="today-badge" title="Today">TODAY</span>}
-                {(hasDeadlines || isModalDeadlineDay) && (
-                  <span
-                    className={`deadline-flag ${isModalDeadlineDay ? 'draft-deadline-flag' : ''} ${isHoveredDeadline ? 'highlighted-deadline-flag' : ''}`}
-                    title={
-                      isModalDeadlineDay
-                        ? `Draft Deadline: ${modalActiveRange?.name || 'Hackathon'}`
-                        : `Deadline: ${day.deadlines.map((d) => d.name).join(', ')}`
-                    }
-                  >
-                    🏁
-                  </span>
-                )}
-              </div>
-
-              <div className="day-badges-wrap">
-                {isRangeStart && <span className="range-badge">START</span>}
-                {isModalStartDay && !isRangeStart && (
-                  <span
-                    className="range-badge draft-start-badge"
-                    title="Draft Start Date"
-                  >
-                    START
-                  </span>
-                )}
-                {isModalEndDay && !isRangeStart && (
-                  <span
-                    className="range-badge draft-end-badge"
-                    title="Draft End Date"
-                  >
-                    END
-                  </span>
-                )}
-                {isHoveredStartDay && !isRangeStart && !isModalStartDay && (
-                  <span
-                    className="range-badge hover-start-badge"
-                    style={{ backgroundColor: hoveredHackathon?.color || 'var(--amber-gear)' }}
-                    title={`${hoveredHackathon?.name || 'Hackathon'} Start`}
-                  >
-                    START
-                  </span>
-                )}
-                {isHoveredEndDay && hoveredHackathon?.endDate !== hoveredHackathon?.startDate && !isRangeStart && !isModalEndDay && (
-                  <span
-                    className="range-badge hover-end-badge"
-                    style={{ backgroundColor: hoveredHackathon?.color || 'var(--amber-gear)' }}
-                    title={`${hoveredHackathon?.name || 'Hackathon'} End`}
-                  >
-                    END
-                  </span>
-                )}
-                {day.events.map((e) => {
-                  const isThisEventHovered = hoveredHackathonId === e.id;
-                  return e.emoji ? (
-                    <span
-                      key={e.id}
-                      className={`day-event-emoji ${isThisEventHovered ? 'highlighted-event-emoji' : ''}`}
-                      title={`${e.name} (${e.status})`}
-                      style={{ color: e.color }}
-                    >
-                      {e.emoji}
-                    </span>
-                  ) : null;
-                })}
-                {inModalRange && modalActiveRange?.emoji && (
-                  <span
-                    className="day-event-emoji draft-event-emoji"
-                    title={`Draft: ${modalActiveRange.name || 'Hackathon'}`}
-                    style={modalActiveRange.color ? { color: modalActiveRange.color } : undefined}
-                  >
-                    {modalActiveRange.emoji}
-                  </span>
-                )}
-              </div>
-            </div>
-          );
-        })}
+            }}
+          />
+        ))}
       </div>
 
-      {activeTooltip && (
-        <div
-          className={`calendar-day-tooltip ${activeTooltip.showAbove ? 'tooltip-above' : ''}`}
-          style={activeTooltip.style}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="tooltip-header">
-            <div className="tooltip-title-wrap">
-              <span className="tooltip-date">📅 {activeTooltip.dateString}</span>
-            </div>
-            <div className="tooltip-header-actions">
-              <button
-                type="button"
-                className="tooltip-add-btn"
-                onClick={() => handleBookFromTooltip(activeTooltip.dateString)}
-                title="Book hackathon starting from this date"
-                aria-label="Book date"
-              >
-                <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
-                  <path d="M6 1.5v9M1.5 6h9" />
-                </svg>
-              </button>
-              <button
-                type="button"
-                className="tooltip-close-btn"
-                onClick={() => setActiveTooltip(null)}
-                aria-label="Close tooltip"
-                title="Close"
-              >
-                ✕
-              </button>
-            </div>
-          </div>
-
-          <div className="tooltip-events-list">
-            {activeTooltip.events.map((e) => (
-              <div key={e.id} className="tooltip-event-row">
-                <div className="tooltip-event-info">
-                  {e.color && (
-                    <span
-                      className="tooltip-color-dot"
-                      style={{ backgroundColor: e.color }}
-                    />
-                  )}
-                  <strong className="tooltip-event-name" title={e.name}>
-                    {e.emoji ? `${e.emoji} ` : ''}{e.name}
-                  </strong>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '3px', flexShrink: 0 }}>
-                  {e.url && (
-                    <a
-                      href={e.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="tooltip-event-link-btn"
-                      title={`Open ${e.url}`}
-                      onClick={(ev) => ev.stopPropagation()}
-                    >
-                      <ExternalLinkIcon size={11} />
-                    </a>
-                  )}
-                  <button
-                    type="button"
-                    className="tooltip-event-edit-btn"
-                    title={`Edit ${e.name}`}
-                    aria-label={`Edit ${e.name}`}
-                    onClick={(ev) => {
-                      ev.stopPropagation();
-                      setActiveTooltip(null);
-                      onEdit && onEdit(e);
-                    }}
-                  >
-                    ✏️
-                  </button>
-                </div>
-              </div>
-            ))}
-
-            {activeTooltip.deadlines && activeTooltip.deadlines.map((d) => (
-              <div key={`dl-${d.id}`} className="tooltip-deadline-row">
-                <div className="tooltip-deadline-info">
-                  <span>🏁</span>
-                  <em>Deadline: {d.name}</em>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '3px', flexShrink: 0 }}>
-                  {d.url && (
-                    <a
-                      href={d.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="tooltip-event-link-btn"
-                      title={`Open ${d.url}`}
-                      onClick={(ev) => ev.stopPropagation()}
-                    >
-                      <ExternalLinkIcon size={11} />
-                    </a>
-                  )}
-                  <button
-                    type="button"
-                    className="tooltip-event-edit-btn"
-                    title={`Edit ${d.name}`}
-                    aria-label={`Edit ${d.name}`}
-                    onClick={(ev) => {
-                      ev.stopPropagation();
-                      setActiveTooltip(null);
-                      onEdit && onEdit(d);
-                    }}
-                  >
-                    ✏️
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      <CalendarDayTooltip
+        tooltip={activeTooltip}
+        onBook={handleBookFromTooltip}
+        onClose={() => setActiveTooltip(null)}
+        onEdit={onEdit}
+      />
     </div>
   );
 };
