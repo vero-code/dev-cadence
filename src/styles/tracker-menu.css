@@ -1,0 +1,115 @@
+[data-theme="steampunk"] .pipeline-dropdown-menu {
+  background: linear-gradient(
+    180deg,
+    rgba(38, 24, 15, 0.98) 0%,
+    rgba(24, 14, 8, 0.98) 100%
+  );
+  border-color: rgba(217, 119, 6, 0.5);
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.9),
+    0 0 16px rgba(245, 158, 11, 0.2);
+}
+
+[data-theme="parchment"] .pipeline-dropdown-menu {
+  background: linear-gradient(180deg, #fffcf6 0%, #f6ecdc 100%);
+  border-color: rgba(160, 110, 50, 0.4);
+  box-shadow: 0 8px 24px rgba(70, 45, 20, 0.2);
+}
+
+[data-theme="devpost"] .pipeline-dropdown-menu {
+  background: linear-gradient(
+    180deg,
+    rgba(16, 26, 48, 0.98) 0%,
+    rgba(10, 16, 32, 0.98) 100%
+  );
+  border-color: rgba(6, 182, 212, 0.4);
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.9),
+    0 0 16px rgba(6, 182, 212, 0.25);
+}
+
+.pipeline-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.6rem;
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-main);
+  background: transparent;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+  width: 100%;
+}
+
+.pipeline-menu-item .menu-item-icon {
+  font-size: var(--text-md);
+}
+
+.pipeline-menu-item:hover {
+  background: rgba(245, 158, 11, 0.18);
+  color: var(--amber-gear);
+  transform: translateX(1px);
+}
+
+.pipeline-menu-item.delete-item:hover {
+  background: rgba(244, 63, 94, 0.18);
+  color: var(--rose);
+}
+
+[data-theme="devpost"] .pipeline-menu-item:hover {
+  background: rgba(6, 182, 212, 0.18);
+  color: var(--cyan-light);
+}
+
+[data-theme="parchment"] .pipeline-menu-item:hover {
+  background: rgba(184, 134, 11, 0.15);
+  color: #78350f;
+}
+
+.pipeline-item-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.55rem;
+}
+
+.pipeline-meta-pills {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.pipeline-meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+.pipeline-meta-pill .meta-icon {
+  font-size: var(--text-sm);
+  opacity: 0.85;
+}
+
+.pipeline-meta-pill.deadline-pill {
+  color: var(--amber-gear);
+}
+
+[data-theme="steampunk"] .pipeline-meta-pill.deadline-pill {
+  color: #fbbf24;
+}
+
+[data-theme="parchment"] .pipeline-meta-pill.deadline-pill {
+  color: #92400e;
+}

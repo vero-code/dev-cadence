@@ -1,0 +1,226 @@
+/* Enamel Plaque / Clockmaker Seal Badges — crisp, sharp, no blurry outer glow */
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.22rem 0.6rem;
+  border-radius: 6px;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  box-shadow: none;
+}
+
+/* Default / Devpost Themes */
+.chip-interest {
+  background: rgba(168, 85, 247, 0.16);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.45);
+  box-shadow: none;
+}
+
+.chip-join,
+.chip-registered {
+  background: rgba(59, 130, 246, 0.16);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.45);
+  box-shadow: none;
+}
+
+.chip-early {
+  background: rgba(244, 63, 94, 0.16);
+  color: #fb7185;
+  border: 1px solid rgba(244, 63, 94, 0.45);
+  box-shadow: none;
+}
+
+.chip-draft,
+.chip-waiting {
+  background: rgba(245, 158, 11, 0.16);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.45);
+  box-shadow: none;
+}
+
+.chip-done {
+  background: rgba(16, 185, 129, 0.16);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  box-shadow: none;
+}
+
+.chip-considering {
+  background: rgba(168, 85, 247, 0.14);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  box-shadow: none;
+}
+
+.chip-custom {
+  background: rgba(168, 85, 247, 0.16);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  box-shadow: none;
+}
+
+[data-theme="parchment"] .status-chip {
+  box-shadow: none !important;
+}
+
+[data-theme="parchment"] .chip-interest {
+  background: rgba(126, 34, 206, 0.12);
+  color: #7e22ce;
+  border-color: rgba(126, 34, 206, 0.4);
+  box-shadow: none !important;
+}
+
+[data-theme="parchment"] .chip-join,
+[data-theme="parchment"] .chip-registered {
+  background: rgba(29, 78, 216, 0.12);
+  color: #1d4ed8;
+  border-color: rgba(29, 78, 216, 0.4);
+  box-shadow: none !important;
+}
+
+[data-theme="parchment"] .chip-early {
+  background: rgba(225, 29, 72, 0.1);
+  color: #be123c;
+  border-color: rgba(225, 29, 72, 0.38);
+  box-shadow: none !important;
+}
+
+[data-theme="parchment"] .chip-draft,
+[data-theme="parchment"] .chip-waiting {
+  background: rgba(180, 83, 9, 0.14);
+  color: #92400e;
+  border-color: rgba(180, 83, 9, 0.4);
+  box-shadow: none !important;
+}
+
+[data-theme="parchment"] .chip-done {
+  background: rgba(22, 163, 74, 0.1);
+  color: #15803d;
+  border-color: rgba(22, 163, 74, 0.4);
+  box-shadow: none !important;
+}
+
+[data-theme="parchment"] .chip-considering {
+  background: rgba(126, 34, 206, 0.12);
+  color: #7e22ce;
+  border-color: rgba(126, 34, 206, 0.35);
+  box-shadow: none !important;
+}
+
+[data-theme="parchment"] .chip-custom {
+  background: rgba(147, 51, 234, 0.12);
+  color: #6b21a8;
+  border-color: rgba(147, 51, 234, 0.4);
+  box-shadow: none !important;
+}
+
+[data-theme="steampunk"] .chip-interest {
+  background: rgba(168, 85, 247, 0.18);
+  color: #d8b4fe;
+  border-color: rgba(168, 85, 247, 0.45);
+  box-shadow: none;
+}
+
+[data-theme="steampunk"] .chip-join,
+[data-theme="steampunk"] .chip-registered {
+  background: rgba(59, 130, 246, 0.18);
+  color: #93c5fd;
+  border-color: rgba(59, 130, 246, 0.45);
+  box-shadow: none;
+}
+
+[data-theme="steampunk"] .chip-early {
+  background: rgba(244, 63, 94, 0.18);
+  color: #fda4af;
+  border-color: rgba(244, 63, 94, 0.45);
+  box-shadow: none;
+}
+
+[data-theme="steampunk"] .chip-draft,
+[data-theme="steampunk"] .chip-waiting {
+  background: rgba(245, 158, 11, 0.18);
+  color: #fde047;
+  border-color: rgba(245, 158, 11, 0.45);
+  box-shadow: none;
+}
+
+[data-theme="steampunk"] .chip-done {
+  background: rgba(16, 185, 129, 0.18);
+  color: #6ee7b7;
+  border-color: rgba(16, 185, 129, 0.45);
+  box-shadow: none;
+}
+
+[data-theme="steampunk"] .chip-considering {
+  background: rgba(168, 85, 247, 0.18);
+  color: #d8b4fe;
+  border-color: rgba(168, 85, 247, 0.35);
+  box-shadow: none;
+}
+
+[data-theme="steampunk"] .chip-custom {
+  background: rgba(192, 132, 252, 0.18);
+  color: #c084fc;
+  border-color: rgba(192, 132, 252, 0.45);
+  box-shadow: none;
+}
+
+.table-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.action-icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-dim);
+  font-size: var(--text-md);
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+}
+
+.action-icon-btn:hover {
+  color: var(--cyan-light);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.action-icon-btn.delete-btn:hover {
+  color: var(--rose);
+}
+
+/* Empty State */
+.empty-table-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 1.5rem 1rem;
+  color: var(--text-muted);
+}
+
+.empty-icon {
+  font-size: var(--text-lg);
+  margin-bottom: 0.5rem;
+  opacity: 0.6;
+}
+
+.empty-title {
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--empty-title-color);
+  margin-bottom: 0.25rem;
+}
+
+.empty-desc {
+  font-size: var(--text-md);
+  color: var(--text-dim);
+}

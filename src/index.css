@@ -13,6 +13,12 @@
 @import './styles/calendar-tooltip.css';
 @import './styles/calendar-tooltip-list.css';
 @import './styles/tracker.css';
+@import './styles/tracker-pills-themes.css';
+@import './styles/tracker-controls.css';
+@import './styles/tracker-table.css';
+@import './styles/tracker-cards.css';
+@import './styles/tracker-menu.css';
+@import './styles/tracker-badges.css';
 @import './styles/modals.css';
 @import './styles/modal-forms.css';
 @import './styles/modal-settings.css';
