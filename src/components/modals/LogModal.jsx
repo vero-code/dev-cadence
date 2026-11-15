@@ -195,7 +195,7 @@ export const LogModal = ({
       <div className="modal-header">
         <h2 className="modal-title">
           <span>{editingHackathon ? "✏️" : "🚀"}</span>
-          {editingHackathon ? "Edit Hackathon" : "Log Hackathon"}
+          {editingHackathon ? "Edit Sprint" : "Log Sprint"}
         </h2>
         <button
           type="button"
@@ -209,11 +209,11 @@ export const LogModal = ({
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label className="form-label">Name</label>
+          <label className="form-label">Title</label>
           <input
             type="text"
             className={`form-input ${!name.trim() && error ? "error" : ""}`}
-            placeholder="e.g. AI Basics Hackathon"
+            placeholder="e.g. Firebase AI Logic Sprint"
             value={name}
             onChange={(e) => {
               setName(e.target.value);
@@ -226,12 +226,11 @@ export const LogModal = ({
         <div className="form-group">
           <div className="label-with-hint">
             <label className="form-label">URL</label>
-            <span className="field-hint">optional</span>
           </div>
           <input
             type="text"
             className={`form-input ${error && (error.toLowerCase().includes("url") || error.toLowerCase().includes("website")) ? "error" : ""}`}
-            placeholder="e.g. https://devpost.com/hackathons/..."
+            placeholder="e.g. https://console.firebase.google.com/project/..."
             value={url}
             onChange={(e) => {
               setUrl(e.target.value);
@@ -271,7 +270,7 @@ export const LogModal = ({
             Cancel
           </button>
           <button type="submit" className="btn-primary">
-            {editingHackathon ? "Save" : "Add Hackathon"}
+            {editingHackathon ? "Save" : "Add Sprint"}
           </button>
         </div>
       </form>

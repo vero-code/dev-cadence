@@ -12,7 +12,7 @@ export const Header = ({ onOpenSettings, onOpenStats, isStatsOpen }) => {
           </div>
           <div className="brand-title-wrap">
             <h1 className="brand-title">Dev Cadence</h1>
-            <span className="brand-subtitle">Smart Pacing for Devpost</span>
+            <span className="brand-subtitle">BUILD & REST CAPACITY PLANNER</span>
           </div>
         </div>
         <div className="header-actions">
