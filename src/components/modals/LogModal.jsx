@@ -152,7 +152,7 @@ export const LogModal = ({
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!name.trim()) {
-      setError("Please provide a hackathon name.");
+      setError("Please provide a sprint title.");
       return;
     }
     if (!startDate || !endDate) {
@@ -244,7 +244,6 @@ export const LogModal = ({
           endDate={endDate}
           deadline={deadline}
           status={status}
-          avgTurnaroundDays={avgTurnaroundDays}
           onStartDateChange={setStartDate}
           onEndDateChange={setEndDate}
           onDeadlineChange={setDeadline}
