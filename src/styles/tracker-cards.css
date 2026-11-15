@@ -52,13 +52,6 @@
   letter-spacing: -0.01em;
 }
 
-.pipeline-item-header-right {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  flex-shrink: 0;
-}
-
 .pipeline-menu-container {
   position: relative;
   display: inline-flex;

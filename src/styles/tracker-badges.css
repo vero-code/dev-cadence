@@ -169,32 +169,6 @@
   box-shadow: none;
 }
 
-.table-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-}
-
-.action-icon-btn {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  color: var(--text-dim);
-  font-size: var(--text-md);
-  padding: 0.25rem;
-  border-radius: 4px;
-  transition: all 0.15s ease;
-}
-
-.action-icon-btn:hover {
-  color: var(--cyan-light);
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.action-icon-btn.delete-btn:hover {
-  color: var(--rose);
-}
-
 /* Empty State */
 .empty-table-state {
   flex: 1;

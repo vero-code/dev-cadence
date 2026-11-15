@@ -46,10 +46,9 @@ export const CalendarGrid = ({
       // If date range booking is active and user clicks on another area (outside day cells and banner)
       if (dateRange?.start && !dateRange?.end) {
         const clickedDayCell = e.target.closest('.calendar-day-cell:not(.padding-cell)');
-        const clickedBanner = e.target.closest('.calendar-selection-banner');
         const clickedTooltip = e.target.closest('.calendar-day-tooltip');
 
-        if (!clickedDayCell && !clickedBanner && !clickedTooltip) {
+        if (!clickedDayCell && !clickedTooltip) {
           setHoveredRangeDate(null);
           onCancelDateRange && onCancelDateRange();
         }

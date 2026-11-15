@@ -194,9 +194,6 @@
     font-size: var(--text-md);
     gap: 0.25rem;
   }
-  .tracker-add-label {
-    display: none;
-  }
   .btn-primary.tracker-add-btn {
     width: 19px;
     height: 19px;
@@ -219,9 +216,6 @@
   .section-heading {
     font-size: var(--text-md);
     gap: 0.25rem;
-  }
-  .tracker-add-label {
-    display: none;
   }
   .btn-primary.tracker-add-btn {
     width: 19px;

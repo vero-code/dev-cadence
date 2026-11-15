@@ -124,13 +124,6 @@ body:has([data-theme="devpost"]) {
 
 
 /* Shared Section Headings & Buttons */
-/* Primary Action Bar */
-.action-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .section-heading {
   font-family: var(--font-heading);
   font-size: var(--text-md);

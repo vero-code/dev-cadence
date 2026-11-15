@@ -81,28 +81,6 @@
   color: var(--text-main);
 }
 
-.tooltip-overlap-badge {
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: #fbbf24;
-  background: rgba(245, 158, 11, 0.15);
-  border: 1px solid rgba(245, 158, 11, 0.3);
-  padding: 1px 6px;
-  border-radius: 4px;
-}
-
-[data-theme="parchment"] .tooltip-overlap-badge {
-  color: #92400e;
-  background: rgba(180, 83, 9, 0.15);
-  border-color: rgba(180, 83, 9, 0.3);
-}
-
-[data-theme="steampunk"] .tooltip-overlap-badge {
-  color: #fbbf24;
-  background: rgba(245, 158, 11, 0.18);
-  border-color: rgba(245, 158, 11, 0.4);
-}
-
 .tooltip-header-actions {
   display: flex;
   align-items: center;

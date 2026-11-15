@@ -77,11 +77,6 @@
   overflow: hidden;
 }
 
-.table-event-emoji {
-  flex-shrink: 0;
-  font-size: var(--text-md);
-}
-
 .table-event-text {
   flex: 1;
   min-width: 0;

@@ -207,19 +207,3 @@
   font-size: var(--text-md);
   line-height: 1;
 }
-
-.overlap-indicator-pill {
-  position: absolute;
-  bottom: 2px;
-  right: 2px;
-  font-size: var(--text-sm);
-  color: #fbbf24;
-}
-
-[data-theme="parchment"] .overlap-indicator-pill {
-  color: #b45309;
-}
-
-[data-theme="steampunk"] .overlap-indicator-pill {
-  color: #f59e0b;
-}

@@ -1,18 +1,3 @@
-/* ========================================================
-   CALENDAR GRID, MONTH NAVIGATOR & DAY TOOLTIPS
-   ======================================================== */
-/* Month Navigation */
-.month-nav-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: var(--month-nav-bg);
-  border: 1.5px solid var(--border-subtle);
-  border-radius: 10px;
-  padding: 0.45rem 0.75rem;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
-}
-
 .month-label {
   font-family: var(--font-heading);
   font-size: var(--text-md);
@@ -191,52 +176,4 @@
   border-radius: 9999px;
   font-weight: 600;
   letter-spacing: 0.02em;
-}
-
-.calendar-selection-banner {
-  background: var(--selection-banner-bg);
-  border: 1.5px solid var(--cyan-primary);
-  border-radius: 8px;
-  padding: 0.5rem 0.75rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  box-shadow: 0 4px 14px var(--cyan-glow);
-  animation: fadeIn 0.2s ease;
-}
-
-.calendar-selection-banner .banner-text {
-  font-size: var(--text-md);
-  color: var(--text-main);
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.calendar-selection-banner .banner-text strong {
-  color: var(--cyan-light);
-}
-
-.calendar-selection-banner .banner-text em {
-  color: var(--amber-gear);
-  font-style: normal;
-}
-
-.banner-cancel-btn {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid var(--border-subtle);
-  color: var(--text-muted);
-  font-size: var(--text-sm);
-  padding: 0.25rem 0.6rem;
-  border-radius: 6px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all 0.15s ease;
-}
-
-.banner-cancel-btn:hover {
-  background: rgba(244, 63, 94, 0.2);
-  color: #f43f5e;
-  border-color: rgba(244, 63, 94, 0.4);
 }
