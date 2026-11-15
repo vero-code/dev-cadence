@@ -185,6 +185,7 @@
   padding: 1px 3px;
   border-radius: 3px;
   line-height: 1;
+  text-transform: uppercase;
 }
 
 [data-theme="parchment"] .today-badge {

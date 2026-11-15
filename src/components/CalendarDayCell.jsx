@@ -95,7 +95,6 @@ export const CalendarDayCell = ({
     >
       <div className="day-top-bar">
         <span className="day-number">{day.dayNumber}</span>
-        {day.isToday && <span className="today-badge" title="Today">TODAY</span>}
         {(hasDeadlines || isModalDeadlineDay) && (
           <span
             className={`deadline-flag ${isModalDeadlineDay ? 'draft-deadline-flag' : ''} ${isHoveredDeadline ? 'highlighted-deadline-flag' : ''}`}
@@ -111,6 +110,7 @@ export const CalendarDayCell = ({
       </div>
 
       <div className="day-badges-wrap">
+        {day.isToday && <span className="today-badge" title="Today">Today</span>}
         {isRangeStart && <span className="range-badge">START</span>}
         {isModalStartDay && !isRangeStart && (
           <span className="range-badge draft-start-badge" title="Draft Start Date">
