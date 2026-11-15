@@ -14,6 +14,10 @@
 @import './styles/calendar-tooltip-list.css';
 @import './styles/tracker.css';
 @import './styles/modals.css';
+@import './styles/modal-forms.css';
+@import './styles/modal-settings.css';
+@import './styles/modal-settings-controls.css';
+@import './styles/modal-legal.css';
 @import './styles/capacity.css';
 @import './styles/footer.css';
 @import './styles/analytics.css';
