@@ -63,7 +63,10 @@
 
 .brand-title-wrap {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .brand-title {
