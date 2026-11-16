@@ -29,16 +29,12 @@
   height: 46px;
   border-radius: 12px;
   padding: 2.5px;
-  /* background: linear-gradient(135deg, #fbbf24 0%, #d97706 40%, #78350f 80%, #fbbf24 100%);
-  box-shadow: 
-    0 0 16px rgba(245, 158, 11, 0.45),
-    0 0 8px rgba(0, 229, 255, 0.3),
-    inset 0 1px 1px rgba(255, 255, 255, 0.6); */
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   position: relative;
+  cursor: pointer;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 

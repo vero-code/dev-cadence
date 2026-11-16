@@ -20,6 +20,7 @@ export const useLogCalendarFlow = (avgTurnaroundDays) => {
   const {
     currentYear,
     currentMonth,
+    setYearAndMonth,
     handlePrevMonth,
     handleNextMonth,
     handleJumpToMonth,
@@ -136,6 +137,7 @@ export const useLogCalendarFlow = (avgTurnaroundDays) => {
   return {
     currentYear,
     currentMonth,
+    setYearAndMonth,
     selectedDate,
     dateRange,
     prefillDates,

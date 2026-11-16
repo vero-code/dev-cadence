@@ -36,6 +36,7 @@ export const App = () => {
   const {
     currentYear,
     currentMonth,
+    setYearAndMonth,
     selectedDate,
     dateRange,
     prefillDates,
@@ -101,6 +102,18 @@ export const App = () => {
     resetAllFlowState();
   };
 
+  const handleResetToHome = () => {
+    const now = new Date();
+    handleCloseLogModal();
+    setIsStatsOpen(false);
+    setIsSettingsOpen(false);
+    setDeleteCandidate(null);
+    setLegalModalTab(null);
+    setIsContactOpen(false);
+    setHoveredHackathonId(null);
+    setYearAndMonth(now.getFullYear(), now.getMonth());
+  };
+
   const visibleHackathons = filterHackathonsByMonth(hackathons, currentYear, currentMonth);
 
   // Exclude active item so draft highlight is clean while editing
@@ -124,6 +137,7 @@ export const App = () => {
         onOpenSettings={handleOpenSettings}
         onOpenStats={() => setIsStatsOpen((prev) => !prev)}
         isStatsOpen={isStatsOpen}
+        onResetHome={handleResetToHome}
         />
       <div className="panel-content">
         {isStatsOpen ? (

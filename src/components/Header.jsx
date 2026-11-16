@@ -1,18 +1,37 @@
-import React from 'react';
 import { DEVPOST_PROFILE_URL } from '../constants';
 import { AgedGearIcon, AnalyticsIcon } from './Icons';
 
-export const Header = ({ onOpenSettings, onOpenStats, isStatsOpen }) => {
+export const Header = ({
+  onOpenSettings,
+  onOpenStats,
+  isStatsOpen,
+  onResetHome,
+}) => {
+  const handleLogoClick = () => {
+    onResetHome?.();
+  };
   return (
     <header className="panel-header">
       <div className="brand-row">
         <div className="brand-left">
-          <div className="brand-logo-frame">
+          <div
+            className="brand-logo-frame"
+            onClick={handleLogoClick}
+            role="button"
+            tabIndex={0}
+            title="Return to home view"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleLogoClick();
+              }
+            }}
+          >
             <img src="/logo.jpg" alt="Dev Cadence Automaton" className="brand-logo" />
           </div>
           <div className="brand-title-wrap">
             <h1 className="brand-title">Dev Cadence</h1>
-            <span className="brand-subtitle">Planner</span>
+            <span className="brand-subtitle">Capacity Planner</span>
           </div>
         </div>
         <div className="header-actions">
