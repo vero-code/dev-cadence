@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { THEMES, FONT_PRESETS, FONT_SIZES } from "../../constants";
+import { THEMES, FONT_PRESETS, FONT_SIZES, CAPACITY_LIMITS } from "../../constants";
 import { ChevronDownIcon } from "../Icons";
-import { WarningIcon, TrashIcon, ResetIcon } from "../FormIcons";
+import { WarningIcon, TrashIcon, ResetIcon, InfoIcon } from "../FormIcons";
 
 export const GeneralSettingsTab = ({
   settings,
@@ -21,35 +21,19 @@ export const GeneralSettingsTab = ({
   const [confirmResetAll, setConfirmResetAll] = useState(false);
   const [resetMessage, setResetMessage] = useState(null);
 
-  const handleRestDaysChange = (val) => {
-    setTargetRestDays(val);
+  const handleNumberChange = (setter, key, { min, max }) => (e) => {
+    const val = e.target.value;
+    setter(val);
     const parsed = parseInt(val, 10);
-    if (!isNaN(parsed) && parsed >= 0 && parsed <= 28) {
-      onUpdateSettings?.({ targetRestDays: parsed });
+    if (!isNaN(parsed) && parsed >= min && parsed <= max) {
+      onUpdateSettings?.({ [key]: parsed });
     }
   };
 
-  const handleRestDaysBlur = () => {
-    const parsed = Math.max(0, Math.min(28, parseInt(targetRestDays, 10) || 0));
-    setTargetRestDays(parsed);
-    onUpdateSettings?.({ targetRestDays: parsed });
-  };
-
-  const handleAvgDaysChange = (val) => {
-    setAvgTurnaroundDays(val);
-    const parsed = parseInt(val, 10);
-    if (!isNaN(parsed) && parsed >= 1 && parsed <= 60) {
-      onUpdateSettings?.({ avgTurnaroundDays: parsed });
-    }
-  };
-
-  const handleAvgDaysBlur = () => {
-    const parsed = Math.max(
-      1,
-      Math.min(60, parseInt(avgTurnaroundDays, 10) || 10),
-    );
-    setAvgTurnaroundDays(parsed);
-    onUpdateSettings?.({ avgTurnaroundDays: parsed });
+  const handleNumberBlur = (value, setter, key, { min, max, fallback }) => () => {
+    const parsed = Math.max(min, Math.min(max, parseInt(value, 10) || fallback));
+    setter(parsed);
+    onUpdateSettings?.({ [key]: parsed });
   };
 
   const handleClearHackathonsClick = async () => {
@@ -154,69 +138,83 @@ export const GeneralSettingsTab = ({
         </div>
       </div>
 
-      {/* Capacity Goals */}
-      <div className="form-row-2">
+      {/* Capacity Goals & Hover Highlight */}
+      <div className="settings-columns-row">
         <div className="form-group">
-          <label className="form-label">Rest Days / Month</label>
-          <input
-            type="number"
-            min="0"
-            max="28"
-            className="form-input"
-            value={targetRestDays}
-            onChange={(e) => handleRestDaysChange(e.target.value)}
-            onBlur={handleRestDaysBlur}
-          />
-        </div>
-
-        <div className="form-group">
-          <label className="form-label">Avg. Work Days</label>
-          <input
-            type="number"
-            min="1"
-            max="60"
-            className="form-input"
-            value={avgTurnaroundDays}
-            onChange={(e) => handleAvgDaysChange(e.target.value)}
-            onBlur={handleAvgDaysBlur}
-          />
-        </div>
-      </div>
-
-      {/* Schedule Highlight */}
-      <div className="form-group settings-toggle-group">
-        <div className="settings-toggle-row">
-          <div className="settings-toggle-info">
-            <label
-              className="form-label settings-toggle-label"
-              htmlFor="toggle-highlight-hover"
+          <div className="settings-label-row">
+            <label className="form-label">Build Days</label>
+            <span
+              className="settings-info-icon"
+              title="Default sprint duration when clicking a start date in Schedule"
             >
-              Highlight in Schedule on Hover
-            </label>
-            <span className="settings-toggle-desc">
-              Highlight dates in the calendar when hovering over sprints in
-              Tracker
+              <InfoIcon />
             </span>
           </div>
-          <button
-            id="toggle-highlight-hover"
-            type="button"
-            role="switch"
-            aria-checked={settings?.highlightOnHover !== false}
-            className={`settings-switch-btn ${settings?.highlightOnHover !== false ? "active" : ""}`}
-            onClick={() => {
-              const currentVal = settings?.highlightOnHover !== false;
-              onUpdateSettings?.({ highlightOnHover: !currentVal });
-            }}
-          >
-            <span className="settings-switch-thumb" />
-          </button>
+          <input
+            type="number"
+            min={CAPACITY_LIMITS.sprint.min}
+            max={CAPACITY_LIMITS.sprint.max}
+            className="form-input"
+            value={avgTurnaroundDays}
+            onChange={handleNumberChange(setAvgTurnaroundDays, 'avgTurnaroundDays', CAPACITY_LIMITS.sprint)}
+            onBlur={handleNumberBlur(avgTurnaroundDays, setAvgTurnaroundDays, 'avgTurnaroundDays', CAPACITY_LIMITS.sprint)}
+          />
+        </div>
+
+        <div className="form-group">
+          <div className="settings-label-row">
+            <label className="form-label">Rest Days</label>
+            <span
+              className="settings-info-icon"
+              title="Target rest days per month used in the Capacity bar"
+            >
+              <InfoIcon />
+            </span>
+          </div>
+          <input
+            type="number"
+            min={CAPACITY_LIMITS.rest.min}
+            max={CAPACITY_LIMITS.rest.max}
+            className="form-input"
+            value={targetRestDays}
+            onChange={handleNumberChange(setTargetRestDays, 'targetRestDays', CAPACITY_LIMITS.rest)}
+            onBlur={handleNumberBlur(targetRestDays, setTargetRestDays, 'targetRestDays', CAPACITY_LIMITS.rest)}
+          />
+        </div>
+
+        <div className="form-group">
+          <div className="settings-label-row">
+            <label className="form-label">
+              Hover
+            </label>
+            <span
+              className="settings-info-icon"
+              title="Highlight dates in the calendar when hovering over sprints in Tracker"
+            >
+              <InfoIcon />
+            </span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', height: '38px' }}>
+            <button
+              id="toggle-highlight-hover"
+              type="button"
+              role="switch"
+              aria-checked={settings?.highlightOnHover !== false}
+              className={`settings-switch-btn ${settings?.highlightOnHover !== false ? "active" : ""}`}
+              onClick={() => {
+                const currentVal = settings?.highlightOnHover !== false;
+                onUpdateSettings?.({ highlightOnHover: !currentVal });
+              }}
+            >
+              <span className="settings-switch-thumb" />
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Danger Zone */}
       <div className="settings-danger-zone">
-        <div className="danger-zone-title">Data Management &amp; Reset</div>
+        <div className="danger-zone-title">Data Management</div>
         <p className="danger-zone-desc">
           Clear logged events or reset the extension to defaults.
         </p>
@@ -251,7 +249,7 @@ export const GeneralSettingsTab = ({
             ) : (
               <>
                 <ResetIcon />
-                Reset All Data
+                Reset All
               </>
             )}
           </button>

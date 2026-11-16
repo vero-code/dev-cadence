@@ -107,3 +107,25 @@ export const ResetIcon = ({ className = '', size = 16 }) => (
     <path d="M2.5 2.75V6h3.25" />
   </svg>
 );
+
+/**
+ * Vector info circle icon
+ */
+export const InfoIcon = ({ className = '', size = 13 }) => (
+  <svg
+    className={className}
+    width={size}
+    height={size}
+    viewBox="0 0 16 16"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <circle cx="8" cy="8" r="6.25" />
+    <line x1="8" y1="7.25" x2="8" y2="11.25" />
+    <line x1="8" y1="4.75" x2="8.01" y2="4.75" />
+  </svg>
+);

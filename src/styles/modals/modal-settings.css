@@ -14,6 +14,28 @@
   min-width: 0;
 }
 
+.settings-label-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 0.35rem;
+}
+
+.settings-label-row .form-label {
+  margin-bottom: 0;
+}
+
+.settings-info-icon {
+  display: inline-flex;
+  align-items: center;
+  color: var(--text-dim);
+  cursor: help;
+}
+
+.settings-info-icon:hover {
+  color: var(--amber-gear);
+}
+
 @media (max-width: 440px) {
   .settings-columns-row {
     grid-template-columns: 1fr;

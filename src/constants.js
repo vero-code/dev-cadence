@@ -130,3 +130,8 @@ export const CONTACT_TOPICS = [
   'Bug Report',
   'Feature Request',
 ];
+
+export const CAPACITY_LIMITS = {
+  rest: { min: 0, max: 31, fallback: 0 },
+  sprint: { min: 1, max: 31, fallback: 10 },
+};
