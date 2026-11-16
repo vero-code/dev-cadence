@@ -60,14 +60,14 @@ export const FONT_PRESETS = [
     preview: 'Clean DIN Geometric',
   },
   {
-    id: 'cinzel',
-    name: 'Cinzel',
-    preview: 'Steampunk Engraving Serif',
-  },
-  {
     id: 'sans',
     name: 'Geometric',
     preview: 'Plus Jakarta Sans',
+  },
+  {
+    id: 'marcellus',
+    name: 'Marcellus',
+    preview: 'Roman Engraving Serif',
   },
 ];
 

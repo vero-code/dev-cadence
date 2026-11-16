@@ -174,18 +174,18 @@ html[data-font="bahnschrift"],
   --font-main: 'Bahnschrift', 'DIN Alternate', 'Franklin Gothic Medium', -apple-system, sans-serif !important;
 }
 
-[data-font="cinzel"],
-html[data-font="cinzel"],
-.app-container[data-font="cinzel"] {
-  --font-heading: 'Cinzel', Georgia, serif !important;
-  --font-main: 'Cinzel', Georgia, serif !important;
-}
-
 [data-font="sans"],
 html[data-font="sans"],
 .app-container[data-font="sans"] {
   --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
   --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+[data-font="marcellus"],
+html[data-font="marcellus"],
+.app-container[data-font="marcellus"] {
+  --font-heading: 'Marcellus', Georgia, serif !important;
+  --font-main: 'Marcellus', Georgia, serif !important;
 }
 
 /* Font Size Scaling */
