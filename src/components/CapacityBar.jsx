@@ -43,23 +43,27 @@ export const CapacityBar = ({ year, month, hackathons, settings, onOpenSettings 
     <div className="capacity-card">
       <div className="capacity-metrics-grid">
         <div className="capacity-metric-box">
-          <span className="metric-label">Work</span>
-          <span className="metric-value committed-val">{committedDaysCount} days</span>
+          <span className="metric-label">Build</span>
+          <span className="metric-value committed-val">
+            {committedDaysCount}d
+          </span>
         </div>
         <div className="capacity-metric-box">
-          <span className="metric-label">Available</span>
+          <span className="metric-label">Free</span>
           <span className="metric-value free-val">
-            {freeDays} days
+            {surplusDays}d
           </span>
         </div>
         <div
           className="capacity-metric-box"
           style={onOpenSettings ? { cursor: 'pointer' } : undefined}
           onClick={onOpenSettings}
-          title={onOpenSettings ? 'Click to configure Target Rest days' : undefined}
+          title={onOpenSettings ? `Target Rest: ${targetRest}d (click to configure)` : undefined}
         >
-          <span className="metric-label">Target Rest</span>
-          <span className="metric-value rest-val">{targetRest} days</span>
+          <span className="metric-label">Rest</span>
+          <span className="metric-value rest-val">
+            {restDays}/{targetRest}d
+          </span>
         </div>
       </div>
 
@@ -81,7 +85,7 @@ export const CapacityBar = ({ year, month, hackathons, settings, onOpenSettings 
           />
         )}
         <div
-          className={`progress-segment ${isOvercommitted ? 'warning-seg' : 'rest-seg'}`}
+          className="progress-segment rest-seg"
           style={{ width: `${restPercent}%` }}
           title={
             isOvercommitted
