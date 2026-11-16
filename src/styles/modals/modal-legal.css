@@ -72,6 +72,11 @@
   flex: 1;
 }
 
+.legal-modal-card .modal-footer {
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 0.75rem;
+}
+
 .legal-badge-pill {
   display: inline-flex;
   align-items: center;

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { GITHUB_REPO_URL } from '../../constants';
 
 export const LegalModal = ({
   isOpen,
@@ -28,8 +29,7 @@ export const LegalModal = ({
       <div className="modal-card legal-modal-card" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2 className="modal-title">
-            <span>{activeTab === 'privacy' ? '🛡️' : '📜'}</span>
-            {activeTab === 'privacy' ? 'Privacy Policy' : 'Terms of Use'}
+            Legal
           </h2>
           <button
             type="button"
@@ -48,14 +48,14 @@ export const LegalModal = ({
             className={`legal-tab-btn ${activeTab === 'privacy' ? 'active' : ''}`}
             onClick={() => setActiveTab('privacy')}
           >
-            <span>🛡️</span> Privacy Policy
+            Privacy Policy
           </button>
           <button
             type="button"
             className={`legal-tab-btn ${activeTab === 'terms' ? 'active' : ''}`}
             onClick={() => setActiveTab('terms')}
           >
-            <span>📜</span> Terms of Use
+            Terms of Use
           </button>
         </div>
 
@@ -63,19 +63,24 @@ export const LegalModal = ({
         <div className="legal-modal-body">
           {activeTab === 'privacy' && (
             <div className="legal-content-section">
-              <div className="legal-badge-pill">
-                <span>🔒</span> 100% Local-First &bull; Zero Telemetry &bull; Full Data Sovereignty
-              </div>
-
               <div className="legal-block">
                 <h3 className="legal-heading">1. Zero Data Collection Architecture</h3>
                 <p>
-                  <strong>Dev Cadence</strong> is built on a strict local-first philosophy. We do not collect,
-                  track, store, or transmit any personal information, browsing history, or user identity.
-                  There are no remote user databases, tracking pixels, or cloud synchronization endpoints.
+                  <strong>Dev Cadence</strong> is developed by{' '}
+                  <a
+                    href={GITHUB_REPO_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="footer-author-link"
+                  >
+                    Veronika Kashtanova
+                  </a>{' '}
+                  on a strict local-first philosophy. We do not collect, track, store, or
+                  transmit any personal information, browsing history, or user identity.
+                  There are no remote user databases, tracking pixels, or cloud
+                  synchronization endpoints.
                 </p>
               </div>
-
               <div className="legal-block">
                 <h3 className="legal-heading">2. Local Storage & Permissions</h3>
                 <p>
@@ -124,10 +129,6 @@ export const LegalModal = ({
 
           {activeTab === 'terms' && (
             <div className="legal-content-section">
-              <div className="legal-badge-pill">
-                <span>⚖️</span> MIT Open Source License &bull; Advisory Decision-Support
-              </div>
-
               <div className="legal-block">
                 <h3 className="legal-heading">1. Acceptance of Terms</h3>
                 <p>
@@ -138,11 +139,21 @@ export const LegalModal = ({
               </div>
 
               <div className="legal-block">
-                <h3 className="legal-heading">2. Permitted Use & MIT License</h3>
+                <h3 className="legal-heading">2. Permitted Use & Apache 2.0 License</h3>
                 <p>
-                  Dev Cadence is distributed under the terms of the <strong>MIT License</strong>. You are granted
-                  permission to use, study, copy, modify, merge, publish, and distribute copies of the software for
-                  personal, educational, or commercial purposes, subject to the inclusion of the original copyright notice.
+                  Dev Cadence is created by{' '}
+                  <a
+                    href={GITHUB_REPO_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="footer-author-link"
+                  >
+                    Veronika Kashtanova
+                  </a>{' '}
+                  and distributed under the terms of the <strong>Apache License 2.0</strong>.
+                  You are granted permission to use, reproduce, modify, and distribute copies
+                  of the software for personal, educational, or commercial purposes, subject to
+                  the license terms and attribution notices.
                 </p>
               </div>
 
@@ -184,7 +195,10 @@ export const LegalModal = ({
 
         </div>
 
-        <div className="modal-footer" style={{ marginTop: '0.85rem' }}>
+        <div className="modal-footer modal-footer-row" style={{ marginTop: '0.85rem' }}>
+          <span className="modal-footer-hint">
+            {activeTab === 'privacy' ? '100% Local-First' : 'Advisory Decision-Support'}
+          </span>
           <button type="button" className="btn-primary" onClick={onClose} style={{ minWidth: '85px' }}>
             Close
           </button>
