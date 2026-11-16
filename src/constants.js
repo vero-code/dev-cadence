@@ -122,3 +122,11 @@ export const STATUS_FILTER_PILLS = [
   { key: 'draft', filter: 'Draft', label: 'Draft' },
   { key: 'done', filter: 'Done', label: 'Done' },
 ];
+
+export const DISCORD_WEBHOOK_URL = import.meta.env.VITE_DISCORD_WEBHOOK_URL || '';
+
+export const CONTACT_TOPICS = [
+  'Question',
+  'Bug Report',
+  'Feature Request',
+];

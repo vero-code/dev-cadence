@@ -8,6 +8,7 @@ import { SettingsModal } from './components/modals/SettingsModal';
 import { StatsModal } from './components/modals/StatsModal';
 import { ConfirmModal } from './components/modals/ConfirmModal';
 import { LegalModal } from './components/modals/LegalModal';
+import { ContactModal } from './components/modals/ContactModal';
 import { useCadenceStorage } from './hooks/useCadenceStorage';
 import { filterHackathonsByMonth, buildCapacityHackathons } from './utils/hackathonFilters';
 import { useLogCalendarFlow } from './hooks/useLogCalendarFlow';
@@ -29,6 +30,7 @@ export const App = () => {
   const [isStatsOpen, setIsStatsOpen] = useState(false);
   const [deleteCandidate, setDeleteCandidate] = useState(null);
   const [legalModalTab, setLegalModalTab] = useState(null);
+  const [isContactOpen, setIsContactOpen] = useState(false);
   const [hoveredHackathonId, setHoveredHackathonId] = useState(null);
 
   const {
@@ -213,6 +215,13 @@ export const App = () => {
             onClose={() => setLegalModalTab(null)}
           />
         )}
+
+        {isContactOpen && (
+          <ContactModal
+            isOpen={isContactOpen}
+            onClose={() => setIsContactOpen(false)}
+          />
+        )}
       </div>
 
       <Footer
@@ -222,6 +231,7 @@ export const App = () => {
         settings={settings}
         onOpenSettings={handleOpenSettings}
         onOpenLegal={(tab) => setLegalModalTab(tab)}
+        onOpenContact={() => setIsContactOpen(true)}
       />
     </div>
   );

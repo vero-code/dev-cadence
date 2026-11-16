@@ -194,7 +194,7 @@ export const LogModal = ({
               setErrors((prev) => ({ ...prev, url: "" }));
             }}
           />
-          {errors.url && <div className="form-error">⚠️ {errors.url}</div>}
+          {errors.url && <div className="form-error">{errors.url}</div>}
         </div>
 
         <LogDateFields

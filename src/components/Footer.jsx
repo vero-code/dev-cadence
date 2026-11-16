@@ -9,6 +9,7 @@ export const Footer = ({
   settings,
   onOpenSettings,
   onOpenLegal,
+  onOpenContact,
 }) => {
   return (
     <footer className="app-footer">
@@ -46,6 +47,14 @@ export const Footer = ({
             onClick={() => onOpenLegal && onOpenLegal('terms')}
           >
             Terms of Use
+          </button>
+          <span className="credits-dot">&bull;</span>
+          <button
+            type="button"
+            className="footer-legal-btn"
+            onClick={() => onOpenContact && onOpenContact()}
+          >
+            Contact
           </button>
         </div>
       </div>
