@@ -20,35 +20,34 @@ export const Footer = ({
         onOpenSettings={onOpenSettings}
       />
       <div className="footer-credits">
-        <a
-          href={GITHUB_REPO_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="footer-author-link"
-        >
-          vero-code
-        </a>
-        <span>&copy; {new Date().getFullYear()}</span>
-        <span className="credits-dot">&bull;</span>
-        <button
-          type="button"
-          className="footer-legal-btn"
-          onClick={() => onOpenLegal && onOpenLegal('privacy')}
-        >
-          Privacy Policy
-        </button>
-        <span className="credits-dot">&bull;</span>
-        <button
-          type="button"
-          className="footer-legal-btn"
-          onClick={() => onOpenLegal && onOpenLegal('terms')}
-        >
-          Terms of Use
-        </button>
-        <span className="credits-dot">&bull;</span>
-        <span className="footer-version" title="Release: October 20, 2026">
-          v0.2.0
-        </span>
+        <div className="footer-credits-group">
+          <span>&copy; {new Date().getFullYear()}</span>
+          <a
+            href={GITHUB_REPO_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="footer-author-link"
+          >
+            Dev Cadence
+          </a>
+        </div>
+        <div className="footer-credits-group">
+          <button
+            type="button"
+            className="footer-legal-btn"
+            onClick={() => onOpenLegal && onOpenLegal('privacy')}
+          >
+            Privacy Policy
+          </button>
+          <span className="credits-dot">&bull;</span>
+          <button
+            type="button"
+            className="footer-legal-btn"
+            onClick={() => onOpenLegal && onOpenLegal('terms')}
+          >
+            Terms of Use
+          </button>
+        </div>
       </div>
     </footer>
   );

@@ -74,12 +74,18 @@
   border-top: 1px solid var(--border-subtle);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: 0.45rem;
   font-family: var(--font-heading);
   font-size: var(--text-sm);
   letter-spacing: 0.06em;
   color: var(--text-dim);
+}
+
+.footer-credits-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
 }
 
 .footer-credits .credits-dot {

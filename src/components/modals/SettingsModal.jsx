@@ -67,7 +67,7 @@ export const SettingsModal = ({
             showAutoSaved={activeTab === "general"}
             leftContent={
               <span className="modal-footer-hint">
-                To disable or remove the model, turn off &ldquo;On-device
+                To remove the model, turn off &ldquo;On-device
                 AI&rdquo; in Chrome Settings.
               </span>
             }
