@@ -55,7 +55,7 @@ export const downloadNanoModel = async () => {
       signal: abortController.signal,
       monitor(m) {
         m.addEventListener('downloadprogress', (e) => {
-          console.log(`Downloaded ${e.loaded * 100}%`);
+          // console.log(`Downloaded ${e.loaded * 100}%`);
           setState({ progress: Math.round(e.loaded * 100) });
         });
       },
