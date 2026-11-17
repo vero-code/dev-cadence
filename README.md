@@ -1,11 +1,10 @@
-# Dev Cadence — Hackathon Capacity & Pacing Planner
+# Dev Cadence — Build & Rest Capacity Planner
 
-> **Chrome Side Panel extension for Devpost. Paces monthly workload, flags date collisions with split cells, and guards rest buffers to turn registrations into submissions.**
+> **Chrome Side Panel extension to pace monthly sprint workload, flag date collisions with split cells, and guard your rest buffer.**
 
 ![React 19](https://img.shields.io/badge/React-19-61dafb?logo=react&logoColor=black)
 ![Vite 6](https://img.shields.io/badge/Vite-6-646cff?logo=vite&logoColor=white)
 ![Chrome Extension](https://img.shields.io/badge/Manifest_V3-Side_Panel-4285f4?logo=google-chrome&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-green.svg)
 
 
 > 📺 **Video Tutorial**
@@ -16,55 +15,50 @@
 
 ## 💡 The Problem
 
-Logging multiple hackathons across disconnected calendars causes:
+Logging multiple projects and sprints across disconnected calendars causes:
 
-1. **Overcommitment:** Registering without seeing overlapping sprint dates.
+1. **Overcommitment:** Planning new work without seeing overlapping sprint dates.
 2. **Date Collisions:** Unnoticed clashing crunch periods and simultaneous deadlines.
-3. **Burnout:** Zero visibility into remaining rest days, leading to missed submissions.
+3. **Burnout:** Zero visibility into remaining rest days, leading to missed deadlines.
 
-**Dev Cadence** lives directly inside Chrome's Side Panel next to Devpost as a real-time capacity guardrail.
+**Dev Cadence** lives directly inside Chrome's Side Panel as a real-time capacity guardrail.
 
 ---
 
 ## ✨ Features
 
 ### 📅 1. Monthly Calendar & Collision Shader
-- **Interactive Grid:** Displays active hackathon sprint periods with custom colors and emojis.
-- **Split-Cell Gradients:** Overlapping hackathons dynamically split cells diagonally (`linear-gradient`) with collision badges (`⚡`).
-- **Clean Day Numbers:** Numbers stay clear at the top; `START` / `END` badges and emojis sit neatly at the bottom.
-- **Deadlines & Popovers:** Submission deadlines are flagged (`🏁`). Click any busy day for quick event details and edit triggers.
+- **Interactive Grid:** Displays active sprint periods with custom colors and emojis.
+- **Split-Cell Gradients:** Overlapping sprints dynamically split cells diagonally (`linear-gradient`) with collision badges (`⚡`).
+- **Clean Day Numbers:** Numbers stay clear at the top; `START` / `END` / `1 DAY` badges and emojis sit neatly at the bottom.
+- **Deadlines & Popovers:** Deadlines are flagged (`🏁`). Hover any busy day for quick event details.
 
 ### 🔄 2. Real-Time Form & Calendar Sync
-- **Smart Range Anchor:** Click any empty day to auto-span a sprint by your configured turnaround. Click later days to dynamically stretch or shrink the sprint; click before the start to shift the start date; click the start day again to deselect.
-- **Live Preview Aura:** Editing dates in the form instantly highlights the calendar with a glowing dashed aura, translucent tint, and animated deadline flag (`🏁`).
-- **Date Safety Guard:** Automatically enforces `startDate <= endDate` and prevents invalid date collisions.
+- **Smart Range Anchor:** Click any day to auto-span a sprint by your configured `Build Days`. Click later days to stretch or shrink the sprint; click before the start to shift the start date.
+- **Live Preview Aura:** Editing dates in the inline form instantly highlights the calendar with a dashed aura, translucent tint, and animated deadline flag (`🏁`).
+- **Date Validation:** Enforces valid `Start Date`, `End Date`, and optional `Deadline` ranges on save.
 
 ### 🛡️ 3. Tri-Color Capacity Guardrail & Rest Buffer
-- **Tri-Color Capacity Bar:** Visual breakdown of your monthly days:
-  - 🔵 **Blue (Sprint Days):** Total scheduled hackathon commitment.
-  - 🟣 **Purple (Available Buffer):** Free days remaining before dipping into rest.
-  - 🟢 **Green (Target Rest):** Protected recharge buffer (configured in Settings, e.g. 8–12 days).
-- **Burnout Warning:** Prominent overload badge alerts you when work encroaches on your rest buffer.
+- **Compact Capacity Bar:** Visual breakdown of your monthly days (`BUILD`, `FREE`, `REST X/Yd`):
+  - 🔵 **Blue (Build):** Scheduled sprint days in the month.
+  - 🟢 **Green (Free):** Available days remaining before dipping into rest.
+  - 🟣 **Purple (Rest):** Protected recharge buffer (`0–31` days configured in Settings).
 
 ### 📋 4. Dual-Layout Tracker (Cards & Table)
-- **Cards & Table Modes:** Switch between compact cards (optimized for side panels) and a classic table view.
-- **Status Filter:** Filter entries instantly (*Interested*, *Planning*, *In Progress*, *Submitted*).
-- **Active Month Scope:** Shows all hackathons active in the current month, including multi-month sprints.
-- **In-Place Actions:** 3-dots menu for fast editing and confirmed deletion.
+- **Cards & Table Modes:** Switch between compact cards and a table view.
+- **Status Filter:** Filter entries by lifecycle status (*Interest*, *Join*, *Early*, *Draft*, *Done*).
+- **Active Month Scope:** Shows all sprints active in the selected month, including multi-month sprints.
+- **In-Place Actions:** 3-dots menu for editing and confirmed deletion.
 
 ### 🎨 5. Multi-Theme Engine & Custom Typography
-- **3 Built-In Themes:**
-  - 🌐 **Devpost Classic Navy:** Deep obsidian navy, electric cyan, and glowing borders.
-  - ⚙️ **Rich Automaton Dark:** Clockwork steampunk, warm brass, and mechanical gears.
-  - 📜 **Light Parchment & Brass:** Warm paper, sepia tones, and bronze accents.
-- **3 Font Presets:** `Bahnschrift` (Technical), `Cinzel Automaton` (Serif), `Modern Geometric` (Sans).
-- **Font Scaling:** *Compact*, *Normal*, and *Large* sizing with live preview and auto-save.
+- **3 Built-In Themes:** `Ocean Slate`, `Rich Dark`, and `Warm Vellum`.
+- **3 Font Presets:** `Bahnschrift`, `Marcellus`, and `Plus Jakarta Sans`.
+- **Font Scaling:** `90%`, `100%`, and `110%` scaling via CSS tokens with auto-save.
 
-### 🔒 6. 100% Local-First & Zero Telemetry
-- **No Cloud, No Trackers:** Zero accounts, zero external APIs, zero tracking cookies.
-- **Dual Storage:** Uses `chrome.storage.local` in the extension with fallback to `localStorage`.
-- **Danger Zone:** 1-click verified *Clear Hackathons* and complete *Factory Reset*.
-- **Legal Center:** Integrated *Privacy Policy* and *Terms of Use* dialog in the footer.
+### 🔒 6. Local-First & Data Portability
+- **Local Storage:** Uses `chrome.storage.local` in the extension with fallback to `localStorage`.
+- **JSON Backup:** 1-click `Export JSON` and `Import JSON` to move data between devices.
+- **Data Management:** Verified `Clear Sprints` and `Reset All` controls, plus `Legal` and `Contact Support` modals.
 
 ---
 
@@ -123,33 +117,21 @@ Logging multiple hackathons across disconnected calendars causes:
 ## 🛠️ Tech Stack & Structure
 
 - **Framework:** [React 19](https://react.dev/) + [Vite 6](https://vite.dev/)
-- **Styling:** Vanilla CSS with CSS tokens, container queries, and backdrop blur
+- **Styling:** Modular Vanilla CSS with CSS tokens and responsive scaling
 - **Platform:** Chrome Extension Manifest V3 (`side_panel`, `storage`, background worker)
-- **Built With AI:** Developed via **Devpost Learn Skill Pack** (`1-start` &rarr; `6-ship`) inside **Google Antigravity** using Flipped Interaction.
 
 ```text
 dev-cadence/
 ├── public/                 # Extension manifest, icons, service worker
 ├── src/
-│   ├── components/
-│   │   ├── CalendarGrid.jsx    # Calendar, split-cell shader, range sync
-│   │   ├── CapacityBar.jsx     # Workload capacity bar & rest alert
-│   │   ├── ConfirmModal.jsx    # Deletion confirmation dialog
-│   │   ├── Footer.jsx          # Capacity bar, author & legal links
-│   │   ├── Header.jsx          # Branding, avatar & gear trigger
-│   │   ├── Icons.jsx           # Precision vector SVG icons
-│   │   ├── LegalModal.jsx      # Privacy Policy & Terms of Use
-│   │   ├── LogModal.jsx        # Hackathon form with live sync
-│   │   ├── MonthNavigator.jsx  # Inline month navigation
-│   │   ├── PipelineTable.jsx   # Dual-view tracker (Cards/Table)
-│   │   └── SettingsModal.jsx   # Themes, fonts, targets & Danger Zone
-│   ├── utils/
-│   │   ├── calendarUtils.js    # Matrix math, collisions & gradients
-│   │   └── storage.js          # Dual chrome.storage / localStorage bridge
-│   ├── App.jsx                 # State coordinator & sync orchestration
-│   ├── constants.js            # Themes, typography presets & colors
-│   └── index.css               # Design tokens, layouts & animations
-├── devpost/                # Scope, PRD, spec, and build checklist
+│   ├── components/         # Calendar, Tracker, CapacityBar, Header, Footer, SVG icons
+│   │   └── modals/         # Inline LogModal, Settings, Analytics, Legal, Contact, Confirm
+│   ├── hooks/              # Storage state and calendar selection flow hooks
+│   ├── styles/             # Modular domain stylesheets (calendar, tracker, modals, analytics)
+│   ├── utils/              # Date math, range preview, validation, and storage bridge
+│   ├── App.jsx             # Root state coordinator
+│   ├── constants.js        # Themes, typography presets, status options, and limits
+│   └── index.css           # Stylesheet entry point
 └── package.json
 ```
 
@@ -173,20 +155,19 @@ npm run build
 1. Open `chrome://extensions` in Chrome.
 2. Enable **Developer mode** (top right).
 3. Click **Load unpacked** and select the `dist/` folder.
-4. Pin Dev Cadence and click its icon on any Devpost page.
+4. Pin Dev Cadence and open it in the Chrome Side Panel.
 
 ---
 
 ## 🧪 Quick Test
 
-- **Collision Split:** Log two overlapping hackathons (e.g. Oct 13–20 and Oct 18–25) to see diagonal split cells with `⚡`.
-- **Live Sync:** Open Log Modal and change dates; watch the calendar update in real-time with cyan glow.
-- **Rest Alert:** Set Target Rest Days to `10` in Settings and log 25 work days to trigger the overload pill.
-- **Dual Views:** Switch between Cards and Table views in the Tracker header.
-- **Themes & Fonts:** Open Settings to toggle themes and typography with instant preview.
+- **Collision Split:** Log two overlapping sprints (e.g. Nov 13–20 and Nov 18–25) to see diagonal split cells.
+- **Live Sync:** Open the Sprint form and change dates; watch the calendar update in real time.
+- **Rest Buffer:** Adjust `Rest Days` in Settings and see the `REST X/Yd` indicator update in the Capacity Bar.
+- **Backup & Restore:** Export your sprints to JSON in `Settings -> Data Management` and import them back.
 
 ---
 
 ## 📄 License
 
-[MIT License](LICENSE) &bull; Built for **Build With AI: Basics** on Devpost.
+[Apache License 2.0](LICENSE). Originally created for [Build With AI: Basics](https://devpost.com/software/dev-cadence) on Devpost as a hackathon pacing planner; expanded into a general-purpose sprint capacity planner for developers as part of **#BuildHybridAI 2026**.
