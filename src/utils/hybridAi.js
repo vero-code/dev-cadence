@@ -1,4 +1,5 @@
 import { initializeApp } from 'firebase/app';
+import { initializeAppCheck, CustomProvider } from 'firebase/app-check';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -10,3 +11,14 @@ const firebaseConfig = {
 };
 
 export const firebaseApp = initializeApp(firebaseConfig);
+
+self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+initializeAppCheck(firebaseApp, {
+  provider: new CustomProvider({
+    getToken: async () => ({
+      token: '',
+      expireTimeMillis: Date.now(),
+    }),
+  }),
+  isTokenAutoRefreshEnabled: true,
+});
