@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { GITHUB_REPO_URL } from '../../constants';
+import { GITHUB_REPO_URL, LEGAL_DATES } from '../../constants';
 
 export const LegalModal = ({
   isOpen,
@@ -197,7 +197,7 @@ export const LegalModal = ({
 
         <div className="modal-footer modal-footer-row" style={{ marginTop: '0.85rem' }}>
           <span className="modal-footer-hint">
-            {activeTab === 'privacy' ? '100% Local-First' : 'Advisory Decision-Support'}
+            {activeTab === 'privacy' ? '100% Local-First' : 'Advisory Decision-Support'} &bull; Updated {LEGAL_DATES[activeTab]}
           </span>
           <button type="button" className="btn-primary" onClick={onClose} style={{ minWidth: '85px' }}>
             Close

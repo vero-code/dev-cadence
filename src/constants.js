@@ -138,3 +138,8 @@ export const CAPACITY_LIMITS = {
 
 export const APP_VERSION = 'v0.3.0';
 export const APP_RELEASE_DATE = 'November 17, 2026';
+
+export const LEGAL_DATES = {
+  privacy: 'November 16, 2026',
+  terms: 'November 16, 2026',
+};
