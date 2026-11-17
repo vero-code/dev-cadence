@@ -94,11 +94,10 @@ export const DataManagementSection = ({
         Export or restore a local JSON backup, or clear saved data.
       </p>
 
-      <div className="danger-actions-row" style={{ marginBottom: '0.5rem' }}>
+      <div className="danger-actions-row backup-actions-row">
         <button
           type="button"
-          className="btn-secondary"
-          style={{ flex: 1, justifyContent: 'center', display: 'flex', alignItems: 'center', gap: '0.35rem' }}
+          className="btn-secondary backup-action-btn"
           onClick={handleExportJson}
         >
           <ExportIcon />
@@ -106,8 +105,7 @@ export const DataManagementSection = ({
         </button>
         <button
           type="button"
-          className="btn-secondary"
-          style={{ flex: 1, justifyContent: 'center', display: 'flex', alignItems: 'center', gap: '0.35rem' }}
+          className="btn-secondary backup-action-btn"
           onClick={() => fileInputRef.current?.click()}
         >
           <ImportIcon />
@@ -117,7 +115,7 @@ export const DataManagementSection = ({
           ref={fileInputRef}
           type="file"
           accept=".json,application/json"
-          style={{ display: 'none' }}
+          className="hidden-file-input"
           onChange={handleImportFileChange}
         />
       </div>
