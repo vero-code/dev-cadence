@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { THEMES, FONT_PRESETS, FONT_SIZES, CAPACITY_LIMITS } from "../../constants";
 import { ChevronDownIcon } from "../Icons";
-import { WarningIcon, TrashIcon, ResetIcon, InfoIcon } from "../FormIcons";
+import { InfoIcon } from "../FormIcons";
+import { DataManagementSection } from "./DataManagementSection";
 
 export const GeneralSettingsTab = ({
   settings,
@@ -10,6 +11,7 @@ export const GeneralSettingsTab = ({
   onSelectTheme,
   onClearAllHackathons,
   onResetAllData,
+  onImportData,
 }) => {
   const [targetRestDays, setTargetRestDays] = useState(
     settings?.targetRestDays ?? 8,
@@ -17,9 +19,6 @@ export const GeneralSettingsTab = ({
   const [avgTurnaroundDays, setAvgTurnaroundDays] = useState(
     settings?.avgTurnaroundDays ?? 10,
   );
-  const [confirmClearHackathons, setConfirmClearHackathons] = useState(false);
-  const [confirmResetAll, setConfirmResetAll] = useState(false);
-  const [resetMessage, setResetMessage] = useState(null);
 
   const handleNumberChange = (setter, key, { min, max }) => (e) => {
     const val = e.target.value;
@@ -34,36 +33,6 @@ export const GeneralSettingsTab = ({
     const parsed = Math.max(min, Math.min(max, parseInt(value, 10) || fallback));
     setter(parsed);
     onUpdateSettings?.({ [key]: parsed });
-  };
-
-  const handleClearHackathonsClick = async () => {
-    if (!confirmClearHackathons) {
-      setConfirmClearHackathons(true);
-      setConfirmResetAll(false);
-      return;
-    }
-    if (onClearAllHackathons) {
-      await onClearAllHackathons();
-      setConfirmClearHackathons(false);
-      setResetMessage("All hackathons have been cleared.");
-      setTimeout(() => setResetMessage(null), 3000);
-    }
-  };
-
-  const handleResetAllClick = async () => {
-    if (!confirmResetAll) {
-      setConfirmResetAll(true);
-      setConfirmClearHackathons(false);
-      return;
-    }
-    if (onResetAllData) {
-      await onResetAllData();
-      setConfirmResetAll(false);
-      setResetMessage(
-        "All data and preferences have been reset to factory defaults.",
-      );
-      setTimeout(() => setResetMessage(null), 3000);
-    }
   };
 
   return (
@@ -213,51 +182,11 @@ export const GeneralSettingsTab = ({
       </div>
 
       {/* Danger Zone */}
-      <div className="settings-danger-zone">
-        <div className="danger-zone-title">Data Management</div>
-        <p className="danger-zone-desc">
-          Clear logged events or reset the extension to defaults.
-        </p>
-        <div className="danger-actions-row">
-          <button
-            type="button"
-            className={`danger-btn-outline ${confirmClearHackathons ? "confirming" : ""}`}
-            onClick={handleClearHackathonsClick}
-          >
-            {confirmClearHackathons ? (
-            <>
-              <WarningIcon />
-              Confirm Clear Sprints
-            </>
-          ) : (
-            <>
-              <TrashIcon />
-              Clear Sprints
-            </>
-          )}
-          </button>
-          <button
-            type="button"
-            className={`danger-btn-outline ${confirmResetAll ? "confirming" : ""}`}
-            onClick={handleResetAllClick}
-          >
-            {confirmResetAll ? (
-              <>
-                <WarningIcon />
-                Confirm Factory Reset
-              </>
-            ) : (
-              <>
-                <ResetIcon />
-                Reset All
-              </>
-            )}
-          </button>
-        </div>
-        {resetMessage && (
-          <div className="settings-reset-msg">✓ {resetMessage}</div>
-        )}
-      </div>
+      <DataManagementSection
+        onClearAllHackathons={onClearAllHackathons}
+        onResetAllData={onResetAllData}
+        onImportData={onImportData}
+      />
     </>
   );
 };

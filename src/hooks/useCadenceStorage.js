@@ -78,6 +78,19 @@ export const useCadenceStorage = () => {
     applyAppearance(DEFAULT_SETTINGS);
   };
 
+  const importData = async (data) => {
+    const nextHackathons = Array.isArray(data.hackathons) ? data.hackathons : [];
+    const nextSettings = { ...DEFAULT_SETTINGS, ...(data.settings || {}) };
+    const nextTheme = data.theme || DEFAULT_THEME;
+    await saveHackathons(nextHackathons);
+    await saveSettings(nextSettings);
+    await saveTheme(nextTheme);
+    setHackathons(nextHackathons);
+    setSettings(nextSettings);
+    setTheme(nextTheme);
+    applyAppearance(nextSettings);
+  };
+
   return {
     hackathons,
     settings,
@@ -88,5 +101,6 @@ export const useCadenceStorage = () => {
     updateSettings,
     clearHackathons,
     resetAllData,
+    importData,
   };
 };

@@ -24,6 +24,7 @@ export const App = () => {
     updateSettings,
     clearHackathons,
     resetAllData,
+    importData,
   } = useCadenceStorage();
 
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -80,17 +81,9 @@ export const App = () => {
     setDeleteCandidate(null);
   };
 
-  const handleCancelDelete = () => {
-    setDeleteCandidate(null);
-  };
-
-  const handleOpenSettings = () => {
-    setIsSettingsOpen(true);
-  };
-
-  const handleCloseSettings = () => {
-    setIsSettingsOpen(false);
-  };
+  const handleCancelDelete = () => setDeleteCandidate(null);
+  const handleOpenSettings = () => setIsSettingsOpen(true);
+  const handleCloseSettings = () => setIsSettingsOpen(false);
 
   const handleClearAllHackathons = async () => {
     await clearHackathons();
@@ -212,6 +205,7 @@ export const App = () => {
             onSelectTheme={selectTheme}
             onClearAllHackathons={handleClearAllHackathons}
             onResetAllData={handleResetAllData}
+            onImportData={importData}
           />
         )}
 

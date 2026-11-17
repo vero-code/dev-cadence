@@ -13,6 +13,7 @@ export const SettingsModal = ({
   onSelectTheme,
   onClearAllHackathons,
   onResetAllData,
+  onImportData,
 }) => {
   const [activeTab, setActiveTab] = useState("general");
 
@@ -58,6 +59,7 @@ export const SettingsModal = ({
               onSelectTheme={onSelectTheme}
               onClearAllHackathons={onClearAllHackathons}
               onResetAllData={onResetAllData}
+              onImportData={onImportData}
             />
           ) : (
             <AiSettingsTab />

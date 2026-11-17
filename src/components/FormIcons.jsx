@@ -129,3 +129,47 @@ export const InfoIcon = ({ className = '', size = 13 }) => (
     <line x1="8" y1="4.75" x2="8.01" y2="4.75" />
   </svg>
 );
+
+/**
+ * Vector download icon for JSON export
+ */
+export const ExportIcon = ({ className = '', size = 16 }) => (
+  <svg
+    className={className}
+    width={size}
+    height={size}
+    viewBox="0 0 16 16"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M8 2.5v7.5" />
+    <path d="M5 7.25 8 10.25l3-3" />
+    <path d="M2.75 11.5v1.75h10.5V11.5" />
+  </svg>
+);
+
+/**
+ * Vector upload icon for JSON import
+ */
+export const ImportIcon = ({ className = '', size = 16 }) => (
+  <svg
+    className={className}
+    width={size}
+    height={size}
+    viewBox="0 0 16 16"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M8 10V2.5" />
+    <path d="M5 5.25 8 2.25l3 3" />
+    <path d="M2.75 11.5v1.75h10.5V11.5" />
+  </svg>
+);
