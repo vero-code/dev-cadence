@@ -92,7 +92,7 @@ export const LegalModal = ({
                   <li><strong>Browser <code>localStorage</code>:</strong> Used as an automatic fallback when running in standard web environments.</li>
                 </ul>
                 <p>
-                  The extension requests only the minimal <code>storage</code> permission. It has zero access to your open tabs, page contents, keystrokes, or network activity.
+                  The extension uses <code>storage</code> and <code>sidePanel</code> for local persistence and UI, plus <code>activeTab</code>, <code>scripting</code>, and host permissions strictly to read the current page text when you explicitly click to extract sprint details. It never reads pages in the background, tracks browsing history, or logs keystrokes.
                 </p>
               </div>
 
