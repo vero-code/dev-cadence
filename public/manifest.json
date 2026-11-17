@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Dev Cadence — Hackathon Capacity Planner",
-  "version": "1.0.0",
-  "description": "In-context side panel for Devpost to pace your hackathon workload, visualize overlap, and turn registrations into submissions.",
+  "name": "Dev Cadence — Capacity Planner",
+  "version": "0.3.0",
+  "description": "Side panel capacity planner to schedule sprints, spot date overlaps, and protect your monthly rest buffer.",
   "icons": {
     "16": "icon16.png",
     "48": "icon48.png",

@@ -135,3 +135,6 @@ export const CAPACITY_LIMITS = {
   rest: { min: 0, max: 31, fallback: 0 },
   sprint: { min: 1, max: 31, fallback: 10 },
 };
+
+export const APP_VERSION = 'v0.3.0';
+export const APP_RELEASE_DATE = 'November 17, 2026';

@@ -1,3 +1,5 @@
+import { APP_VERSION, APP_RELEASE_DATE } from '../../constants';
+
 export const ModalFooter = ({
   showAutoSaved = false,
   leftContent = null,
@@ -9,8 +11,8 @@ export const ModalFooter = ({
           <span className="modal-autosaved">
             <span className="modal-autosaved-dot">●</span> Auto-saved
           </span>
-          <span className="modal-footer-hint" title="Release: October 20, 2026">
-            v0.2.0
+          <span className="modal-footer-hint" title={`Release: ${APP_RELEASE_DATE}`}>
+            {APP_VERSION}
           </span>
         </>
       ) : (

@@ -70,6 +70,36 @@ Logging multiple hackathons across disconnected calendars causes:
 
 ## 📦 Changelog
 
+### v0.3.0 *(November 17, 2026)*
+
+- Added an AI settings tab to check Chrome on-device AI (`Gemini Nano`) status and download the local model.
+
+- Migrated font sizes across the app to CSS scale tokens (`10/12/14px`, `12/14/16px`, `14/16/18px`) and replaced `Cinzel` with `Marcellus`.
+
+- Defaulted the calendar to the current month and added a header logo click to return to the current month.
+
+- Made the main panel scrollable between the fixed header and footer, and opened Analytics in the full panel view with a return action.
+
+- Converted the Sprint form into an inline card, aligned `Start Date`, `End Date`, and `Deadline` in one row, and made `Deadline` optional.
+
+- Removed silent date auto-correction and added inline validation errors, including `Deadline` range checks against start and end dates.
+
+- Added single-day (`1 DAY`) event support and responsive layout rules for multiple badges (`TODAY`, `START`, `END`) and emojis in calendar cells.
+
+- Updated the color and emoji palette for visibility across light and dark themes, and added screen-reader labels (`aria-label`, `aria-pressed`).
+
+- Added descriptions to status dropdown options, updated theme names, and replaced hackathon/Devpost labels with universal sprint terminology.
+
+- Extracted `SprintLinkButton` with an updated tooltip and replaced emojis in the Sprint form and Settings buttons with vector SVG icons.
+
+- Redesigned `CapacityBar` into a compact single-line summary (`BUILD`, `FREE`, `REST X/Yd`) and unified segment colors across themes.
+
+- Updated `Settings -> General` with dropdown selectors, a single row for `Build Days`, `Rest Days` (`0–31`), and `Hover` with info tooltips, plus local JSON backup (`Export JSON` / `Import JSON`).
+
+- Added a `Contact Support` modal with Discord webhook delivery, updated the license to Apache 2.0, simplified footer links, and moved the version label to Settings.
+
+- Added ESLint configuration, split all components and CSS files under 250 lines into domain modules, and removed unused styles and exports.
+
 ### v0.2.0 *(October 20, 2026)*
 
 - Added a hackathon URL field.
