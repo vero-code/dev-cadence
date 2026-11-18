@@ -177,6 +177,7 @@ export const App = () => {
                     onPickOnCalendar={handlePickOnCalendar}
                     onDatesChange={handleDatesChange}
                     calendarPickedDate={calendarPickedDate}
+                    hackathons={hackathons}
                   />
               ) : (
                 <PipelineTable

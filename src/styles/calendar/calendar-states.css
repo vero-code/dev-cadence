@@ -137,4 +137,5 @@
 .day-event-emoji {
   font-size: var(--text-md);
   line-height: 1;
+  margin-bottom: 3px;
 }

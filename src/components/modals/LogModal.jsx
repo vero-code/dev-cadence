@@ -21,6 +21,7 @@ export const LogModal = ({
   avgTurnaroundDays = 10,
   onDatesChange,
   calendarPickedDate,
+  hackathons = [],
 }) => {
   const clickStepRef = useRef(0);
   const lastProcessedClickRef = useRef(null);
@@ -125,6 +126,7 @@ export const LogModal = ({
     e.preventDefault();
     const { errors: nextErrors, payload } = validateAndBuildLogPayload({
       editingHackathon,
+      hackathons,
       name,
       url,
       deadline,

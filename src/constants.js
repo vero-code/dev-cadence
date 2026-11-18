@@ -145,3 +145,5 @@ export const LEGAL_DATES = {
 };
 
 export const CLOUD_FALLBACK_MODEL = 'gemini-4-hydrogen';
+
+export const MAX_SPRINTS_PER_DAY = 2;

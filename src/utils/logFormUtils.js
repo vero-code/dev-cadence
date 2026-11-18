@@ -1,4 +1,4 @@
-import { STATUS_OPTIONS } from '../constants';
+import { STATUS_OPTIONS, MAX_SPRINTS_PER_DAY } from '../constants';
 import { addDaysToDateString } from './calendarUtils';
 
 export const getInitialFormState = ({
@@ -144,8 +144,21 @@ export const computeDatesFromCalendarClick = (clickedDate, currentValues, avgTur
   return patch;
 };
 
+const findOverloadedDay = (startDate, endDate, hackathons = [], editingId = null) => {
+  let current = startDate;
+  while (current <= endDate) {
+    const count = hackathons.filter(
+      (h) => h.id !== editingId && h.startDate <= current && current <= h.endDate,
+    ).length;
+    if (count >= MAX_SPRINTS_PER_DAY) return current;
+    current = addDaysToDateString(current, 1);
+  }
+  return null;
+};
+
 export const validateAndBuildLogPayload = ({
   editingHackathon,
+  hackathons = [],
   name,
   url,
   deadline,
@@ -167,6 +180,18 @@ export const validateAndBuildLogPayload = ({
     errors.endDate = 'Please provide an end date.';
   } else if (startDate && new Date(endDate) < new Date(startDate)) {
     errors.endDate = 'End date cannot be earlier than start date.';
+  }
+
+  if (!errors.endDate && startDate && endDate) {
+    const overloadedDay = findOverloadedDay(
+      startDate,
+      endDate,
+      hackathons,
+      editingHackathon?.id,
+    );
+    if (overloadedDay) {
+      errors.endDate = `Max ${MAX_SPRINTS_PER_DAY} sprints per day (limit reached on ${overloadedDay}).`;
+    }
   }
 
   if (deadline && startDate && new Date(deadline) < new Date(startDate)) {
