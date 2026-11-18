@@ -172,3 +172,49 @@
   box-shadow: 0 6px 18px rgba(244, 63, 94, 0.5);
   font-size: var(--text-sm);
 }
+
+.ai-extract-wrap {
+  margin-bottom: 0.75rem;
+}
+
+.ai-extract-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.ai-extract-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: var(--text-sm);
+  line-height: 1;
+  padding: 0.35rem 0.65rem;
+}
+
+.ai-extract-btn svg {
+  display: block;
+  transform: translateY(-1px);
+}
+
+.ai-source-badge {
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid var(--border-subtle);
+}
+
+.ai-source-badge.on-device {
+  color: var(--emerald);
+  border-color: var(--emerald);
+  background: rgba(16, 185, 129, 0.12);
+}
+
+.ai-source-badge.in-cloud {
+  color: var(--cyan-primary);
+  border-color: var(--cyan-primary);
+  background: rgba(6, 182, 212, 0.12);
+}

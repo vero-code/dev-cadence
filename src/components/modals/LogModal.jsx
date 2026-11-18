@@ -8,6 +8,7 @@ import {
 import { ColorEmojiPicker } from "./ColorEmojiPicker";
 import { LogDateFields } from "./LogDateFields";
 import { EditPenIcon, LogSprintIcon } from "../FormIcons";
+import { AiExtractBar } from "./AiExtractBar";
 
 export const LogModal = ({
   isOpen,
@@ -164,6 +165,14 @@ export const LogModal = ({
       </div>
 
       <form onSubmit={handleSubmit}>
+        <AiExtractBar
+          onExtracted={(data) => {
+            if (data.title) setName(data.title);
+            if (data.url) setUrl(data.url);
+            if (data.deadline) setDeadline(data.deadline);
+            setErrors({});
+          }}
+        />
         <div className="form-group">
           <label className="form-label">Title</label>
           <input

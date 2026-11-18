@@ -173,3 +173,23 @@ export const ImportIcon = ({ className = '', size = 16 }) => (
     <path d="M2.75 11.5v1.75h10.5V11.5" />
   </svg>
 );
+
+/**
+ * Vector sparkle icon for AI actions
+ */
+export const SparkleIcon = ({ className = '', size = 14 }) => (
+  <svg
+    className={className}
+    width={size}
+    height={size}
+    viewBox="0 0 16 16"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M8 1.75 9.6 6.4 14.25 8 9.6 9.6 8 14.25 6.4 9.6 1.75 8 6.4 6.4 8 1.75z" />
+  </svg>
+);

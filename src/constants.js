@@ -15,7 +15,7 @@ export const EMOJI_OPTIONS = [
 ];
 
 export const STATUS_OPTIONS = [
-  { value: 'Interest', description: 'Considering or bookmarking for later' },
+  { value: 'Interest', description: 'Considering for later' },
   { value: 'Join', description: 'Committed and scheduled' },
   { value: 'Early', description: 'Early stage, just getting started' },
   { value: 'Draft', description: 'Active work, finalizing details' },

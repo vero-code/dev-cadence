@@ -74,8 +74,6 @@ export const generateHybridText = async (prompt) => {
 const sprintJsonSchema = Schema.object({
   properties: {
     title: Schema.string(),
-    startDate: Schema.string(),
-    endDate: Schema.string(),
     deadline: Schema.string(),
   },
   optionalProperties: ['deadline'],
@@ -176,8 +174,6 @@ export const extractSprintFromActiveTab = async () => {
   return {
     data: {
       title: data.title || title || '',
-      startDate: data.startDate || '',
-      endDate: data.endDate || '',
       deadline: data.deadline || '',
       url: url || '',
     },

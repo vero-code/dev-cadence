@@ -31,7 +31,7 @@ export const Header = ({
           </div>
           <div className="brand-title-wrap">
             <h1 className="brand-title">Dev Cadence</h1>
-            <span className="brand-subtitle">Capacity Planner</span>
+            <span className="brand-subtitle">Planner</span>
           </div>
         </div>
         <div className="header-actions">
