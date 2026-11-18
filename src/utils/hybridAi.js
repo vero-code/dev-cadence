@@ -66,8 +66,10 @@ export const generateHybridText = async (prompt) => {
 
 // Uncomment for check in console:
 // window.testHybridAi = () => generateHybridText('Say hello in one short sentence.');
+
 // Write into console: await window.testHybridAi();
-// Result: return {text: 'Hello!', inferenceSource: 'on_device'}
+// Return:
+// {text: 'Hello!', inferenceSource: 'on_device'}
 
 const sprintJsonSchema = Schema.object({
   properties: {
@@ -117,3 +119,77 @@ export const extractSprintFromText = async (pageText, todayStr) => {
     inferenceSource,
   };
 };
+
+export const readActiveTabContent = () =>
+  new Promise((resolve, reject) => {
+    if (!chrome?.tabs?.query || !chrome?.scripting?.executeScript) {
+      reject(new Error('Tab extraction is only available in the Chrome Extension.'));
+      return;
+    }
+
+    chrome.tabs.query({ active: true, windowType: 'normal' }, ([tab]) => {
+      if (!tab?.id) {
+        reject(new Error('No active browser tab found.'));
+        return;
+      }
+
+      chrome.scripting.executeScript(
+        {
+          target: { tabId: tab.id },
+          func: () => ({
+            url: window.location.href,
+            title: document.title,
+            text:
+              window.getSelection()?.toString().trim() ||
+              document.body?.innerText ||
+              '',
+          }),
+        },
+        (results) => {
+          if (chrome.runtime.lastError || !results?.[0]?.result) {
+            reject(
+              new Error(
+                'Cannot read this tab. Open a standard https:// webpage and try again.',
+              ),
+            );
+            return;
+          }
+          resolve(results[0].result);
+        },
+      );
+    });
+  });
+
+export const extractSprintFromActiveTab = async () => {
+  const { url, title, text } = await readActiveTabContent();
+  if (!text.trim()) {
+    throw new Error('The active tab has no readable text.');
+  }
+
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const combinedText = `Page Title: ${title}\n\n${text}`;
+  const { data, inferenceSource } = await extractSprintFromText(
+    combinedText,
+    todayStr,
+  );
+
+  return {
+    data: {
+      title: data.title || title || '',
+      startDate: data.startDate || '',
+      endDate: data.endDate || '',
+      deadline: data.deadline || '',
+      url: url || '',
+    },
+    inferenceSource,
+  };
+};
+
+// Uncomment for check in console:
+// window.testExtractTab = () => extractSprintFromActiveTab();
+
+// Write into console: await window.testExtractTab();
+// Return:
+// You used: on_device
+// {title: '#BuildHybridAI 2026', startDate: '2026-11-18', endDate: '2026-12-01', deadline: '2026-12-01'}
+// {data: {title: '#BuildHybridAI 2026',…}, inferenceSource: 'on_device'}

@@ -38,7 +38,7 @@ export const Footer = ({
             className="footer-legal-btn"
             onClick={() => onOpenLegal && onOpenLegal('privacy')}
           >
-            Privacy Policy
+            Privacy
           </button>
           <span className="credits-dot">&bull;</span>
           <button
@@ -46,7 +46,7 @@ export const Footer = ({
             className="footer-legal-btn"
             onClick={() => onOpenLegal && onOpenLegal('terms')}
           >
-            Terms of Use
+            Terms
           </button>
           <span className="credits-dot">&bull;</span>
           <button
