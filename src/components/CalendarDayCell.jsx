@@ -161,7 +161,13 @@ export const CalendarDayCell = ({
               e.emoji ? (
                 <span
                   key={e.id}
-                  className={`day-event-emoji ${hoveredHackathonId === e.id ? 'highlighted-event-emoji' : ''}`}
+                  className={`day-event-emoji ${
+                    hoveredHackathonId === e.id
+                      ? 'highlighted-event-emoji'
+                      : hoveredHackathonId
+                        ? 'dimmed-event-emoji'
+                        : ''
+                  }`}
                   title={`${e.name} (${e.status})`}
                   style={{ color: e.color }}
                 >

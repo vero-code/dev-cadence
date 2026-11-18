@@ -45,26 +45,6 @@
     filter 0.2s ease;
 }
 
-/* Highlighted Event Emoji inside Calendar Cell */
-.day-event-emoji.highlighted-event-emoji {
-  transform: scale(1.4);
-  filter: drop-shadow(0 0 6px var(--hover-hack-color, currentColor));
-  transition:
-    transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1),
-    filter 0.15s ease;
-  display: inline-block;
-  animation: emojiPulse 1.2s infinite alternate ease-in-out;
-}
-
-@keyframes emojiPulse {
-  0% {
-    transform: scale(1.25);
-  }
-  100% {
-    transform: scale(1.45);
-  }
-}
-
 /* Highlighted Deadline Flag on Hover */
 .deadline-flag.highlighted-deadline-flag {
   animation: deadlineBounce 0.55s infinite alternate ease-in-out !important;
@@ -136,6 +116,32 @@
 
 .day-event-emoji {
   font-size: var(--text-md);
-  line-height: 1;
-  margin-bottom: 3px;
+  line-height: 1.4;
+  display: inline-block;
+  margin-bottom: 2px;
+  
+}
+
+.day-event-emoji.highlighted-event-emoji {
+  transform: scale(1.4);
+  filter: drop-shadow(0 0 6px var(--hover-hack-color, currentColor));
+  transition:
+    transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1),
+    filter 0.15s ease;
+  display: inline-block;
+  animation: emojiPulse 1.2s infinite alternate ease-in-out;
+}
+
+.day-event-emoji.dimmed-event-emoji {
+  opacity: 0.25;
+  filter: grayscale(40%);
+}
+
+@keyframes emojiPulse {
+  0% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1.45);
+  }
 }
