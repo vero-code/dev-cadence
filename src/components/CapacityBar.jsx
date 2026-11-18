@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { getDaysInMonth } from '../utils/calendarUtils';
 import { adviseScheduleWithAi } from '../utils/hybridAi';
 import { SparkleIcon } from './FormIcons';
+import { ChevronDownIcon } from './Icons';
 
 export const CapacityBar = ({ year, month, hackathons, settings, onOpenSettings }) => {
   const daysInMonth = getDaysInMonth(year, month);
@@ -41,6 +42,7 @@ export const CapacityBar = ({ year, month, hackathons, settings, onOpenSettings 
   const restPercent = Math.max(0, 100 - committedPercent - availablePercent);
 
   const [advice, setAdvice] = useState(null);
+  const [isAdviceOpen, setIsAdviceOpen] = useState(true);
   const [source, setSource] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -61,6 +63,7 @@ export const CapacityBar = ({ year, month, hackathons, settings, onOpenSettings 
       });
       setAdvice(res.text);
       setSource(res.inferenceSource);
+      setIsAdviceOpen(true);
     } catch (err) {
       setError(err?.message || 'Failed to generate schedule advice.');
     } finally {
@@ -139,12 +142,26 @@ export const CapacityBar = ({ year, month, hackathons, settings, onOpenSettings 
                 ? `${overlapDaysCount}d overlap`
                 : `${shortageDays}d rest deficit`}
             </span>
-            {sourceLabel && (
-              <span
-                className={`ai-source-badge ${sourceLabel === 'On-Device Nano' ? 'on-device' : 'in-cloud'}`}
-              >
-                {sourceLabel}
-              </span>
+            {sourceLabel && advice && (
+              <div className="capacity-source-group">
+                <span
+                  className={`ai-source-badge ${sourceLabel === 'On-Device Nano' ? 'on-device' : 'in-cloud'}`}
+                >
+                  {sourceLabel}
+                </span>
+                <button
+                  type="button"
+                  className="capacity-collapse-btn"
+                  onClick={() => setIsAdviceOpen((prev) => !prev)}
+                  title={isAdviceOpen ? 'Collapse advice' : 'Expand advice'}
+                  aria-expanded={isAdviceOpen}
+                >
+                  <ChevronDownIcon
+                    size={14}
+                    className={isAdviceOpen ? 'chevron-rotated' : ''}
+                  />
+                </button>
+              </div>
             )}
             <button
               type="button"
@@ -159,7 +176,7 @@ export const CapacityBar = ({ year, month, hackathons, settings, onOpenSettings 
 
           {error && <div className="form-error">{error}</div>}
 
-          {advice && (
+          {advice && isAdviceOpen && (
             <div className="capacity-advice-box">
               <div className="capacity-advice-text">{advice}</div>
               <button
