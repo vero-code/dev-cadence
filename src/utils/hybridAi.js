@@ -16,6 +16,7 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
+// Initialize FirebaseApp
 export const firebaseApp = initializeApp(firebaseConfig);
 
 self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
@@ -29,14 +30,25 @@ initializeAppCheck(firebaseApp, {
   isTokenAutoRefreshEnabled: true,
 });
 
+// Initialize the Gemini Developer API backend service
 const ai = getAI(firebaseApp, { backend: new GoogleAIBackend() });
 
+// Create a `GenerativeModel` instance
 export const model = getGenerativeModel(ai, {
   mode: InferenceMode.PREFER_ON_DEVICE,
   inCloudParams: { model: 'gemini-4-hydrogen' },
 });
 
+export const initDeviceModel = (onProgress) =>
+  model.initializeDeviceModel((val) => {
+    const percent = Math.round(val * 10000) / 100;
+    console.log(`Download progress: ${percent}%`);
+    onProgress?.(percent);
+  });
+
 export const generateHybridText = async (prompt) => {
+  await initDeviceModel().catch(() => {});
+
   const result = await model.generateContent(prompt);
   const inferenceSource = result.response.inferenceSource;
   const text = result.response.text();
