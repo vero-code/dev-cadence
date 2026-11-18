@@ -61,6 +61,14 @@ export const countHackathonsByStatus = (hackathons) => {
   return counts;
 };
 
+export const compareSprintsByDeadline = (a, b) => {
+  const deadlineA = a.deadline || '9999-99-99';
+  const deadlineB = b.deadline || '9999-99-99';
+  if (deadlineA !== deadlineB) return deadlineA.localeCompare(deadlineB);
+
+  return (a.name || '').localeCompare(b.name || '');
+};
+
 export const filterAndSortHackathons = (hackathons, statusFilter) => {
   if (!hackathons) return [];
   let list = hackathons;
@@ -77,15 +85,5 @@ export const filterAndSortHackathons = (hackathons, statusFilter) => {
     });
   }
 
-  return [...list].sort((a, b) => {
-    const dateA = a.startDate || a.deadline || '9999-99-99';
-    const dateB = b.startDate || b.deadline || '9999-99-99';
-    if (dateA !== dateB) return dateA.localeCompare(dateB);
-
-    const deadlineA = a.deadline || '9999-99-99';
-    const deadlineB = b.deadline || '9999-99-99';
-    if (deadlineA !== deadlineB) return deadlineA.localeCompare(deadlineB);
-
-    return (a.name || '').localeCompare(b.name || '');
-  });
+  return [...list].sort(compareSprintsByDeadline);
 };
