@@ -61,3 +61,9 @@ export const generateHybridText = async (prompt) => {
     inferenceSource,
   };
 };
+
+// Uncomment for check in console:
+window.testHybridAi = () => generateHybridText('Say hello in one short sentence.');
+
+// Write into console: await window.testHybridAi();
+// Result: return {text: 'Hello!', inferenceSource: 'on_device'}
