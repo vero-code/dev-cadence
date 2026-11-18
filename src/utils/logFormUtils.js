@@ -45,8 +45,12 @@ export const getInitialFormState = ({
     };
   }
 
+  const now = new Date();
+  const isCurrentMonth =
+    initialYear === now.getFullYear() && initialMonth === now.getMonth();
+  const dayPadded = String(isCurrentMonth ? now.getDate() : 1).padStart(2, '0');
   const monthPadded = String(initialMonth + 1).padStart(2, '0');
-  const defaultStart = `${initialYear}-${monthPadded}-05`;
+  const defaultStart = `${initialYear}-${monthPadded}-${dayPadded}`;
   const defaultEnd = addDaysToDateString(defaultStart, avgDays - 1);
 
   return {

@@ -53,10 +53,7 @@ export const useLogCalendarFlow = (avgTurnaroundDays) => {
       const end = dateRange.end || addDaysToDateString(dateRange.start, avgDays - 1);
       setPrefillDates({ startDate: dateRange.start, endDate: end });
     } else {
-      const monthPadded = String(currentMonth + 1).padStart(2, '0');
-      const start = `${currentYear}-${monthPadded}-05`;
-      const end = addDaysToDateString(start, avgDays - 1);
-      setPrefillDates({ startDate: start, endDate: end });
+      setPrefillDates(null);
     }
     setEditingHackathon(null);
     setIsSelectingOnCalendar(false);
