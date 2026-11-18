@@ -45,7 +45,14 @@
     filter 0.2s ease;
 }
 
-/* Highlighted Deadline Flag on Hover */
+.deadline-flag {
+  font-size: var(--text-sm);
+  line-height: 1;
+  display: inline-block;
+  margin-top: 4px;
+  animation: pulse 2s infinite;
+}
+
 .deadline-flag.highlighted-deadline-flag {
   animation: deadlineBounce 0.55s infinite alternate ease-in-out !important;
   filter: drop-shadow(0 0 6px #f59e0b) drop-shadow(0 0 12px #ef4444) !important;
