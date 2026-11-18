@@ -48,10 +48,33 @@ export const initDeviceModel = (onProgress) =>
     onProgress?.(percent);
   });
 
+const raceWithAbort = (promise, signal) => {
+  if (!signal) return promise;
+  if (signal.aborted) {
+    return Promise.reject(new DOMException('Aborted', 'AbortError'));
+  }
+  return new Promise((resolve, reject) => {
+    const onAbort = () => reject(new DOMException('Aborted', 'AbortError'));
+    signal.addEventListener('abort', onAbort, { once: true });
+    promise.then(
+      (res) => {
+        signal.removeEventListener('abort', onAbort);
+        resolve(res);
+      },
+      (err) => {
+        signal.removeEventListener('abort', onAbort);
+        reject(err);
+      },
+    );
+  });
+};
+
 export const generateHybridText = async (prompt, { signal } = {}) => {
-  await initDeviceModel().catch(() => {});
-  if (signal?.aborted) throw new DOMException('Aborted', 'AbortError');
-  const result = await model.generateContent(prompt, { signal });
+  await raceWithAbort(initDeviceModel().catch(() => {}), signal);
+  const result = await raceWithAbort(
+    model.generateContent(prompt, { signal }),
+    signal,
+  );
   const inferenceSource = result.response.inferenceSource;
   const text = result.response.text().trim();
 
@@ -89,8 +112,10 @@ export const sprintExtractorModel = getGenerativeModel(ai, {
 });
 
 export const extractSprintFromText = async (pageText, todayStr, { signal } = {}) => {
-  await sprintExtractorModel.initializeDeviceModel().catch(() => {});
-  if (signal?.aborted) throw new DOMException('Aborted', 'AbortError');
+  await raceWithAbort(
+    sprintExtractorModel.initializeDeviceModel().catch(() => {}),
+    signal,
+  );
 
   const prompt = [
     `Today is ${todayStr}. Extract sprint or event details from the text below.`,
@@ -99,7 +124,10 @@ export const extractSprintFromText = async (pageText, todayStr, { signal } = {})
     pageText.slice(0, 6000),
   ].join('\n');
 
-  const result = await sprintExtractorModel.generateContent(prompt, { signal });
+  const result = await raceWithAbort(
+    sprintExtractorModel.generateContent(prompt, { signal }),
+    signal,
+  );
   const inferenceSource = result.response.inferenceSource;
   const data = JSON.parse(result.response.text());
 
@@ -153,8 +181,10 @@ export const readActiveTabContent = () =>
   });
 
 export const extractSprintFromActiveTab = async ({ signal } = {}) => {
-  const { url, title, text } = await readActiveTabContent();
-  if (signal?.aborted) throw new DOMException('Aborted', 'AbortError');
+  const { url, title, text } = await raceWithAbort(
+    readActiveTabContent(),
+    signal,
+  );
   if (!text.trim()) {
     throw new Error('The active tab has no readable text.');
   }
