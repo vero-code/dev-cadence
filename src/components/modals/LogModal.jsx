@@ -156,17 +156,6 @@ export const LogModal = ({
           {editingHackathon ? <EditPenIcon size={16} /> : <LogSprintIcon size={16} />}
           {editingHackathon ? "Edit Sprint" : "Log Sprint"}
         </h2>
-        <button
-          type="button"
-          className="modal-close-btn"
-          onClick={onClose}
-          aria-label="Close form"
-        >
-          &times;
-        </button>
-      </div>
-
-      <form onSubmit={handleSubmit}>
         <AiExtractBar
           onExtracted={(data) => {
             if (data.title) setName(data.title);
@@ -175,6 +164,9 @@ export const LogModal = ({
             setErrors({});
           }}
         />
+      </div>
+
+      <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label className="form-label">Title</label>
           <input

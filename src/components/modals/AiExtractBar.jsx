@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { extractSprintFromActiveTab } from '../../utils/hybridAi';
 import { SparkleIcon } from '../FormIcons';
+import { AiSourceBadge } from '../AiSourceBadge';
 
 export const AiExtractBar = ({ onExtracted }) => {
   const [loading, setLoading] = useState(false);
@@ -21,16 +22,10 @@ export const AiExtractBar = ({ onExtracted }) => {
     }
   };
 
-  const sourceLabel =
-    source === 'on_device' || source === 'ON_DEVICE'
-      ? 'On-Device Nano'
-      : source
-        ? 'Cloud Fallback'
-        : null;
-
   return (
     <div className="ai-extract-wrap">
       <div className="ai-extract-row">
+        <AiSourceBadge source={source} />
         <button
           type="button"
           className="btn-secondary ai-extract-btn"
@@ -41,13 +36,6 @@ export const AiExtractBar = ({ onExtracted }) => {
           <SparkleIcon />
           {loading ? 'Extracting...' : 'Extract from Page'}
         </button>
-        {sourceLabel && (
-          <span
-            className={`ai-source-badge ${sourceLabel === 'On-Device Nano' ? 'on-device' : 'in-cloud'}`}
-          >
-            {sourceLabel}
-          </span>
-        )}
       </div>
       {error && <div className="form-error">{error}</div>}
     </div>

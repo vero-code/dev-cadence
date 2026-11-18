@@ -3,6 +3,7 @@ import { getDaysInMonth } from '../utils/calendarUtils';
 import { adviseScheduleWithAi } from '../utils/hybridAi';
 import { SparkleIcon } from './FormIcons';
 import { ChevronDownIcon } from './Icons';
+import { AiSourceBadge } from './AiSourceBadge';
 
 export const CapacityBar = ({ year, month, hackathons, settings, onOpenSettings }) => {
   const daysInMonth = getDaysInMonth(year, month);
@@ -71,13 +72,6 @@ export const CapacityBar = ({ year, month, hackathons, settings, onOpenSettings 
     }
   };
 
-  const sourceLabel =
-    source === 'on_device' || source === 'ON_DEVICE'
-      ? 'On-Device Nano'
-      : source
-        ? 'Cloud Fallback'
-        : null;
-
   return (
     <div className="capacity-card">
       <div className="capacity-metrics-grid">
@@ -142,13 +136,9 @@ export const CapacityBar = ({ year, month, hackathons, settings, onOpenSettings 
                 ? `${overlapDaysCount}d overlap`
                 : `${shortageDays}d rest deficit`}
             </span>
-            {sourceLabel && advice && (
+            {advice && (
               <div className="capacity-source-group">
-                <span
-                  className={`ai-source-badge ${sourceLabel === 'On-Device Nano' ? 'on-device' : 'in-cloud'}`}
-                >
-                  {sourceLabel}
-                </span>
+                <AiSourceBadge source={source} />
                 <button
                   type="button"
                   className="capacity-collapse-btn"
