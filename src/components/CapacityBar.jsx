@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { getDaysInMonth } from '../utils/calendarUtils';
+import { adviseScheduleWithAi } from '../utils/hybridAi';
+import { SparkleIcon } from './FormIcons';
 
 export const CapacityBar = ({ year, month, hackathons, settings, onOpenSettings }) => {
   const daysInMonth = getDaysInMonth(year, month);
@@ -7,23 +9,22 @@ export const CapacityBar = ({ year, month, hackathons, settings, onOpenSettings 
 
   const monthPadded = String(month + 1).padStart(2, '0');
 
-  // Count distinct calendar days in this month that have at least one active hackathon
   let committedDaysCount = 0;
+  let overlapDaysCount = 0;
   for (let d = 1; d <= daysInMonth; d++) {
     const dayPadded = String(d).padStart(2, '0');
     const dateString = `${year}-${monthPadded}-${dayPadded}`;
     const targetDate = new Date(dateString);
 
-    const isCommitted = hackathons.some((h) => {
+    const activeCount = hackathons.filter((h) => {
       if (!h.startDate || !h.endDate) return false;
       const start = new Date(h.startDate);
       const end = new Date(h.endDate);
       return targetDate >= start && targetDate <= end;
-    });
+    }).length;
 
-    if (isCommitted) {
-      committedDaysCount++;
-    }
+    if (activeCount > 0) committedDaysCount++;
+    if (activeCount > 1) overlapDaysCount++;
   }
 
   const freeDays = Math.max(0, daysInMonth - committedDaysCount);
@@ -38,6 +39,41 @@ export const CapacityBar = ({ year, month, hackathons, settings, onOpenSettings 
   const committedPercent = Math.min(100, Math.round((committedDaysCount / daysInMonth) * 100));
   const availablePercent = Math.min(100 - committedPercent, Math.round((surplusDays / daysInMonth) * 100));
   const restPercent = Math.max(0, 100 - committedPercent - availablePercent);
+
+  const [advice, setAdvice] = useState(null);
+  const [source, setSource] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const showAdvisorTrigger = isOvercommitted || overlapDaysCount > 0;
+
+  const handleGetAdvice = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const res = await adviseScheduleWithAi({
+        sprints: hackathons,
+        year,
+        month,
+        targetRest,
+        freeDays,
+        overlapDaysCount,
+      });
+      setAdvice(res.text);
+      setSource(res.inferenceSource);
+    } catch (err) {
+      setError(err?.message || 'Failed to generate schedule advice.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const sourceLabel =
+    source === 'on_device' || source === 'ON_DEVICE'
+      ? 'On-Device Nano'
+      : source
+        ? 'Cloud Fallback'
+        : null;
 
   return (
     <div className="capacity-card">
@@ -94,6 +130,52 @@ export const CapacityBar = ({ year, month, hackathons, settings, onOpenSettings 
           }
         />
       </div>
+
+      {showAdvisorTrigger && (
+        <div className="capacity-advisor-wrap">
+          <div className="capacity-advisor-bar">
+            <span className="capacity-advisor-hint">
+              {overlapDaysCount > 0
+                ? `${overlapDaysCount}d overlap`
+                : `${shortageDays}d rest deficit`}
+            </span>
+            <button
+              type="button"
+              className="btn-secondary ai-extract-btn"
+              onClick={handleGetAdvice}
+              disabled={loading}
+            >
+              <SparkleIcon size={12} />
+              {loading ? 'Analyzing...' : 'AI Pace Advisor'}
+            </button>
+          </div>
+
+          {error && <div className="form-error">{error}</div>}
+
+          {advice && (
+            <div className="capacity-advice-box">
+              <div className="capacity-advice-header">
+                {sourceLabel && (
+                  <span
+                    className={`ai-source-badge ${sourceLabel === 'On-Device Nano' ? 'on-device' : 'in-cloud'}`}
+                  >
+                    {sourceLabel}
+                  </span>
+                )}
+                <button
+                  type="button"
+                  className="modal-close-btn"
+                  onClick={() => setAdvice(null)}
+                  aria-label="Close advice"
+                >
+                  &times;
+                </button>
+              </div>
+              <div className="capacity-advice-text">{advice}</div>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

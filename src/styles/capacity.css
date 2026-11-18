@@ -81,3 +81,46 @@
 .warning-seg {
   background: #f59e0b;
 }
+
+.capacity-advisor-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.15rem;
+}
+
+.capacity-advisor-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.capacity-advisor-hint {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--amber-gear);
+}
+
+.capacity-advice-box {
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 0.5rem 0.65rem;
+  max-height: 130px;
+  overflow-y: auto;
+}
+
+.capacity-advice-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.3rem;
+}
+
+.capacity-advice-text {
+  font-size: var(--text-sm);
+  color: var(--text-main);
+  white-space: pre-wrap;
+  line-height: 1.4;
+}
