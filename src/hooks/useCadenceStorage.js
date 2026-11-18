@@ -15,7 +15,7 @@ const DEFAULT_SETTINGS = {
   fontSize: 'normal',
 };
 
-const DEFAULT_THEME = 'steampunk';
+const DEFAULT_THEME = 'parchment';
 
 const applyAppearance = (settings) => {
   document.documentElement.setAttribute('data-font', settings?.fontPreset || DEFAULT_SETTINGS.fontPreset);

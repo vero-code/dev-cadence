@@ -20,7 +20,7 @@ const isChromeStorageAvailable = () => {
 
 const sanitizeTheme = (t) => {
   if (t === 'dark') return 'devpost';
-  return t || 'devpost';
+  return t || 'parchment';
 };
 
 const sanitizeSettings = (s) => {
