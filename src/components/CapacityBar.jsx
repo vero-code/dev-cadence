@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { getDaysInMonth } from '../utils/calendarUtils';
 import { adviseScheduleWithAi } from '../utils/hybridAi';
 import { SparkleIcon } from './FormIcons';
@@ -47,28 +47,44 @@ export const CapacityBar = ({ year, month, hackathons, settings, onOpenSettings 
   const [source, setSource] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const abortRef = useRef(null);
+
+  useEffect(() => () => abortRef.current?.abort(), []);
 
   const showAdvisorTrigger = isOvercommitted || overlapDaysCount > 0;
 
   const handleGetAdvice = async () => {
+    if (loading) {
+      abortRef.current?.abort();
+      return;
+    }
+
+    const controller = new AbortController();
+    abortRef.current = controller;
     setLoading(true);
     setError('');
+
     try {
-      const res = await adviseScheduleWithAi({
-        sprints: hackathons,
-        year,
-        month,
-        targetRest,
-        freeDays,
-        overlapDaysCount,
-      });
+      const res = await adviseScheduleWithAi(
+        {
+          sprints: hackathons,
+          year,
+          month,
+          targetRest,
+          freeDays,
+          overlapDaysCount,
+        },
+        { signal: controller.signal },
+      );
       setAdvice(res.text);
       setSource(res.inferenceSource);
       setIsAdviceOpen(true);
     } catch (err) {
+      if (err?.name === 'AbortError' || controller.signal.aborted) return;
       setError(err?.message || 'Failed to generate schedule advice.');
     } finally {
       setLoading(false);
+      abortRef.current = null;
     }
   };
 
@@ -157,10 +173,9 @@ export const CapacityBar = ({ year, month, hackathons, settings, onOpenSettings 
               type="button"
               className="btn-secondary ai-extract-btn"
               onClick={handleGetAdvice}
-              disabled={loading}
             >
               <SparkleIcon size={12} />
-              {loading ? 'Analyzing...' : 'AI Pace Advisor'}
+              {loading ? 'Stop' : 'AI Pace Advisor'}
             </button>
           </div>
 

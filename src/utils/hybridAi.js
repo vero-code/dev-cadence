@@ -48,10 +48,10 @@ export const initDeviceModel = (onProgress) =>
     onProgress?.(percent);
   });
 
-export const generateHybridText = async (prompt) => {
+export const generateHybridText = async (prompt, { signal } = {}) => {
   await initDeviceModel().catch(() => {});
-
-  const result = await model.generateContent(prompt);
+  if (signal?.aborted) throw new DOMException('Aborted', 'AbortError');
+  const result = await model.generateContent(prompt, { signal });
   const inferenceSource = result.response.inferenceSource;
   const text = result.response.text().trim();
 
@@ -63,13 +63,6 @@ export const generateHybridText = async (prompt) => {
     inferenceSource,
   };
 };
-
-// Uncomment for check in console:
-// window.testHybridAi = () => generateHybridText('Say hello in one short sentence.');
-
-// Write into console: await window.testHybridAi();
-// Return:
-// {text: 'Hello!', inferenceSource: 'on_device'}
 
 const sprintJsonSchema = Schema.object({
   properties: {
@@ -95,8 +88,9 @@ export const sprintExtractorModel = getGenerativeModel(ai, {
   },
 });
 
-export const extractSprintFromText = async (pageText, todayStr) => {
+export const extractSprintFromText = async (pageText, todayStr, { signal } = {}) => {
   await sprintExtractorModel.initializeDeviceModel().catch(() => {});
+  if (signal?.aborted) throw new DOMException('Aborted', 'AbortError');
 
   const prompt = [
     `Today is ${todayStr}. Extract sprint or event details from the text below.`,
@@ -105,7 +99,7 @@ export const extractSprintFromText = async (pageText, todayStr) => {
     pageText.slice(0, 6000),
   ].join('\n');
 
-  const result = await sprintExtractorModel.generateContent(prompt);
+  const result = await sprintExtractorModel.generateContent(prompt, { signal });
   const inferenceSource = result.response.inferenceSource;
   const data = JSON.parse(result.response.text());
 
@@ -158,8 +152,9 @@ export const readActiveTabContent = () =>
     });
   });
 
-export const extractSprintFromActiveTab = async () => {
+export const extractSprintFromActiveTab = async ({ signal } = {}) => {
   const { url, title, text } = await readActiveTabContent();
+  if (signal?.aborted) throw new DOMException('Aborted', 'AbortError');
   if (!text.trim()) {
     throw new Error('The active tab has no readable text.');
   }
@@ -169,6 +164,7 @@ export const extractSprintFromActiveTab = async () => {
   const { data, inferenceSource } = await extractSprintFromText(
     combinedText,
     todayStr,
+    { signal },
   );
 
   return {
@@ -181,15 +177,6 @@ export const extractSprintFromActiveTab = async () => {
   };
 };
 
-// Uncomment for check in console:
-// window.testExtractTab = () => extractSprintFromActiveTab();
-
-// Write into console: await window.testExtractTab();
-// Return:
-// You used: on_device
-// {title: '#BuildHybridAI 2026', startDate: '2026-11-18', endDate: '2026-12-01', deadline: '2026-12-01'}
-// {data: {title: '#BuildHybridAI 2026',…}, inferenceSource: 'on_device'}
-
 export const adviseScheduleWithAi = async ({
   sprints,
   year,
@@ -197,7 +184,7 @@ export const adviseScheduleWithAi = async ({
   targetRest,
   freeDays,
   overlapDaysCount,
-}) => {
+}, { signal } = {}) => {
   const monthName = new Date(year, month, 1).toLocaleString('en-US', {
     month: 'long',
     year: 'numeric',
@@ -222,24 +209,5 @@ export const adviseScheduleWithAi = async ({
     'Plain text only: no markdown, no asterisks (*), no intro title. Reply with 2 short numbered lines.',
   ].join('\n');
 
-  return generateHybridText(prompt);
+  return generateHybridText(prompt, { signal });
 };
-
-// Uncomment, npm run build, reload app in chrome://extensions
-// await window.testAdvisor();
-// Return:
-// You used: on_device.
-// Here's a concise capacity plan: ...
-
-// window.testAdvisor = () =>
-//   adviseScheduleWithAi({
-//     sprints: [
-//       { name: 'Sprint A', startDate: '2026-11-18', endDate: '2026-11-25', deadline: '2026-11-25', status: 'Join' },
-//       { name: 'Sprint B', startDate: '2026-11-20', endDate: '2026-11-28', deadline: '2026-11-30', status: 'Interest' },
-//     ],
-//     year: 2026,
-//     month: 10,
-//     targetRest: 8,
-//     freeDays: 3,
-//     overlapDaysCount: 6,
-//   });
