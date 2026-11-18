@@ -189,3 +189,55 @@ export const extractSprintFromActiveTab = async () => {
 // You used: on_device
 // {title: '#BuildHybridAI 2026', startDate: '2026-11-18', endDate: '2026-12-01', deadline: '2026-12-01'}
 // {data: {title: '#BuildHybridAI 2026',…}, inferenceSource: 'on_device'}
+
+export const adviseScheduleWithAi = async ({
+  sprints,
+  year,
+  month,
+  targetRest,
+  freeDays,
+  overlapDaysCount,
+}) => {
+  const monthName = new Date(year, month, 1).toLocaleString('en-US', {
+    month: 'long',
+    year: 'numeric',
+  });
+
+  const sprintLines = sprints
+    .map(
+      (s) =>
+        `- "${s.name}": ${s.startDate} to ${s.endDate}${s.deadline ? ` (deadline: ${s.deadline})` : ''}, status: ${s.status}`,
+    )
+    .join('\n');
+
+  const prompt = [
+    `You are a concise developer capacity advisor for ${monthName}.`,
+    `Target rest: ${targetRest} days. Remaining free/rest days: ${freeDays}. Overlapping sprint days: ${overlapDaysCount}.`,
+    'Scheduled sprints:',
+    sprintLines || 'None',
+    '',
+    'Provide 2-3 short, actionable bullet points (max 45 words total):',
+    '1) Which sprint to de-scope to a minimal MVP.',
+    '2) How to shift start/end work dates to eliminate overlaps and protect rest days.',
+  ].join('\n');
+
+  return generateHybridText(prompt);
+};
+
+// Uncomment, npm run build, reload app in chrome://extensions
+// await window.testAdvisor();
+// Return:
+// You used: on_device.
+// Here's a concise capacity plan: ...
+window.testAdvisor = () =>
+  adviseScheduleWithAi({
+    sprints: [
+      { name: 'Sprint A', startDate: '2026-11-18', endDate: '2026-11-25', deadline: '2026-11-25', status: 'Join' },
+      { name: 'Sprint B', startDate: '2026-11-20', endDate: '2026-11-28', deadline: '2026-11-30', status: 'Interest' },
+    ],
+    year: 2026,
+    month: 10,
+    targetRest: 8,
+    freeDays: 3,
+    overlapDaysCount: 6,
+  });
