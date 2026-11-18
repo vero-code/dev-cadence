@@ -120,6 +120,14 @@ export const LogModal = ({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose]);
 
+  useEffect(() => {
+    if (!errors.extract) return undefined;
+    const timer = setTimeout(() => {
+      setErrors((prev) => ({ ...prev, extract: '' }));
+    }, 4000);
+    return () => clearTimeout(timer);
+  }, [errors.extract]);
+
   if (!isOpen) return null;
 
   const handleSubmit = (e) => {
@@ -163,8 +171,15 @@ export const LogModal = ({
             if (data.deadline) setDeadline(data.deadline);
             setErrors({});
           }}
+          onError={(msg) => setErrors((prev) => ({ ...prev, extract: msg }))}
         />
       </div>
+
+      {errors.extract && (
+        <div className="form-error" style={{ marginBottom: '0.65rem' }}>
+          {errors.extract}
+        </div>
+      )}
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
