@@ -1,5 +1,11 @@
 import { initializeApp } from 'firebase/app';
 import { initializeAppCheck, CustomProvider } from 'firebase/app-check';
+import {
+  getAI,
+  getGenerativeModel,
+  GoogleAIBackend,
+  InferenceMode,
+} from 'firebase/ai';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -22,3 +28,24 @@ initializeAppCheck(firebaseApp, {
   }),
   isTokenAutoRefreshEnabled: true,
 });
+
+const ai = getAI(firebaseApp, { backend: new GoogleAIBackend() });
+
+export const model = getGenerativeModel(ai, {
+  mode: InferenceMode.PREFER_ON_DEVICE,
+  inCloudParams: { model: 'gemini-4-hydrogen' },
+});
+
+export const generateHybridText = async (prompt) => {
+  const result = await model.generateContent(prompt);
+  const inferenceSource = result.response.inferenceSource;
+  const text = result.response.text();
+
+  console.log('You used: ' + inferenceSource);
+  console.log(text);
+
+  return {
+    text,
+    inferenceSource,
+  };
+};
