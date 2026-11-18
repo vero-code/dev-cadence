@@ -3,16 +3,15 @@ import { extractSprintFromActiveTab } from '../../utils/hybridAi';
 import { SparkleIcon } from '../FormIcons';
 import { AiSourceBadge } from '../AiSourceBadge';
 
-export const AiExtractBar = ({ onExtracted, onError }) => {
+export const AiExtractBar = ({ source, onSourceChange, onExtracted, onError }) => {
   const [loading, setLoading] = useState(false);
-  const [source, setSource] = useState(null);
 
   const handleExtract = async () => {
     setLoading(true);
     onError?.('');
     try {
       const { data, inferenceSource } = await extractSprintFromActiveTab();
-      setSource(inferenceSource);
+      onSourceChange?.(inferenceSource);
       onExtracted(data);
     } catch (err) {
       onError?.(err?.message || 'Failed to extract sprint details from page.');

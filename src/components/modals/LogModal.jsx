@@ -47,6 +47,7 @@ export const LogModal = ({
   const [color, setColor] = useState(initial.color);
   const [emoji, setEmoji] = useState(initial.emoji);
   const [errors, setErrors] = useState({});
+  const [aiSource, setAiSource] = useState(null);
   const [activeDateField, setActiveDateField] = useState(null);
 
   useEffect(() => {
@@ -174,6 +175,8 @@ export const LogModal = ({
           </button>
         </div>
         <AiExtractBar
+          source={aiSource}
+          onSourceChange={setAiSource}
           onExtracted={(data) => {
             if (data.title) setName(data.title);
             if (data.url) setUrl(data.url);
@@ -200,6 +203,7 @@ export const LogModal = ({
             value={name}
             onChange={(e) => {
               setName(e.target.value);
+              setAiSource(null);
               setErrors((prev) => ({ ...prev, name: "" }));
             }}
             autoFocus
@@ -218,6 +222,7 @@ export const LogModal = ({
             value={url}
             onChange={(e) => {
               setUrl(e.target.value);
+              setAiSource(null);
               setErrors((prev) => ({ ...prev, url: "" }));
             }}
           />
@@ -232,7 +237,10 @@ export const LogModal = ({
           errors={errors}
           onStartDateChange={setStartDate}
           onEndDateChange={setEndDate}
-          onDeadlineChange={setDeadline}
+          onDeadlineChange={(val) => {
+            setDeadline(val);
+            setAiSource(null);
+          }}
           onStatusChange={setStatus}
           onFocusField={setActiveDateField}
           onInteraction={() => {
