@@ -53,7 +53,7 @@ export const generateHybridText = async (prompt) => {
 
   const result = await model.generateContent(prompt);
   const inferenceSource = result.response.inferenceSource;
-  const text = result.response.text();
+  const text = result.response.text().trim();
 
   console.log('You used: ' + inferenceSource);
   console.log(text);
@@ -219,6 +219,7 @@ export const adviseScheduleWithAi = async ({
     'Provide 2-3 short, actionable bullet points (max 45 words total):',
     '1) Which sprint to de-scope to a minimal MVP.',
     '2) How to shift start/end work dates to eliminate overlaps and protect rest days.',
+    'Plain text only: no markdown, no asterisks (*), no intro title. Reply with 2 short numbered lines.',
   ].join('\n');
 
   return generateHybridText(prompt);
@@ -229,15 +230,16 @@ export const adviseScheduleWithAi = async ({
 // Return:
 // You used: on_device.
 // Here's a concise capacity plan: ...
-window.testAdvisor = () =>
-  adviseScheduleWithAi({
-    sprints: [
-      { name: 'Sprint A', startDate: '2026-11-18', endDate: '2026-11-25', deadline: '2026-11-25', status: 'Join' },
-      { name: 'Sprint B', startDate: '2026-11-20', endDate: '2026-11-28', deadline: '2026-11-30', status: 'Interest' },
-    ],
-    year: 2026,
-    month: 10,
-    targetRest: 8,
-    freeDays: 3,
-    overlapDaysCount: 6,
-  });
+
+// window.testAdvisor = () =>
+//   adviseScheduleWithAi({
+//     sprints: [
+//       { name: 'Sprint A', startDate: '2026-11-18', endDate: '2026-11-25', deadline: '2026-11-25', status: 'Join' },
+//       { name: 'Sprint B', startDate: '2026-11-20', endDate: '2026-11-28', deadline: '2026-11-30', status: 'Interest' },
+//     ],
+//     year: 2026,
+//     month: 10,
+//     targetRest: 8,
+//     freeDays: 3,
+//     overlapDaysCount: 6,
+//   });

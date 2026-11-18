@@ -139,6 +139,13 @@ export const CapacityBar = ({ year, month, hackathons, settings, onOpenSettings 
                 ? `${overlapDaysCount}d overlap`
                 : `${shortageDays}d rest deficit`}
             </span>
+            {sourceLabel && (
+              <span
+                className={`ai-source-badge ${sourceLabel === 'On-Device Nano' ? 'on-device' : 'in-cloud'}`}
+              >
+                {sourceLabel}
+              </span>
+            )}
             <button
               type="button"
               className="btn-secondary ai-extract-btn"
@@ -154,24 +161,18 @@ export const CapacityBar = ({ year, month, hackathons, settings, onOpenSettings 
 
           {advice && (
             <div className="capacity-advice-box">
-              <div className="capacity-advice-header">
-                {sourceLabel && (
-                  <span
-                    className={`ai-source-badge ${sourceLabel === 'On-Device Nano' ? 'on-device' : 'in-cloud'}`}
-                  >
-                    {sourceLabel}
-                  </span>
-                )}
-                <button
-                  type="button"
-                  className="modal-close-btn"
-                  onClick={() => setAdvice(null)}
-                  aria-label="Close advice"
-                >
-                  &times;
-                </button>
-              </div>
               <div className="capacity-advice-text">{advice}</div>
+              <button
+                type="button"
+                className="modal-close-btn"
+                onClick={() => {
+                  setAdvice(null);
+                  setSource(null);
+                }}
+                aria-label="Close advice"
+              >
+                &times;
+              </button>
             </div>
           )}
         </div>
