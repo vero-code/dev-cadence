@@ -4,6 +4,7 @@ import { adviseScheduleWithAi } from '../utils/hybridAi';
 import { SparkleIcon } from './FormIcons';
 import { ChevronDownIcon } from './Icons';
 import { AiSourceBadge } from './AiSourceBadge';
+import Markdown from 'react-markdown';
 
 export const CapacityBar = ({ year, month, hackathons, settings, onOpenSettings }) => {
   const daysInMonth = getDaysInMonth(year, month);
@@ -190,7 +191,9 @@ export const CapacityBar = ({ year, month, hackathons, settings, onOpenSettings 
 
           {advice && isAdviceOpen && (
             <div className="capacity-advice-box">
-              <div className="capacity-advice-text">{advice}</div>
+              <div className="capacity-advice-text">
+                <Markdown>{advice}</Markdown>
+              </div>
               <button
                 type="button"
                 className="modal-close-btn"

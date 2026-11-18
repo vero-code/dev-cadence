@@ -113,11 +113,27 @@
   gap: 0.4rem;
 }
 
-.capacity-advice-text {
-  font-size: var(--text-sm);
-  color: var(--text-main);
-  white-space: pre-wrap;
-  line-height: 1.4;
+.capacity-advice-text p,
+.capacity-advice-text ul,
+.capacity-advice-text ol {
+  margin: 0.2rem 0;
+}
+
+.capacity-advice-text p:first-child,
+.capacity-advice-text ul:first-child,
+.capacity-advice-text ol:first-child {
+  margin-top: 0;
+}
+
+.capacity-advice-text p:last-child,
+.capacity-advice-text ul:last-child,
+.capacity-advice-text ol:last-child {
+  margin-bottom: 0;
+}
+
+.capacity-advice-text ul,
+.capacity-advice-text ol {
+  padding-left: 1.1rem;
 }
 
 .capacity-source-group {
