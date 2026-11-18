@@ -193,3 +193,23 @@ export const SparkleIcon = ({ className = '', size = 14 }) => (
     <path d="M8 1.75 9.6 6.4 14.25 8 9.6 9.6 8 14.25 6.4 9.6 1.75 8 6.4 6.4 8 1.75z" />
   </svg>
 );
+
+/**
+ * Vector left arrow icon for back navigation
+ */
+export const ArrowLeftIcon = ({ className = '', size = 16 }) => (
+  <svg
+    className={className}
+    width={size}
+    height={size}
+    viewBox="0 0 16 16"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M10 12.5 5.5 8 10 3.5" />
+  </svg>
+);

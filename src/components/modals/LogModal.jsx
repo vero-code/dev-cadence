@@ -7,7 +7,7 @@ import {
 } from "../../utils/logFormUtils";
 import { ColorEmojiPicker } from "./ColorEmojiPicker";
 import { LogDateFields } from "./LogDateFields";
-import { EditPenIcon, LogSprintIcon } from "../FormIcons";
+import { EditPenIcon, LogSprintIcon, ArrowLeftIcon } from "../FormIcons";
 import { AiExtractBar } from "./AiExtractBar";
 
 export const LogModal = ({
@@ -160,10 +160,22 @@ export const LogModal = ({
       onClick={(e) => e.stopPropagation()}
     >
       <div className="modal-header">
-        <h2 className="modal-title">
-          {editingHackathon ? <EditPenIcon size={16} /> : <LogSprintIcon size={16} />}
-          {editingHackathon ? "Edit Sprint" : "Log Sprint"}
-        </h2>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+          <button
+            type="button"
+            className="modal-close-btn"
+            onClick={onClose}
+            aria-label="Back to tracker"
+            title="Back to tracker"
+            style={{ display: 'inline-flex', alignItems: 'center' }}
+          >
+            <ArrowLeftIcon />
+          </button>
+          <h2 className="modal-title">
+            {editingHackathon ? <EditPenIcon size={16} /> : <LogSprintIcon size={16} />}
+            {editingHackathon ? "Edit Sprint" : "Log Sprint"}
+          </h2>
+        </div>
         <AiExtractBar
           onExtracted={(data) => {
             if (data.title) setName(data.title);
