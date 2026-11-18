@@ -43,6 +43,6 @@ export const buildScheduleAdvicePrompt = ({ sprints, year, month }) => {
     `Sprints:`,
     sprintLines,
     '',
-    'In 2 short plain-text sentences, do not start with "Yes" or "No". State it directly, e.g., "Sprint 1 and Sprint 2 overlap on Nov 1." or "No hackathon overlaps."',
+    'In 3 short plain-text sentences, do not start with "Yes" or "No". State it directly, e.g., "Sprint 1 and Sprint 2 overlap on Nov 1." or "No hackathon overlaps."',
   ].join('\n');
 };

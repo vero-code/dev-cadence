@@ -39,7 +39,30 @@ const ai = getAI(firebaseApp, { backend: new GoogleAIBackend() });
 // Create a `GenerativeModel` instance
 export const model = getGenerativeModel(ai, {
   mode: InferenceMode.PREFER_ON_DEVICE,
-  inCloudParams: { model: CLOUD_FALLBACK_MODEL },
+  inCloudParams: {
+    model: CLOUD_FALLBACK_MODEL,
+    generationConfig: { temperature: 0.2 },
+  },
+  onDeviceParams: {
+    createOptions: {
+      temperature: 0.2,
+      topK: 3,
+      expectedInputs: [{ type: 'text', languages: ['en'] }],
+      expectedOutputs: [{ type: 'text', languages: ['en'] }],
+      initialPrompts: [
+        {
+          role: 'system',
+          content: [
+            {
+              type: 'text',
+              value:
+                'You are a concise developer capacity advisor. Follow exact date facts and reply directly without filler.',
+            },
+          ],
+        },
+      ],
+    },
+  },
 });
 
 export const initDeviceModel = (onProgress) =>
