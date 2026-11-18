@@ -175,24 +175,6 @@
     0 0 10px rgba(0, 229, 255, 0.35);
 }
 
-.today-badge {
-  font-family: var(--font-heading);
-  font-size: var(--text-sm);
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  background: var(--cyan-primary);
-  color: #070d19;
-  padding: 1px 3px;
-  border-radius: 3px;
-  line-height: 1;
-  text-transform: uppercase;
-}
-
-[data-theme="parchment"] .today-badge {
-  background: #0284c7;
-  color: #ffffff;
-}
-
 /* Dashed Border Range Highlight when Log/Edit Modal is open — original cyan/blue style */
 .calendar-day-cell.modal-dashed-cell {
   border: 1.5px dashed var(--cyan-light, #22d3ee) !important;

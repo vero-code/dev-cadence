@@ -11,6 +11,7 @@
 @import './styles/calendar/calendar.css';
 @import './styles/calendar/calendar-cells.css';
 @import './styles/calendar/calendar-states.css';
+@import './styles/calendar/calendar-badges.css';
 @import './styles/calendar/calendar-tooltip.css';
 @import './styles/calendar/calendar-tooltip-list.css';
 

@@ -45,31 +45,6 @@
     filter 0.2s ease;
 }
 
-/* Hover Start and End Badges */
-.hover-start-badge,
-.hover-end-badge {
-  color: #ffffff;
-  font-size: var(--text-sm);
-  font-weight: 800;
-  padding: 1px 4px;
-  border-radius: 3px;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-  animation: badgePop 0.2s ease-out;
-  box-shadow: 0 0 8px var(--hover-hack-glow, rgba(245, 158, 11, 0.5));
-}
-
-@keyframes badgePop {
-  0% {
-    transform: scale(0.7);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
 /* Highlighted Event Emoji inside Calendar Cell */
 .day-event-emoji.highlighted-event-emoji {
   transform: scale(1.4);
@@ -103,41 +78,6 @@
   100% {
     transform: translateY(-4px) scale(1.3);
   }
-}
-
-/* Badges for Draft Start / End Dates */
-.draft-start-badge {
-  background: var(--amber-gear, #f59e0b);
-  color: #111827;
-  font-size: var(--text-sm);
-  font-weight: 800;
-  padding: 1px 4px;
-  border-radius: 3px;
-  letter-spacing: 0.04em;
-  animation: pulseStart 1.8s infinite;
-  white-space: nowrap;
-}
-
-.draft-end-badge {
-  background: #10b981;
-  color: #ffffff;
-  font-size: var(--text-sm);
-  font-weight: 800;
-  padding: 1px 4px;
-  border-radius: 3px;
-  letter-spacing: 0.04em;
-  animation: pulseStart 1.8s infinite;
-  white-space: nowrap;
-}
-
-[data-theme="parchment"] .draft-start-badge {
-  background: #d97706;
-  color: #ffffff;
-}
-
-[data-theme="parchment"] .draft-end-badge {
-  background: #059669;
-  color: #ffffff;
 }
 
 /* Animated Deadline Flag for Draft */
@@ -192,14 +132,6 @@
   font-size: var(--text-sm);
   line-height: 1;
   animation: pulse 2s infinite;
-}
-
-.day-badges-wrap {
-  display: flex;
-  gap: 2px;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
 }
 
 .day-event-emoji {
