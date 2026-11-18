@@ -97,11 +97,10 @@ export const LegalModal = ({
               </div>
 
               <div className="legal-block">
-                <h3 className="legal-heading">3. No Third-Party Analytics or Trackers</h3>
+                <h3 className="legal-heading">3. Hybrid AI Processing & Zero Telemetry</h3>
                 <p>
-                  Dev Cadence contains zero third-party software development kits (SDKs), zero advertising trackers,
-                  and zero telemetry services (such as Google Analytics or Mixpanel). Your scheduling workflow and
-                  hackathon pipeline remain completely private to you.
+                  Dev Cadence contains zero advertising trackers and zero analytics telemetry (such as Google Analytics or Mixpanel).
+                  When you explicitly trigger AI features, prompts run locally on your device via Chrome&apos;s built-in <strong>Gemini Nano</strong> model whenever available, and fall back to <strong>Firebase AI Logic (Gemini 4 Hydrogen)</strong> secured by <strong>Firebase App Check</strong> only when on-device inference is unavailable.
                 </p>
               </div>
 
