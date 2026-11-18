@@ -1,4 +1,5 @@
 import { STATUS_OPTIONS } from "../../constants";
+import { ChevronDownIcon } from "../Icons";
 
 export const LogDateFields = ({
   startDate,
@@ -60,19 +61,22 @@ export const LogDateFields = ({
         {dateError && <div className="form-error">{dateError}</div>}
       </div>
 
-            <div className="form-group">
+      <div className="form-group">
         <label className="form-label">Status</label>
-        <select
-          className="form-select"
-          value={status}
-          onChange={(e) => onStatusChange(e.target.value)}
-        >
-          {STATUS_OPTIONS.map(({ value, description }) => (
-            <option key={value} value={value}>
-              {value} — {description}
-            </option>
-          ))}
-        </select>
+        <div className="select-wrapper">
+          <select
+            className="form-select"
+            value={status}
+            onChange={(e) => onStatusChange(e.target.value)}
+          >
+            {STATUS_OPTIONS.map(({ value, description }) => (
+              <option key={value} value={value}>
+                {value} — {description}
+              </option>
+            ))}
+          </select>
+          <ChevronDownIcon className="select-chevron" size={14} />
+        </div>
       </div>
     </>
   );
