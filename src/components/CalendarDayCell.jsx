@@ -96,6 +96,10 @@ export const CalendarDayCell = ({
   const hasRangeBadge =
     isRangeStart || showDraftStart || showDraftEnd || showHoverStart || showHoverEnd;
 
+  const hasEmojis =
+    day.events.some((e) => e.emoji) ||
+    Boolean(inModalRange && modalActiveRange?.emoji);
+
   return (
     <div
       className={cellClasses}
@@ -121,9 +125,7 @@ export const CalendarDayCell = ({
       </div>
 
       <div className="day-badges-wrap">
-        {day.isToday ? (
-          <span className="today-badge" title="Today">Today</span>
-        ) : hasRangeBadge ? (
+        {hasRangeBadge ? (
           <>
             {isRangeStart && <span className="range-badge">START</span>}
             {showDraftStart && (
@@ -153,7 +155,7 @@ export const CalendarDayCell = ({
               </span>
             )}
           </>
-        ) : (
+        ) : hasEmojis ? (
           <>
             {day.events.map((e) => (
               e.emoji ? (
@@ -177,7 +179,9 @@ export const CalendarDayCell = ({
               </span>
             )}
           </>
-        )}
+        ) : day.isToday ? (
+          <span className="today-badge" title="Today">Today</span>
+        ) : null}
       </div>
     </div>
   );

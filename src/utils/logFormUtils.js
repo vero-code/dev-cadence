@@ -190,7 +190,15 @@ export const validateAndBuildLogPayload = ({
       editingHackathon?.id,
     );
     if (overloadedDay) {
-      errors.endDate = `Max ${MAX_SPRINTS_PER_DAY} sprints per day (limit reached on ${overloadedDay}).`;
+      const msg = `Max ${MAX_SPRINTS_PER_DAY} sprints per day (limit reached on ${overloadedDay}).`;
+      if (overloadedDay === startDate) {
+        errors.startDate = msg;
+      } else if (overloadedDay === endDate) {
+        errors.endDate = msg;
+      } else {
+        errors.startDate = msg;
+        errors.endDate = msg;
+      }
     }
   }
 
