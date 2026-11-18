@@ -7,7 +7,7 @@ import {
 } from "../../utils/logFormUtils";
 import { ColorEmojiPicker } from "./ColorEmojiPicker";
 import { LogDateFields } from "./LogDateFields";
-import { EditPenIcon, LogSprintIcon, ArrowLeftIcon } from "../FormIcons";
+import { ArrowLeftIcon } from "../FormIcons";
 import { AiExtractBar } from "./AiExtractBar";
 
 export const LogModal = ({
@@ -49,7 +49,6 @@ export const LogModal = ({
   const [errors, setErrors] = useState({});
   const [activeDateField, setActiveDateField] = useState(null);
 
-  // Keep a fresh reference to current form values to avoid stale closures and redundant effect triggers
   useEffect(() => {
     currentValuesRef.current = {
       startDate,
@@ -160,21 +159,19 @@ export const LogModal = ({
       onClick={(e) => e.stopPropagation()}
     >
       <div className="modal-header">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+        <div className="modal-title-group">
+          <h2 className="modal-title">
+            <span>{editingHackathon ? "Edit Sprint" : "Log Sprint"}</span>
+          </h2>
           <button
             type="button"
-            className="modal-close-btn"
+            className="btn-primary tracker-add-btn"
             onClick={onClose}
             aria-label="Back to tracker"
             title="Back to tracker"
-            style={{ display: 'inline-flex', alignItems: 'center' }}
           >
-            <ArrowLeftIcon />
+            <ArrowLeftIcon size={12} />
           </button>
-          <h2 className="modal-title">
-            {editingHackathon ? <EditPenIcon size={16} /> : <LogSprintIcon size={16} />}
-            {editingHackathon ? "Edit Sprint" : "Log Sprint"}
-          </h2>
         </div>
         <AiExtractBar
           onExtracted={(data) => {

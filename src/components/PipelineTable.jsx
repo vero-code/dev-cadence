@@ -88,7 +88,6 @@ export const PipelineTable = ({
       <div className="pipeline-header-row">
         <div className="tracker-heading-group">
           <h2 className="section-heading">
-            <TrackerBadgeIcon className="tracker-badge-icon" size={16} />
             <span>Tracker</span>
             <button type="button" className="btn-primary tracker-add-btn" onClick={onAddNew} title="Log Hackathon">
               <PlusIcon size={11} strokeWidth={2.4} />
