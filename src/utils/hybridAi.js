@@ -8,6 +8,7 @@ import {
   Schema,
 } from 'firebase/ai';
 import { CLOUD_FALLBACK_MODEL } from '../constants';
+import { buildScheduleAdvicePrompt } from './scheduleAdvisor';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -69,8 +70,12 @@ const raceWithAbort = (promise, signal) => {
   });
 };
 
+/**
+* Call from AI Pace Advisor.
+*/
 export const generateHybridText = async (prompt, { signal } = {}) => {
   await raceWithAbort(initDeviceModel().catch(() => {}), signal);
+  console.log('Prompt:\n' + prompt);
   const result = await raceWithAbort(
     model.generateContent(prompt, { signal }),
     signal,
@@ -111,6 +116,9 @@ export const sprintExtractorModel = getGenerativeModel(ai, {
   },
 });
 
+/**
+* Call from Extract from Page.
+*/
 export const extractSprintFromText = async (pageText, todayStr, { signal } = {}) => {
   await raceWithAbort(
     sprintExtractorModel.initializeDeviceModel().catch(() => {}),
@@ -207,37 +215,5 @@ export const extractSprintFromActiveTab = async ({ signal } = {}) => {
   };
 };
 
-export const adviseScheduleWithAi = async ({
-  sprints,
-  year,
-  month,
-  targetRest,
-  freeDays,
-  overlapDaysCount,
-}, { signal } = {}) => {
-  const monthName = new Date(year, month, 1).toLocaleString('en-US', {
-    month: 'long',
-    year: 'numeric',
-  });
-
-  const sprintLines = sprints
-    .map(
-      (s) =>
-        `- "${s.name}": ${s.startDate} to ${s.endDate}${s.deadline ? ` (deadline: ${s.deadline})` : ''}, status: ${s.status}`,
-    )
-    .join('\n');
-
-  const prompt = [
-    `You are a concise developer capacity advisor for ${monthName}.`,
-    `Target rest: ${targetRest} days. Remaining free/rest days: ${freeDays}. Overlapping sprint days: ${overlapDaysCount}.`,
-    'Scheduled sprints:',
-    sprintLines || 'None',
-    '',
-    'Provide 2-3 short, actionable bullet points (max 45 words total):',
-    '1) Which sprint to de-scope to a minimal MVP.',
-    '2) How to shift start/end work dates to eliminate overlaps and protect rest days.',
-    'Plain text only: no markdown, no asterisks (*), no intro title. Reply with 2 short numbered lines.',
-  ].join('\n');
-
-  return generateHybridText(prompt, { signal });
-};
+export const adviseScheduleWithAi = async (params, { signal } = {}) =>
+  generateHybridText(buildScheduleAdvicePrompt(params), { signal });
