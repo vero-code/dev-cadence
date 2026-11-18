@@ -85,6 +85,17 @@ export const CalendarDayCell = ({
     isDimmedByHover && 'hackathon-dimmed-by-hover',
   ].filter(Boolean).join(' ');
 
+  const showDraftStart = isModalStartDay && !isRangeStart;
+  const showDraftEnd = isModalEndDay && !isRangeStart;
+  const showHoverStart = isHoveredStartDay && !isRangeStart && !isModalStartDay;
+  const showHoverEnd =
+    isHoveredEndDay &&
+    hoveredHackathon?.endDate !== hoveredHackathon?.startDate &&
+    !isRangeStart &&
+    !isModalEndDay;
+  const hasRangeBadge =
+    isRangeStart || showDraftStart || showDraftEnd || showHoverStart || showHoverEnd;
+
   return (
     <div
       className={cellClasses}
@@ -110,54 +121,62 @@ export const CalendarDayCell = ({
       </div>
 
       <div className="day-badges-wrap">
-        {day.isToday && <span className="today-badge" title="Today">Today</span>}
-        {isRangeStart && <span className="range-badge">START</span>}
-        {isModalStartDay && !isRangeStart && (
-          <span className="range-badge draft-start-badge" title="Draft Start Date">
-            {modalActiveRange?.startDate === modalActiveRange?.endDate ? '1 DAY' : 'START'}
-          </span>
-        )}
-        {isModalEndDay && !isRangeStart && (
-          <span className="range-badge draft-end-badge" title="Draft End Date">END</span>
-        )}
-        {isHoveredStartDay && !isRangeStart && !isModalStartDay && (
-          <span
-            className="range-badge hover-start-badge"
-            style={{ backgroundColor: hoveredHackathon?.color || 'var(--amber-gear)' }}
-            title={`${hoveredHackathon?.name || 'Hackathon'} Start`}
-          >
-            {hoveredHackathon?.startDate === hoveredHackathon?.endDate ? '1 DAY' : 'START'}
-          </span>
-        )}
-        {isHoveredEndDay && hoveredHackathon?.endDate !== hoveredHackathon?.startDate && !isRangeStart && !isModalEndDay && (
-          <span
-            className="range-badge hover-end-badge"
-            style={{ backgroundColor: hoveredHackathon?.color || 'var(--amber-gear)' }}
-            title={`${hoveredHackathon?.name || 'Hackathon'} End`}
-          >
-            END
-          </span>
-        )}
-        {day.events.map((e) => (
-          e.emoji ? (
-            <span
-              key={e.id}
-              className={`day-event-emoji ${hoveredHackathonId === e.id ? 'highlighted-event-emoji' : ''}`}
-              title={`${e.name} (${e.status})`}
-              style={{ color: e.color }}
-            >
-              {e.emoji}
-            </span>
-          ) : null
-        ))}
-        {inModalRange && modalActiveRange?.emoji && (
-          <span
-            className="day-event-emoji draft-event-emoji"
-            title={`Draft: ${modalActiveRange.name || 'Hackathon'}`}
-            style={modalActiveRange.color ? { color: modalActiveRange.color } : undefined}
-          >
-            {modalActiveRange.emoji}
-          </span>
+        {day.isToday ? (
+          <span className="today-badge" title="Today">Today</span>
+        ) : hasRangeBadge ? (
+          <>
+            {isRangeStart && <span className="range-badge">START</span>}
+            {showDraftStart && (
+              <span className="range-badge draft-start-badge" title="Draft Start Date">
+                {modalActiveRange?.startDate === modalActiveRange?.endDate ? '1 DAY' : 'START'}
+              </span>
+            )}
+            {showDraftEnd && (
+              <span className="range-badge draft-end-badge" title="Draft End Date">END</span>
+            )}
+            {showHoverStart && (
+              <span
+                className="range-badge hover-start-badge"
+                style={{ backgroundColor: hoveredHackathon?.color || 'var(--amber-gear)' }}
+                title={`${hoveredHackathon?.name || 'Hackathon'} Start`}
+              >
+                {hoveredHackathon?.startDate === hoveredHackathon?.endDate ? '1 DAY' : 'START'}
+              </span>
+            )}
+            {showHoverEnd && (
+              <span
+                className="range-badge hover-end-badge"
+                style={{ backgroundColor: hoveredHackathon?.color || 'var(--amber-gear)' }}
+                title={`${hoveredHackathon?.name || 'Hackathon'} End`}
+              >
+                END
+              </span>
+            )}
+          </>
+        ) : (
+          <>
+            {day.events.map((e) => (
+              e.emoji ? (
+                <span
+                  key={e.id}
+                  className={`day-event-emoji ${hoveredHackathonId === e.id ? 'highlighted-event-emoji' : ''}`}
+                  title={`${e.name} (${e.status})`}
+                  style={{ color: e.color }}
+                >
+                  {e.emoji}
+                </span>
+              ) : null
+            ))}
+            {inModalRange && modalActiveRange?.emoji && (
+              <span
+                className="day-event-emoji draft-event-emoji"
+                title={`Draft: ${modalActiveRange.name || 'Hackathon'}`}
+                style={modalActiveRange.color ? { color: modalActiveRange.color } : undefined}
+              >
+                {modalActiveRange.emoji}
+              </span>
+            )}
+          </>
         )}
       </div>
     </div>
