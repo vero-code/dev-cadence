@@ -1,14 +1,13 @@
 # Dev Cadence — Build & Rest Capacity Planner
 
-> **Chrome Side Panel extension to pace monthly sprint workload, flag date collisions with split cells, and guard your rest buffer.**
-
 ![React 19](https://img.shields.io/badge/React-19-61dafb?logo=react&logoColor=black)
 ![Vite 6](https://img.shields.io/badge/Vite-6-646cff?logo=vite&logoColor=white)
+![Firebase 13.4](https://img.shields.io/badge/Firebase_AI_Logic-13.4-ffca28?logo=firebase&logoColor=black)
+![Gemini 4 Hydrogen](https://img.shields.io/badge/Gemini_4_Hydrogen-Hybrid_AI-8e75b2?logo=googlegemini&logoColor=white)
 ![Chrome Extension](https://img.shields.io/badge/Manifest_V3-Side_Panel-4285f4?logo=google-chrome&logoColor=white)
 
+Chrome Side Panel extension to pace monthly sprint workload, flag date collisions with split cells, and guard your rest buffer.
 
-> 📺 **Video Tutorial**
->
 > [![Video tutorial on Dev Cadence](https://img.youtube.com/vi/HrIht2-ZHvk/hqdefault.jpg)](https://youtu.be/HrIht2-ZHvk)
 
 ---
@@ -119,6 +118,7 @@ Logging multiple projects and sprints across disconnected calendars causes:
 - **Framework:** [React 19](https://react.dev/) + [Vite 6](https://vite.dev/)
 - **Styling:** Modular Vanilla CSS with CSS tokens and responsive scaling
 - **Platform:** Chrome Extension Manifest V3 (`side_panel`, `storage`, background worker)
+- **Hybrid AI:** [Firebase AI Logic](https://firebase.google.com/docs/ai-logic/hybrid) (`firebase ^13.4.0`), Firebase App Check, Chrome Prompt API (`Gemini Nano` on-device), and `gemini-4-hydrogen` cloud fallback
 
 ```text
 dev-cadence/
