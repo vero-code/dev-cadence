@@ -173,9 +173,16 @@ export const CapacityBar = ({ year, month, hackathons, settings, onOpenSettings 
               type="button"
               className="btn-secondary ai-extract-btn"
               onClick={handleGetAdvice}
+              title={loading ? 'Click to stop AI analysis' : 'Analyze schedule with Hybrid AI'}
             >
               <SparkleIcon size={12} />
-              {loading ? 'Stop' : 'AI Pace Advisor'}
+              {loading ? (
+                <>
+                  Analyzing<span className="ai-loading-dots" aria-hidden="true" />
+                </>
+              ) : (
+                'AI Pace Advisor'
+              )}
             </button>
           </div>
 

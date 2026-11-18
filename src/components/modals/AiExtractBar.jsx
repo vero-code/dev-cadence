@@ -43,10 +43,16 @@ export const AiExtractBar = ({ source, onSourceChange, onExtracted, onError }) =
           type="button"
           className="btn-secondary ai-extract-btn"
           onClick={handleExtract}
-          title={loading ? 'Stop AI extraction' : 'Extract title, URL, and deadline from the active browser tab'}
+          title={loading ? 'Click to stop AI extraction' : 'Extract title, URL, and deadline from the active browser tab'}
         >
           <SparkleIcon />
-          {loading ? 'Stop' : 'Extract from Page'}
+          {loading ? (
+            <>
+              Extracting<span className="ai-loading-dots" aria-hidden="true" />
+            </>
+          ) : (
+            'Extract from Page'
+          )}
         </button>
       </div>
     </div>
