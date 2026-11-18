@@ -143,3 +143,5 @@ export const LEGAL_DATES = {
   privacy: 'November 16, 2026',
   terms: 'November 16, 2026',
 };
+
+export const CLOUD_FALLBACK_MODEL = 'gemini-4-hydrogen';

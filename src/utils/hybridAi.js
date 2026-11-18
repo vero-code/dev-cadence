@@ -5,7 +5,9 @@ import {
   getGenerativeModel,
   GoogleAIBackend,
   InferenceMode,
+  Schema,
 } from 'firebase/ai';
+import { CLOUD_FALLBACK_MODEL } from '../constants';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -36,7 +38,7 @@ const ai = getAI(firebaseApp, { backend: new GoogleAIBackend() });
 // Create a `GenerativeModel` instance
 export const model = getGenerativeModel(ai, {
   mode: InferenceMode.PREFER_ON_DEVICE,
-  inCloudParams: { model: 'gemini-4-hydrogen' },
+  inCloudParams: { model: CLOUD_FALLBACK_MODEL },
 });
 
 export const initDeviceModel = (onProgress) =>
@@ -63,7 +65,55 @@ export const generateHybridText = async (prompt) => {
 };
 
 // Uncomment for check in console:
-window.testHybridAi = () => generateHybridText('Say hello in one short sentence.');
-
+// window.testHybridAi = () => generateHybridText('Say hello in one short sentence.');
 // Write into console: await window.testHybridAi();
 // Result: return {text: 'Hello!', inferenceSource: 'on_device'}
+
+const sprintJsonSchema = Schema.object({
+  properties: {
+    title: Schema.string(),
+    startDate: Schema.string(),
+    endDate: Schema.string(),
+    deadline: Schema.string(),
+  },
+  optionalProperties: ['deadline'],
+});
+
+export const sprintExtractorModel = getGenerativeModel(ai, {
+  mode: InferenceMode.PREFER_ON_DEVICE,
+  inCloudParams: {
+    model: CLOUD_FALLBACK_MODEL,
+    generationConfig: {
+      responseMimeType: 'application/json',
+      responseSchema: sprintJsonSchema,
+    },
+  },
+  onDeviceParams: {
+    promptOptions: {
+      responseConstraint: sprintJsonSchema,
+    },
+  },
+});
+
+export const extractSprintFromText = async (pageText, todayStr) => {
+  await sprintExtractorModel.initializeDeviceModel().catch(() => {});
+
+  const prompt = [
+    `Today is ${todayStr}. Extract sprint or event details from the text below.`,
+    'Format all dates as YYYY-MM-DD (or empty string "" if missing).',
+    '',
+    pageText.slice(0, 6000),
+  ].join('\n');
+
+  const result = await sprintExtractorModel.generateContent(prompt);
+  const inferenceSource = result.response.inferenceSource;
+  const data = JSON.parse(result.response.text());
+
+  console.log('You used: ' + inferenceSource);
+  console.log(data);
+
+  return {
+    data,
+    inferenceSource,
+  };
+};
