@@ -102,16 +102,20 @@ export const LegalModal = ({
                   Dev Cadence contains zero advertising trackers and zero analytics telemetry (such as Google Analytics or Mixpanel).
                   When you explicitly trigger AI features, prompts run locally on your device via Chrome&apos;s built-in <strong>Gemini Nano</strong> model whenever available, and fall back to <strong>Firebase AI Logic (Gemini 4 Hydrogen)</strong> secured by <strong>Firebase App Check</strong> only when on-device inference is unavailable.
                 </p>
+                <p>
+                  If you voluntarily submit the Contact form, the message you enter is sent to the developer via a Discord webhook solely to handle your feedback or support request.
+                </p>
               </div>
 
               <div className="legal-block">
                 <h3 className="legal-heading">4. Data Ownership & One-Click Deletion</h3>
                 <p>
-                  You have full and permanent ownership over your data. You may modify or permanently wipe your data
-                  at any time directly from the <strong>Settings &rarr; Danger Zone</strong>:
+                  You have full and permanent ownership over your data. You may export, import, modify, or permanently wipe your data
+                  at any time directly from <strong>Settings &rarr; Data Management</strong>:
                 </p>
                 <ul className="legal-list">
-                  <li><strong>Clear Hackathons:</strong> Instantly wipes all saved hackathons while preserving your preferences.</li>
+                  <li><strong>Export / Import JSON:</strong> Back up or restore your sprints and preferences locally.</li>
+                  <li><strong>Clear Sprints:</strong> Instantly wipes all saved sprints while preserving your preferences.</li>
                   <li><strong>Factory Reset:</strong> Completely purges all local storage and resets the app to its original clean state.</li>
                 </ul>
               </div>
@@ -196,7 +200,7 @@ export const LegalModal = ({
 
         <div className="modal-footer modal-footer-row" style={{ marginTop: '0.85rem' }}>
           <span className="modal-footer-hint">
-            {activeTab === 'privacy' ? '100% Local-First' : 'Advisory Decision-Support'} &bull; Updated {LEGAL_DATES[activeTab]}
+            {activeTab === 'privacy' ? 'Local-First Hybrid AI' : 'Advisory Decision-Support'} &bull; Updated {LEGAL_DATES[activeTab]}
           </span>
           <button type="button" className="btn-primary" onClick={onClose} style={{ minWidth: '85px' }}>
             Close
