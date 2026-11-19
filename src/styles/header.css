@@ -21,6 +21,7 @@
   display: flex;
   align-items: center;
   gap: 0.85rem;
+  flex: 1;
 }
 
 /* Pocket-watch Brass Bezel Frame around Logo */
@@ -60,9 +61,10 @@
 .brand-title-wrap {
   display: flex;
   flex-direction: row;
-  align-items: baseline;
+  align-items: center;
   gap: 0.5rem;
   flex-wrap: wrap;
+  flex: 1;
 }
 
 .brand-title {
@@ -84,6 +86,7 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-dim);
+  margin: 0 auto;
 }
 
 [data-theme="steampunk"] .brand-subtitle {

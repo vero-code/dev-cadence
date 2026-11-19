@@ -1,5 +1,5 @@
 // App metadata and links
-export const APP_VERSION = 'v0.3.0';
+export const APP_VERSION = 'v1.0.0';
 export const APP_RELEASE_DATE = 'November 17, 2026';
 
 export const LEGAL_DATES = {

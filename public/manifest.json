@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Dev Cadence — Capacity Planner",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "Side panel capacity planner to schedule sprints, spot date overlaps, and protect your monthly rest buffer.",
   "icons": {
     "16": "icon16.png",
