@@ -113,6 +113,16 @@
   gap: 0.4rem;
 }
 
+.capacity-advice-text {
+  font-size: var(--text-sm);
+  color: var(--text-main);
+  line-height: 1.4;
+  flex: 1;
+  max-height: 110px;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
 .capacity-advice-text p,
 .capacity-advice-text ul,
 .capacity-advice-text ol {

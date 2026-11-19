@@ -64,6 +64,8 @@ export const CapacityBar = ({ year, month, hackathons, settings, onOpenSettings 
     abortRef.current = controller;
     setLoading(true);
     setError('');
+    setAdvice(null);
+    setSource(null);
 
     try {
       const res = await adviseScheduleWithAi(
