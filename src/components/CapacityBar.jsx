@@ -52,7 +52,13 @@ export const CapacityBar = ({ year, month, hackathons, settings, onOpenSettings 
 
   useEffect(() => () => abortRef.current?.abort(), []);
 
-  const showAdvisorTrigger = isOvercommitted || overlapDaysCount > 0;
+  const now = new Date();
+  const isPastMonth =
+    year < now.getFullYear() ||
+    (year === now.getFullYear() && month < now.getMonth());
+
+  const showAdvisorTrigger =
+    !isPastMonth && (isOvercommitted || overlapDaysCount > 0);
 
   const handleGetAdvice = async () => {
     if (loading) {
