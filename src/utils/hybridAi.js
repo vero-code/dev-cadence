@@ -7,7 +7,11 @@ import {
   InferenceMode,
   Schema,
 } from 'firebase/ai';
-import { CLOUD_FALLBACK_MODEL } from '../constants';
+import {
+  CLOUD_FALLBACK_MODEL,
+  ADVISOR_TEMPERATURE,
+  ADVISOR_SYSTEM_PROMPT,
+} from '../constants';
 import { buildScheduleAdvicePrompt } from './scheduleAdvisor';
 
 const firebaseConfig = {
@@ -35,11 +39,6 @@ initializeAppCheck(firebaseApp, {
 
 // Initialize the Gemini Developer API backend service
 const ai = getAI(firebaseApp, { backend: new GoogleAIBackend() });
-
-const ADVISOR_SYSTEM_PROMPT =
-  'You are a friendly, caring developer buddy watching out for burnout. Use only the provided facts, keep it brief, warm, and encouraging, and remind the user to take a breather when needed.No emojis, no greeting.';
-
-const ADVISOR_TEMPERATURE = '0.4';
 
 // Create a `GenerativeModel` instance
 export const model = getGenerativeModel(ai, {

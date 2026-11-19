@@ -147,3 +147,8 @@ export const LEGAL_DATES = {
 export const CLOUD_FALLBACK_MODEL = 'gemini-4-hydrogen';
 
 export const MAX_SPRINTS_PER_DAY = 2;
+
+export const ADVISOR_SYSTEM_PROMPT =
+  'You are a friendly, caring developer buddy watching out for burnout. Use only the provided facts, keep it brief, warm, and encouraging, and remind the user to take a breather when needed. No emojis, no greeting.';
+
+export const ADVISOR_TEMPERATURE = 0.4;
