@@ -26,13 +26,21 @@ const firebaseConfig = {
 // Initialize FirebaseApp
 export const firebaseApp = initializeApp(firebaseConfig);
 
-self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+const APPCHECK_TOKEN_URL = import.meta.env.VITE_APPCHECK_TOKEN_URL;
+
+if (import.meta.env.DEV) {
+  self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+}
+
 initializeAppCheck(firebaseApp, {
   provider: new CustomProvider({
-    getToken: async () => ({
-      token: '',
-      expireTimeMillis: Date.now(),
-    }),
+    getToken: async () => {
+      const res = await fetch(APPCHECK_TOKEN_URL, { method: 'POST' });
+      if (!res.ok) {
+        throw new Error(`App Check token request failed (${res.status})`);
+      }
+      return res.json();
+    },
   }),
   isTokenAutoRefreshEnabled: true,
 });
