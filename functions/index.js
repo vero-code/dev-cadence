@@ -1,32 +1,51 @@
-/**
- * Import function triggers from their respective submodules:
- *
- * const {onCall} = require("firebase-functions/v2/https");
- * const {onDocumentWritten} = require("firebase-functions/v2/firestore");
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
+const { setGlobalOptions } = require('firebase-functions');
+const { onRequest } = require('firebase-functions/https');
+const logger = require('firebase-functions/logger');
+const { initializeApp } = require('firebase-admin/app');
+const { getAppCheck } = require('firebase-admin/app-check');
 
-const {setGlobalOptions} = require("firebase-functions");
-const {onRequest} = require("firebase-functions/https");
-const logger = require("firebase-functions/logger");
+initializeApp();
+setGlobalOptions({ maxInstances: 5 });
 
-// For cost control, you can set the maximum number of containers that can be
-// running at the same time. This helps mitigate the impact of unexpected
-// traffic spikes by instead downgrading performance. This limit is a
-// per-function limit. You can override the limit for each function using the
-// `maxInstances` option in the function's options, e.g.
-// `onRequest({ maxInstances: 5 }, (req, res) => { ... })`.
-// NOTE: setGlobalOptions does not apply to functions using the v1 API. V1
-// functions should each use functions.runWith({ maxInstances: 10 }) instead.
-// In the v1 API, each function can only serve one request per container, so
-// this will be the maximum concurrent request count.
-setGlobalOptions({ maxInstances: 10 });
+exports.getAppCheckToken = onRequest(async (req, res) => {
+  const allowedIds = (process.env.ALLOWED_EXTENSION_IDS || '')
+    .split(',')
+    .map((id) => id.trim())
+    .filter(Boolean);
+  const allowedOrigins = allowedIds.map((id) => `chrome-extension://${id}`);
 
-// Create and deploy your first functions
-// https://firebase.google.com/docs/functions/get-started
+  const origin = req.headers.origin || '';
+  if (allowedOrigins.includes(origin)) {
+    res.set('Access-Control-Allow-Origin', origin);
+    res.set('Vary', 'Origin');
+  }
+  res.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.set('Access-Control-Allow-Headers', 'Content-Type');
 
-// exports.helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+  if (req.method === 'OPTIONS') {
+    res.status(204).send('');
+    return;
+  }
+
+  if (!allowedOrigins.includes(origin)) {
+    res.status(403).json({ error: 'Forbidden origin' });
+    return;
+  }
+
+  const appId = process.env.APPCHECK_WEB_APP_ID;
+  if (!appId) {
+    res.status(500).json({ error: 'Missing APPCHECK_WEB_APP_ID' });
+    return;
+  }
+
+  try {
+    const { token, ttlMillis } = await getAppCheck().createToken(appId);
+    res.status(200).json({
+      token,
+      expireTimeMillis: Date.now() + ttlMillis,
+    });
+  } catch (err) {
+    logger.error('Failed to mint App Check token', err);
+    res.status(500).json({ error: 'Failed to create App Check token' });
+  }
+});
