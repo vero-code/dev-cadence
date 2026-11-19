@@ -41,14 +41,32 @@ export const findSprintOverlaps = (sprints = []) => {
   return overlaps;
 };
 
-export const buildScheduleAdvicePrompt = ({ sprints, year, month }) => {
+// Trims latest-deadline sprint to fix rest deficit
+export const getRestDeficitInfo = (activeSprints, targetRest, freeDays, todayIso) => {
+  const deficit = Math.max(0, targetRest - freeDays);
+  if (deficit === 0) return null;
+
+  const upcoming = activeSprints.filter((s) => s.endDate >= todayIso);
+  const pool = upcoming.length > 0 ? upcoming : activeSprints;
+  const candidate = pool[pool.length - 1] || null;
+
+  return {
+    deficit,
+    freeDays,
+    targetRest,
+    candidateName: candidate?.name || null,
+    candidateDeadline: candidate?.deadline || null,
+  };
+};
+
+export const buildScheduleAdvicePrompt = ({ sprints, year, month, targetRest, freeDays }) => {
   const daysInMonth = getDaysInMonth(year, month);
   const monthPadded = String(month + 1).padStart(2, '0');
   const monthStart = `${year}-${monthPadded}-01`;
   const monthEnd = `${year}-${monthPadded}-${String(daysInMonth).padStart(2, '0')}`;
 
   const now = new Date();
-  const todayStr = formatReadableDate(`${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`);
+  const todayIso = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 
   const activeSprints = sprints
     .filter(
@@ -69,9 +87,20 @@ export const buildScheduleAdvicePrompt = ({ sprints, year, month }) => {
     )
     .join('\n');
 
+    const restInfo = getRestDeficitInfo(activeSprints, targetRest, freeDays, todayIso);
+    const restLine = restInfo
+    ? `Rest deficit: ${restInfo.deficit} days short of your ${restInfo.targetRest}-day rest target (${restInfo.freeDays} free days left).${
+        restInfo.candidateName
+          ? ` "${restInfo.candidateName}" has the furthest deadline (${formatReadableDate(restInfo.candidateDeadline)}), so it is the best sprint to shorten or simplify to an MVP.`
+          : ''
+      }`
+    : '';
+
+    const facts = [overlapLines, restLine].filter(Boolean).join('\n');
+
     return [
-      overlapLines ? `${overlapLines}` : 'Overlaps: none.',
+      facts || 'Schedule looks balanced.',
       '',
-      'Present this information to the user in an attractive way.',
+      'Present this information to the user in a concise, attractive way (2-3 short lines max).',
     ].join('\n');
 };
