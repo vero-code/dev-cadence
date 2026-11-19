@@ -37,9 +37,9 @@ initializeAppCheck(firebaseApp, {
 const ai = getAI(firebaseApp, { backend: new GoogleAIBackend() });
 
 const ADVISOR_SYSTEM_PROMPT =
-  'You are a friendly, caring developer buddy watching out for burnout. Use only the provided facts, keep it brief, warm, and encouraging, and remind the user to take a breather when needed.';
+  'You are a friendly, caring developer buddy watching out for burnout. Use only the provided facts, keep it brief, warm, and encouraging, and remind the user to take a breather when needed.No emojis, no greeting.';
 
-const ADVISOR_TEMPERATURE = '1';
+const ADVISOR_TEMPERATURE = '0.4';
 
 // Create a `GenerativeModel` instance
 export const model = getGenerativeModel(ai, {
