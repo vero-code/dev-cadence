@@ -29,7 +29,12 @@ export const findSprintOverlaps = (sprints = []) => {
       const b = sprints[j];
       const dates = getDateRangeOverlap(a.startDate, a.endDate, b.startDate, b.endDate);
       if (dates.length > 0) {
-        overlaps.push({ first: a.name, second: b.name, dates });
+        overlaps.push({
+          first: a.name,
+          firstDeadline: a.deadline,
+          second: b.name,
+          dates,
+        });
       }
     }
   }
@@ -57,20 +62,16 @@ export const buildScheduleAdvicePrompt = ({ sprints, year, month }) => {
     .sort(compareSprintsByDeadline);
 
   const overlaps = findSprintOverlaps(activeSprints);
-  console.log('Overlaps:', overlaps);
-
-  const sprintLines = activeSprints
-    .map((s) => `- Sprint: "${s.name}", Work: ${formatReadableDate(s.startDate)} to ${formatReadableDate(s.endDate)}, Deadline: "${formatReadableDate(s.deadline) || 'none'}";`)
+  const overlapLines = overlaps
+    .map(
+      (o) =>
+        `Sprints overlap on ${o.dates.map(formatReadableDate).join(', ')}: "${o.first}" and "${o.second}". "${o.first}" has higher priority because its deadline is closer (${formatReadableDate(o.firstDeadline)}).`,
+    )
     .join('\n');
 
-  return [
-    `Today is ${todayStr}. \n`,
-    "1. Given each sprint's work start and end dates, check if any sprints overlap (ignore deadlines).",
-    '2. If they do, name the overlapping sprints, the overlapping date(s), and explain why.',
-    '',
-    `Sprints:`,
-    sprintLines,
-    '',
-    'In 3 short plain-text sentences, do not start with "Yes" or "No". State it directly, e.g., "Sprint 1 and Sprint 2 overlap on Nov 1." or "No hackathon overlaps."',
-  ].join('\n');
+    return [
+      overlapLines ? `${overlapLines}` : 'Overlaps: none.',
+      '',
+      'Present this information to the user in an attractive way.',
+    ].join('\n');
 };
