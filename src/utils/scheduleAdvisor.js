@@ -98,13 +98,13 @@ export const buildScheduleAdvicePrompt = ({ sprints, year, month, targetRest, fr
 
     const facts = [overlapLines, restLine].filter(Boolean).join('\n');
     const formatTemplate = [
-    overlapLines
-      ? '- **Overlap:** <sprints & date> — prioritize <priority sprint> (deadline <date>).'
-      : null,
-    restLine
-      ? '- **Rest:** <deficit>d short (<free>d free) — simplify or shorten <candidate sprint> to MVP.'
-      : null,
-  ]
+      overlapLines
+        ? '- **Overlap:** <sprints & date> — prioritize <priority sprint> (deadline <date>).'
+        : null,
+      restLine
+        ? '- **Rest:** <deficit>d short (<free>d free) — simplify or shorten <candidate sprint> to MVP.'
+        : null,
+    ]
     .filter(Boolean)
     .join('\n');
 
