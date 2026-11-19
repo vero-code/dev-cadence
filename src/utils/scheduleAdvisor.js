@@ -97,10 +97,21 @@ export const buildScheduleAdvicePrompt = ({ sprints, year, month, targetRest, fr
     : '';
 
     const facts = [overlapLines, restLine].filter(Boolean).join('\n');
+    const formatTemplate = [
+    overlapLines
+      ? '- **Overlap:** <sprints & date> — prioritize <priority sprint> (deadline <date>).'
+      : null,
+    restLine
+      ? '- **Rest:** <deficit>d short (<free>d free) — simplify or shorten <candidate sprint> to MVP.'
+      : null,
+  ]
+    .filter(Boolean)
+    .join('\n');
 
     return [
       facts || 'Schedule looks balanced.',
       '',
-      'Present this information to the user in a concise, attractive way (2-3 short lines max).',
+      'Present these facts concisely using this exact markdown format:',
+      formatTemplate || '- **Status:** <short summary>',
     ].join('\n');
 };
