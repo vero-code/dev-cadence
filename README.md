@@ -22,79 +22,74 @@ Logging multiple hackathons, bounties, and projects across disconnected calendar
 2. **Date Collisions:** Unnoticed clashing crunch periods and simultaneous deadlines.
 3. **Burnout:** Zero visibility into remaining rest days, leading to missed deadlines.
 
-**Dev Cadence** lives directly inside Chrome's Side Panel as a real-time capacity guardrail.
+**Dev Cadence** lives directly inside Chrome's Side Panel to track sprint workload and rest days alongside your browser tabs.
 
 ---
 
 ## Features
 
-### 🤖 1. Privacy-First Hybrid AI (`Firebase AI Logic`)
+### 1. Privacy-First Hybrid AI (`Firebase AI Logic`)
 - **Extract from Page:** Click **Extract from Page** inside the Sprint form on any standard webpage to read the active tab's selected or visible text on demand, extract structured JSON (`title`, `deadline`) via `Schema` constraints, and auto-fill the form's **Title**, **URL**, and **Deadline**.
 - **AI Pace Advisor:** Appears in the Capacity Bar when sprints overlap or your monthly rest buffer is short (hidden for past months). Deterministic JavaScript computes exact overlapping dates, deadline priority, and rest deficit, while Hybrid AI turns those facts into a concise markdown recommendation.
 - **Transparent Execution:** Displays an `On-Device` (Chrome built-in **Gemini Nano**) or `Cloud` (**Gemini 4 Hydrogen** fallback via Firebase AI Logic) badge, supports click-to-stop cancellation (`AbortController`), and automatically hides the AI badge if you manually edit extracted fields.
 - **Production App Check:** Secured with Firebase App Check via a `CustomProvider` backed by a **Firebase Cloud Function (2nd Gen)** (`getAppCheckToken`) restricted to allowed extension origins.
 
-### 📅 2. Monthly Calendar
+### 2. Monthly Calendar
 - **Interactive Grid:** Displays active sprint periods with custom colors and emojis.
 - **Split-Cell Gradients:** Overlapping sprints dynamically split cells diagonally (`linear-gradient`).
-- **Day Numbers:** Numbers stay clear at the top; `TODAY`, `START`, `END`, `1 DAY` badges and emojis sit neatly at the bottom. Bottom cell indicators follow a priority (`START` / `END` / `1 DAY` → sprint emojis → `TODAY`) so cells stay uncluttered.
+- **Day Numbers:** Numbers stay clear at the top; bottom cell indicators follow a strict priority (`START` / `END` / `1 DAY` → sprint emojis → `TODAY`) so cells stay uncluttered.
 - **Deadlines & Popovers:** Deadlines are flagged (`🏁`). Click or hover any busy day for quick event details.
 
-### 🔄 3. Real-Time Form & Calendar Sync
+### 3. Real-Time Form & Calendar Sync
 - **Smart Range Anchor:** Click any day to auto-span a sprint by your configured `Build Days`. Click later days to stretch or shrink the sprint; click before the start to shift the start date.
 - **Calendar Preview:** Editing dates in the inline form highlights the sprint range with a dashed border, soft tint, `START` / `END` badges, and deadline flag (`🏁`).
 - **Tracker Hover Highlight:** Hovering a saved sprint in the Tracker highlights its range and deadline on the calendar (can be toggled in Settings).
 - **Date & Overlap Validation:** Enforces valid `Start Date`, `End Date`, optional `Deadline`, and a max of 2 overlapping sprints per day.
 
-### 🛡️ 4. Tri-Color Capacity Guardrail & Rest Buffer
+### 4. Capacity Bar & Rest Buffer
 - **Compact Capacity Bar:** Visual breakdown of your monthly days (`BUILD`, `FREE`, `REST X/Yd`):
   - 🔵 **Blue (Build):** Scheduled sprint days in the month.
   - 🟢 **Green (Free):** Available days remaining before dipping into rest.
-  - 🟣 **Purple (Rest):** Protected recharge buffer (`0–31` days configured in Settings).
+  - 🟣 **Purple (Rest):** Target rest days (`0–31` days configured in Settings).
 
-### 📋 5. Dual-Layout Tracker (Cards & Table)
+### 5. Dual-Layout Tracker (Cards & Table)
 - **Cards & Table Modes:** Switch between compact cards and a table view, sorted by earliest deadline first.
 - **Status Filter:** Filter entries by lifecycle status (*Interest*, *Join*, *Early*, *Draft*, *Done*).
 - **Month-Aware List:** Shows every sprint touching the selected month, including sprints that span across two months.
 
-### 🎨 6. Multi-Theme Engine & Custom Typography
+### 6. Themes & Typography
 - **3 Built-In Themes:** `Ocean Slate`, `Obsidian Brass`, and `Warm Vellum` (default).
 - **3 Font Presets:** `Bahnschrift`, `Geometric` (`Plus Jakarta Sans`), and `Marcellus`.
 - **Font Scaling:** `90%`, `100%`, and `110%` scaling via CSS tokens with auto-save.
 
-### 🔒 7. Local-First & Data Portability
+### 7. Local-First & Data Portability
 - **Local Storage:** Uses `chrome.storage.local` in the extension with fallback to `localStorage`.
 - **JSON Backup:** 1-click `Export JSON` and `Import JSON` to move data between devices.
-- **Data Management & Transparency:** Verified `Clear Sprints` and `Factory Reset` controls, `Legal` and `Contact Support` modals, and a public [Privacy Policy](PRIVACY.md).
-
----
-
-## What Was Built During #BuildHybridAI 2026
-
-Dev Cadence originally existed before November 11, 2026 (`v0.2.0` tag) as a local-only Chrome Side Panel hackathon tracker with no AI or Firebase integration.
-
-During **#BuildHybridAI 2026** (from `v0.2.0` to `v1.0.0`), the project was expanded into a universal Hybrid AI capacity planner:
-
-- **Firebase AI Logic Hybrid Inference (`src/utils/hybridAi.js`):** Integrated `firebase ^13.4.0` (`InferenceMode.PREFER_ON_DEVICE` with `gemini-4-hydrogen` cloud fallback), structured JSON output (`Schema`), and cancelable generation (`AbortController` + abort racing for on-device calls).
-- **Firebase App Check + Cloud Functions (`functions/index.js`):** Implemented a 2nd Gen Cloud Function (`getAppCheckToken`) using `firebase-admin/app-check` with origin validation to mint production App Check tokens for Chrome Extension MV3 `CustomProvider`.
-- **Active-Tab Sprint Extractor (`src/components/modals/AiExtractBar.jsx`):** Added `activeTab`, `scripting`, and on-demand page extraction to auto-fill sprint title, URL, and deadline from any webpage, with live `On-Device` / `Cloud` source badges.
-- **Deterministic + Hybrid AI Pace Advisor (`src/utils/scheduleAdvisor.js`, `src/components/CapacityBar.jsx`):** Built pure JS overlap detection, deadline-priority sorting, and rest-deficit calculation paired with Hybrid AI buddy phrasing rendered via `react-markdown`.
-- **Universal Rebrand & UX Overhaul:** Removed platform-specific lock-in, added on-device AI setup settings, local JSON export/import, Apache 2.0 license, and [PRIVACY.md](PRIVACY.md) for Chrome Web Store submission (see the full list of UI/UX updates in the Changelog below v0.3.0/v1.0.0).
+- **Data Management & Transparency:** Confirmation-protected Clear Sprints and Factory Reset controls, `Legal` and `Contact Support` modals, and a public [Privacy Policy](PRIVACY.md).
 
 ---
 
 ## Changelog
 
-### v1.0.0 *(November 19, 2026)*
-- Integrated **Firebase AI Logic** (`PREFER_ON_DEVICE` Gemini Nano + `gemini-4-hydrogen` cloud fallback) and **Firebase App Check** (`CustomProvider` + 2nd Gen Cloud Function `getAppCheckToken`).
-- Added **Extract from Page** in the Sprint form using `activeTab` + `scripting` and structured JSON output (`Schema`), with `On-Device` / `Cloud` badges (`AiSourceBadge`) that hide if extracted fields are manually edited.
-- Added **AI Pace Advisor** in `CapacityBar` with deterministic overlap & rest-deficit analysis (`scheduleAdvisor.js`), friendly buddy tone, `react-markdown` rendering, collapse toggle, scrollable output, and past-month hiding.
-- Added cancelable AI generation (`AbortController` with animated loading dots) and shared deadline-first sprint sorting between Tracker and AI advisor.
-- Limited daily sprint overlap to max 2, defaulted new sprint start dates to today, and refined calendar cell badge priority (`START`/`END`/`1 DAY` → emojis → `TODAY`) with dimmed unrelated emojis during preview.
-- Set **Warm Vellum** as the default theme, added a back button to the inline Sprint form, centered the header subtitle, and grouped all project constants.
-- Updated `LegalModal` and added [PRIVACY.md](PRIVACY.md) for Chrome Web Store release.
+### What Was Built During #BuildHybridAI 2026
 
-### v0.3.0 *(November 17, 2026)*
+Dev Cadence originally existed before November 11, 2026 (`v0.2.0` tag) as a local-only Chrome Side Panel hackathon tracker with no AI or Firebase integration. During **#BuildHybridAI 2026** (`v0.3.0` → `v1.0.0`), it was expanded into a Hybrid AI capacity planner:
+
+#### v1.0.0 *(November 19, 2026)*
+
+- **Firebase AI Logic Hybrid Inference (`src/utils/hybridAi.js`):** Integrated `firebase ^13.4.0` (`InferenceMode.PREFER_ON_DEVICE` with `gemini-4-hydrogen` cloud fallback), structured JSON output (`Schema`), and cancelable generation (`AbortController` with animated loading dots and on-device abort racing).
+
+- **Firebase App Check + Cloud Functions (`functions/index.js`):** Implemented a 2nd Gen Cloud Function (`getAppCheckToken`) using `firebase-admin/app-check` with origin validation to mint production App Check tokens for Chrome Extension MV3 `CustomProvider`.
+
+- **Active-Tab Sprint Extractor (`src/components/modals/AiExtractBar.jsx`):** Added `activeTab` + `scripting` on-demand page extraction to auto-fill sprint title, URL, and deadline, with `On-Device` / `Cloud` badges (`AiSourceBadge`) that hide if extracted fields are edited manually.
+
+- **Deterministic + Hybrid AI Pace Advisor (`src/utils/scheduleAdvisor.js`, `src/components/CapacityBar.jsx`):** Added pure JS overlap detection, shared deadline-first sprint sorting, and rest-deficit calculation paired with friendly Hybrid AI phrasing rendered via `react-markdown`, with collapse toggle, scroll, and past-month hiding.
+
+- **Calendar & Form Refinements:** Limited daily sprint overlap to max 2, defaulted new sprint start dates to today, prioritized cell badges (`START` / `END` / `1 DAY` → emojis → `TODAY`) with dimmed unrelated emojis during preview, and added a back button to the inline Sprint form.
+
+- **UI & Release Polish:** Set **Warm Vellum** as the default theme, centered the header subtitle, grouped all project constants, updated `LegalModal`, and added [PRIVACY.md](PRIVACY.md) for Chrome Web Store submission.
+
+#### v0.3.0 *(November 17, 2026)*
 
 - Added an AI settings tab to check Chrome on-device AI (`Gemini Nano`) status and download the local model.
 
@@ -124,7 +119,9 @@ During **#BuildHybridAI 2026** (from `v0.2.0` to `v1.0.0`), the project was expa
 
 - Added ESLint configuration, split all components and CSS files under 250 lines into domain modules, and removed unused styles and exports.
 
-### v0.2.0 *(October 20, 2026)*
+### Before #BuildHybridAI 2026
+
+#### v0.2.0 *(October 20, 2026)*
 
 - Added a hackathon URL field.
 
@@ -203,7 +200,7 @@ If deploying the App Check Cloud Function yourself, also configure `functions/.e
 
 - **Hybrid AI Extract from Page:** Open any hackathon or project page, click `+` in Tracker, click **Extract from Page**, and confirm title, URL, deadline, and the `On-Device` / `Cloud` badge populate automatically.
 - **Hybrid AI Pace Advisor:** Log two overlapping sprints (or lower available rest days below `Rest Days`), then click **AI Pace Advisor** in the bottom Capacity Bar. Click again while analyzing to test cancellation.
-- **Collision Split & Live Sync:** Edit dates in the Sprint form and watch diagonal split cells and live preview aura update in real time.
+- **Collision Split & Live Sync:** Edit dates in the Sprint form and watch diagonal split cells and dashed preview border update in real time.
 - **Backup & Restore:** Export sprints to JSON in `Settings -> Data Management` and import them back.
 - **On-Device Model Inspection:** Tested locally in Chrome with `nano_v3_gpu_high_tier_model` (**Gemini Nano**). You can inspect the installed model and status at `chrome://on-device-internals`, or check/download it via `Settings -> AI`.
 
